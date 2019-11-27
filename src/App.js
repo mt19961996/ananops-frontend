@@ -1,16 +1,21 @@
 import React, { Component, } from 'react';
-import { HashRouter} from 'react-router-dom';
-import Layouts from './layouts';
+import Login from './pages/login';
+import PrimaryLayout from './pages/primiaryLayout';
+import { Router, Route, } from 'react-router-dom'
+import { createBrowserHistory } from 'history'
 import './App.styl';
-export const {Provider,Consumer} = React.createContext("默认名称");
+
 class App extends Component {
  
-  render() {
+  render(){
+    const history = createBrowserHistory()
     return (
-      <HashRouter>
-        <Layouts />
-         
-      </HashRouter>
+      <Router history={history}>
+        {/* 登录页面 */}
+        <Route path="/login" component={Login} />
+        {/* 使用路由的钩子函数 */}
+        <Route exact path="/" component={PrimaryLayout}/>
+      </Router>
     );
   }
 }
