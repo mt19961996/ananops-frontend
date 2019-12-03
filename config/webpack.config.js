@@ -296,6 +296,15 @@ module.exports = function(webpackEnv) {
         PnpWebpackPlugin.moduleLoader(module),
       ],
     },
+    // devServer: {
+    //   historyApiFallback: {
+    //     rewrites: [{
+    //       from: /.*/g,
+    //       to: '/public/index.html'
+    //     }]
+  
+    //   }
+    // },
     module: {
       strictExportPresence: true,
       rules: [

@@ -1,21 +1,18 @@
-import React, { Component, } from 'react';
+import React from 'react';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import Login from './pages/login';
-import PrimaryLayout from './pages/primiaryLayout';
-import { Router, Route, } from 'react-router-dom'
-import { createBrowserHistory } from 'history'
-import './App.styl';
+import Main from './router';
 
-class App extends Component {
- 
-  render(){
-    const history = createBrowserHistory()
+class App extends React.Component {
+  render() {
     return (
-      <Router history={history}>
-        {/* 登录页面 */}
-        <Route path="/login" component={Login} />
-        {/* 使用路由的钩子函数 */}
-        <Route exact path="/" component={PrimaryLayout}/>
-      </Router>
+      <div className="App">
+        <Switch>
+          <Route path="/login" component={ Login } />
+          <Route path="/" component={ Main }/>
+          <Redirect to="/"/>
+        </Switch>
+      </div>
     );
   }
 }
