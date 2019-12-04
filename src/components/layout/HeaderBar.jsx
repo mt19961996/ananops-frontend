@@ -33,6 +33,7 @@ class UserInfo extends React.Component {
       <Dropdown overlay={ menu } onVisibleChange={ this.handleVisibleChange } visible={ this.state.visible }>
         <div className="ant-dropdown-link">
           {/* <img className="custom-img" src={ customUrl } alt=""/> */}
+          用户
           <Icon type="caret-down" />
         </div>
       </Dropdown>
