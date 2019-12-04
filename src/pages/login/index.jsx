@@ -24,17 +24,17 @@ class Login extends React.Component {
         <Form onSubmit={this.handleSubmit} className="login-form">
           <div className="sub-title">登 录</div>
           <Form.Item>
-            { getFieldDecorator('username', {
+            {getFieldDecorator('username', {
               rules: [{ required: true, message: '请输入用户名!' }],
             })(
-              <Input prefix={<Icon type="user" className='login-icon' />} placeholder="用户名admin"/>,
+              <Input prefix={<Icon type="user" className="login-icon" />} placeholder="用户名admin"/>,
             )}
           </Form.Item>
           <Form.Item>
-            { getFieldDecorator('password', {
+            {getFieldDecorator('password', {
               rules: [{ required: true, message: '请输入密码!' }],
             })(
-              <Input prefix={<Icon type="lock" className='login-icon'/>} type="password" placeholder="密码123"/>,
+              <Input prefix={<Icon type="lock" className="login-icon"/>} type="password" placeholder="密码123"/>,
             )}
           </Form.Item>
           <Form.Item>

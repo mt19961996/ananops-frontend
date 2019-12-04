@@ -18,13 +18,13 @@ class Index extends React.Component {
           <HeaderBar history={this.props.history}></HeaderBar>
           <div className="layout-content">
             {/* <Suspense fallback={<div>Loading...</div>}> */}
-              <Switch>
-                <Route exact path="/" component={ Home }/>
-                {/* <Route path="/user/connect" component={ Connect }/>
+            <Switch>
+              <Route exact path="/" component={Home}/>
+              {/* <Route path="/user/connect" component={ Connect }/>
                 <Route path="/user/list" component={ List }/>
                 <Route path="/tool/rich" component={ Rich }/> */}
-                <Route component={ NotFind }/>
-              </Switch>
+              <Route component={NotFind}/>
+            </Switch>
             {/* </Suspense> */}
           </div>
         </Layout>
