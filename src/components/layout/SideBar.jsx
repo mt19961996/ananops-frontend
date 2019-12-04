@@ -3,7 +3,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom'
 import { Menu, Icon, Layout } from 'antd';
 import menuConfig from '../../config';
-// import logoURL from '../../images/logo.jpeg';
+import logoURL from '../../img/logo.jpeg';
 import { connect } from 'react-redux';
 import { switchMenu } from '../../redux/actions';
 const { Sider } = Layout;
@@ -108,7 +108,7 @@ class SiderBar extends React.Component {
     return (
       <Sider collapsible collapsed={ this.state.collapsed } onCollapse={ this.onCollapse }>
         <div className="logo">
-          {/* <img className="logo-img" src={ logoURL } alt=""/> */}
+          <img className="logo-img" src={ logoURL } alt=""/>
           { name }
         </div>
         <Menu onClick={ this.handleClick } theme="dark"
