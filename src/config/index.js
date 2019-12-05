@@ -20,13 +20,13 @@ const menuConfig = [
       ]
     },
     {
-      title: '组件',
-      key: '/tool',
+      title: '巡检管理',
+      key: '/inspection',
       icon: 'build',
       children: [
         {
-          title: '富文本',
-          key: '/tool/rich',
+          title: '巡检计划管理',
+          key: '/inspection/plan',
         }
       ]
     }

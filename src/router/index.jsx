@@ -6,7 +6,7 @@ import HeaderBar from '../components/layout/HeaderBar.jsx'
 import Home from '../pages/home'
 import NotFind from '../pages/notFound'
 import Connect from '../pages/user/connect'
-
+import Plan from '../pages/inspection/plan'
 
 class Index extends React.Component {
 
@@ -22,8 +22,8 @@ class Index extends React.Component {
               <Switch>
                 <Route exact path="/" component={ Home }/>
                 <Route path="/user/connect" component={ Connect }/>
-                {/* <Route path="/user/list" component={ List }/>
-                <Route path="/tool/rich" component={ Rich }/> */}
+                {/* <Route path="/user/list" component={ List }/> */}
+                <Route path="/inspection/plan" component={ Plan }/>
 
                 <Route component={ NotFind }/>
               </Switch>
