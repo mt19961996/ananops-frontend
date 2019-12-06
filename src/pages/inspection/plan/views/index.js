@@ -48,7 +48,7 @@ class PlanRoute extends Component{
             loading: Loading
           })}
         />
-           <Route
+        <Route
           exact
           path="/inspection/plan/detail/:id"
           component={Loadable({
@@ -58,7 +58,7 @@ class PlanRoute extends Component{
             loading: Loading
           })}
         />
-          <Route 
+        <Route 
           exact   
           path="/inspection/plan/subTask"
           component={Loadable({
@@ -88,7 +88,7 @@ class PlanRoute extends Component{
             loading: Loading
           })}
         />
-           <Route
+        <Route
           exact
           path="/inspection/plan/subTask/detail/:id"
           component={Loadable({
@@ -98,7 +98,7 @@ class PlanRoute extends Component{
             loading: Loading
           })}
         />
-         <Route 
+        <Route 
           exact   
           path="/inspection/plan/comment"
           component={Loadable({

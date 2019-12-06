@@ -25,12 +25,12 @@ class UserInfo extends React.Component {
 
   render() {
     const menu = (
-      <Menu onClick={ this.handleMenuClick }>
+      <Menu onClick={this.handleMenuClick}>
         <Menu.Item key="outLogin">退出登录</Menu.Item>
       </Menu>
     );
     return (
-      <Dropdown overlay={ menu } onVisibleChange={ this.handleVisibleChange } visible={ this.state.visible }>
+      <Dropdown overlay={menu} onVisibleChange={this.handleVisibleChange} visible={this.state.visible}>
         <div className="ant-dropdown-link">
           {/* <img className="custom-img" src={ customUrl } alt=""/> */}
           用户
@@ -48,12 +48,12 @@ const HeaderBar = (props) => {
         {
           props.menuName.map((item) => {
             return (
-              <Breadcrumb.Item key={ item }>{ item }</Breadcrumb.Item>
+              <Breadcrumb.Item key={item}>{item}</Breadcrumb.Item>
             );
           })
         }
       </Breadcrumb>
-      <UserInfo history={ props.history }/>
+      <UserInfo history={props.history}/>
     </Header>
   );
 };

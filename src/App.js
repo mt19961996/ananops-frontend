@@ -9,8 +9,8 @@ class App extends React.Component {
     return (
       <div className="App">
         <Switch>
-          <Route path="/login" component={ Login } />
-          <Route path="/" component={ Main }/>
+          <Route path="/login" component={Login} />
+          <Route path="/" component={Main}/>
           <Redirect to="/"/>
         </Switch>
       </div>

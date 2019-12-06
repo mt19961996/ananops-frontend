@@ -52,17 +52,18 @@ class SiderBar extends React.Component {
     return menu.map((item) => {
       if (item.children) {
         return (
-          <SubMenu key={ item.key }
-                   title={ <span><Icon type={ item.icon }/><span>{ item.title }</span></span> }>
-            { this.setMenu(item.children, item) }
+          <SubMenu key={item.key}
+            title={<span><Icon type={item.icon}/><span>{item.title}</span></span>}
+          >
+            {this.setMenu(item.children, item)}
           </SubMenu>
         )
       }
       return (
-        <Menu.Item title={ item.title } key={ item.key } pitem={ pItem }>
-          <NavLink to={ item.key } >
-            { item.icon && <Icon type={ item.icon }/> }
-            <span>{ item.title }</span>
+        <Menu.Item title={item.title} key={item.key} pitem={pItem}>
+          <NavLink to={item.key} >
+            {item.icon && <Icon type={item.icon}/>}
+            <span>{item.title}</span>
           </NavLink>
         </Menu.Item>
       )
@@ -106,16 +107,17 @@ class SiderBar extends React.Component {
       name = <span className="name">React管理后台</span>;
     }
     return (
-      <Sider collapsible collapsed={ this.state.collapsed } onCollapse={ this.onCollapse }>
+      <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
         <div className="logo">
-          <img className="logo-img" src={ logoURL } alt=""/>
-          { name }
+          <img className="logo-img" src={logoURL} alt=""/>
+          {name}
         </div>
-        <Menu onClick={ this.handleClick } theme="dark"
-              defaultOpenKeys={ this.state.defaultOpenKeys }
-              defaultSelectedKeys={ this.state.defaultSelectedKeys }
-              mode="inline">
-          { this.state.menuList }
+        <Menu onClick={this.handleClick} theme="dark"
+          defaultOpenKeys={this.state.defaultOpenKeys}
+          defaultSelectedKeys={this.state.defaultSelectedKeys}
+          mode="inline"
+        >
+          {this.state.menuList}
         </Menu>
       </Sider>
     );
