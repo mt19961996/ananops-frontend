@@ -7,6 +7,7 @@ import Home from '../pages/home'
 import NotFind from '../pages/notFound'
 import Connect from '../pages/user/connect'
 import Plan from '../pages/inspection/plan'
+// import SubTask from '../pages/inspection/subTask'
 
 class Index extends React.Component {
 
@@ -24,7 +25,7 @@ class Index extends React.Component {
                 <Route path="/user/connect" component={ Connect }/>
                 {/* <Route path="/user/list" component={ List }/> */}
                 <Route path="/inspection/plan" component={ Plan }/>
-
+                {/* <Route path="/inspection/subTask" component={ SubTask }/> */}
                 <Route component={ NotFind }/>
               </Switch>
             {/* </Suspense> */}

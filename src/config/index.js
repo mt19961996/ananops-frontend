@@ -27,7 +27,7 @@ const menuConfig = [
         {
           title: '巡检计划管理',
           key: '/inspection/plan',
-        }
+        },
       ]
     }
   ];

@@ -3,10 +3,11 @@ import { Button,Row,Col,Table,Input,Popconfirm,message  } from 'antd';
 import { Link } from 'react-router-dom'
 import moment from 'moment';
 import './index.styl'
+
 const FIRST_PAGE = 0;
 const PAGE_SIZE = 10;
 const Search = Input.Search;
-class Plan extends Component{
+class SubTask extends Component{
     constructor(props) {
         super(props);
         this.state = {
@@ -15,7 +16,25 @@ class Plan extends Component{
             total: 20, 
             nowCurrent:FIRST_PAGE,
             data:{
-                data:[],
+                data:[
+                { "actualFinishTime" : "string",
+                "actualStartTime" : "string",
+                "deadline" : "string",
+                "description" : "无",
+                "deviceId" : 'ZKM-03-003',
+                "deviceLatitude" : 0.0,
+                "deviceLongitude" : 0.0,
+                "deviceStatus" : '维修中',
+                "deviceType" : "string",
+                "exceptionDescription" : "无反应",
+                "exceptionLevel" : 1,
+                "id" : 0,
+                "inspectionTaskId" : 0,
+                "maintenanceTaskId" : 0,
+                "scheduledFinishTime" : "string",
+                "scheduledStartTime" : "string",
+                "status" : '暂停中'              
+            }],
                 limit:3,
                 page:0,
                 allCount:0,
@@ -46,6 +65,11 @@ class Plan extends Component{
                           onSearch={value => this.selectActivity(value)}
                       />
                       </Col>
+                      <Col push={16}>
+                        <Button type="primary">
+                          +新建巡检子项
+                        </Button>
+                        </Col>
                   </Row> 
                 </div>
                 <Table
@@ -62,22 +86,29 @@ class Plan extends Component{
                 rowClassName={this.setRowClassName}
                 dataSource={data}
                 columns={[{
-                  title: '任务ID',
-                  key: 'content',
+                  title: '设备ID',
+                  key: 'deviceId',
                   render: (text, record) => {
-                    return ((record.number && record.number) || '--')
+                    return (record.deviceId && record.deviceId) || '--'
+                  }
+                },
+                  {
+                  title: '设备状态',
+                  key: 'deviceStatus',
+                  render: (text, record) => {
+                    return ((record.deviceStatus && record.deviceStatus) || '--')
                   }   
                 }, {
-                  title: '巡检类型',
-                  key: 'create_date',
+                  title: '设备异常等级',
+                  key: 'exceptionLevel',
                   render: (text, record) => {
-                    return (record.date && record.date) || '--'
+                    return (record.exceptionLevel && record.exceptionLevel) || '--'
                   }
-                }, {
-                  title: '状态',
-                  key: 'inspection_person',
+                }, , {
+                  title: '设备异常描述',
+                  key: 'exceptionDescription',
                   render: (text, record) => {
-                    return (record.inspection_person && record.inspection_person) || '--'
+                    return (record.exceptionDescription && record.exceptionDescription) || '--'
                   }
                 },
                 // {
@@ -118,28 +149,10 @@ class Plan extends Component{
                 //   }
                 // },
                  {
-                  title: '负责人ID', 
-                  key: 'inspection_person',
+                  title: '描述信息', 
+                  key: 'description',
                   render: (text, record) => {
-                    return (record.inspection_person && record.inspection_person) || '--'
-                  }
-                }, {
-                  title: '服务商ID',
-                  key: 'inspection_person',
-                  render: (text, record) => {
-                    return (record.inspection_person && record.inspection_person) || '--'
-                  }
-                },{
-                  title: '所属项目',
-                  key: 'inspection_person',
-                  render: (text, record) => {
-                    return (record.inspection_person && record.inspection_person) || '--'
-                  }
-                },{
-                  title: '地址',
-                  key: 'status',
-                  render: (text, record) => {
-                    return (record.status && record.status) || '--'
+                    return (record.description && record.description) || '--'
                   }
                 },
                 // {
@@ -175,21 +188,17 @@ class Plan extends Component{
                       style={{ display: 'block' }}
                     >
                       <Link
-                        to={`/inspection/plan/edit/${record.id}`}
-                        style={{marginRight:'5px'}}
-                      >查看子任务</Link>
+                        to={`/inspection/plan/subTask/detail/1`}
+                        style={{marginRight:'12px'}}
+                      >详情</Link>
                       <Link
                         to={`/inspection/plan/edit/${record.id}`}
-                        style={{marginRight:'5px'}}
+                        style={{marginRight:'12px'}}
                       >修改</Link>
                       <Link
                         to={`/inspection/plan/edit/${record.id}`}
-                        style={{marginRight:'5px'}}
                       >创建订单</Link>
-                      <Link
-                        to={`/inspection/plan/edit/${record.id}`}
-                        style={{marginRight:'5px'}}
-                      >评论</Link>
+                   
                       {/* <Popconfirm
                         title="确定要删除吗？"
                         onConfirm={()=> {this.deleteGroup(record)}}
@@ -207,4 +216,4 @@ class Plan extends Component{
         )
     }
 }
-export default Plan;
+export default SubTask;
