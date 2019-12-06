@@ -20,7 +20,7 @@ class PlanRoute extends Component{
       <Switch>
         <Route 
           exact   
-          path="/inspection/plan"
+          path="/inspection"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -30,7 +30,7 @@ class PlanRoute extends Component{
         />
         <Route
           exact
-          path="/inspection/plan/new"
+          path="/inspection/new"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "Device" */
@@ -40,7 +40,7 @@ class PlanRoute extends Component{
         />
         <Route
           exact
-          path="/inspection/plan/edit/:id"
+          path="/inspection/edit/:id"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "Dssevice" */
@@ -50,7 +50,7 @@ class PlanRoute extends Component{
         />
         <Route
           exact
-          path="/inspection/plan/detail/:id"
+          path="/inspection/detail/:id"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "Dssevice" */
@@ -60,7 +60,7 @@ class PlanRoute extends Component{
         />
         <Route 
           exact   
-          path="/inspection/plan/subTask"
+          path="/inspection/subTask"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -70,7 +70,7 @@ class PlanRoute extends Component{
         />
         <Route
           exact
-          path="/inspection/plan/subTask/new"
+          path="/inspection/subTask/new"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "Device" */
@@ -80,7 +80,7 @@ class PlanRoute extends Component{
         />
         <Route
           exact
-          path="/inspection/plan/subTask/edit/:id"
+          path="/inspection/subTask/edit/:id"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "Dssevice" */
@@ -90,7 +90,7 @@ class PlanRoute extends Component{
         />
         <Route
           exact
-          path="/inspection/plan/subTask/detail/:id"
+          path="/inspection/subTask/detail/:id"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "Dssevice" */
@@ -100,7 +100,7 @@ class PlanRoute extends Component{
         />
         <Route 
           exact   
-          path="/inspection/plan/comment"
+          path="/inspection/comment"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -110,7 +110,7 @@ class PlanRoute extends Component{
         />
         <Route
           exact
-          path="/inspection/plan/comment/new"
+          path="/inspection/comment/new"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "Device" */

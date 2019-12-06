@@ -188,15 +188,15 @@ class SubTask extends Component{
                       style={{ display: 'block' }}
                     >
                       <Link
-                        to={`/inspection/plan/subTask/detail/1`}
+                        to={`/inspection/subTask/detail/1`}
                         style={{marginRight:'12px'}}
                       >详情</Link>
                       <Link
-                        to={`/inspection/plan/edit/${record.id}`}
+                        to={`/inspection/edit/${record.id}`}
                         style={{marginRight:'12px'}}
                       >修改</Link>
                       <Link
-                        to={`/inspection/plan/edit/${record.id}`}
+                        to={`/inspection/edit/${record.id}`}
                       >创建订单</Link>
                    
                       {/* <Popconfirm

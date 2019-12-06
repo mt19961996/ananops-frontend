@@ -230,7 +230,7 @@ class PlanNew extends Component {
                     const {
                       history,
                     } = this.props
-                    history.push('/inspection/plan')
+                    history.push('/inspection')
                   }}
                 >取消
                 </Button>

@@ -14,7 +14,7 @@ import Contract from '../pages/contract'
 import Service from '../pages/service'
 import ServiceProvider from '../pages/serviceProvider'
 import User from '../pages/user'
-import PlanRoute from '../pages/inspection/plan'
+import PlanRoute from '../pages/inspection'
 
 class Index extends React.Component {
 
@@ -33,7 +33,7 @@ class Index extends React.Component {
                 <Route path="/tool/rich" component={ Rich }/> */}
               <Route path="/service" component={Service}/>
               <Route path="/contract" component={Contract}/>
-              <Route path="/inspection/plan" component={PlanRoute}/>
+              <Route path="/inspection" component={PlanRoute}/>
               <Route path="/approval" component={PlanApproval}/>
               <Route path="/bill" component={Bill}/>
               <Route path="/user" component={User}/>

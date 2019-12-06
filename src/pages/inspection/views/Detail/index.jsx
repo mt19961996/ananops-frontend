@@ -58,11 +58,11 @@ class PlanDetail extends Component {
                 {/* <Button style={{marginRight:5}} onClick={this.check}>查看子项</Button>
                     <Button>查看评论</Button> */}
                 <Link
-                  to={`/inspection/plan/subTask`}
+                  to={`/inspection/subTask`}
                   style={{marginRight:'12px'}}
                 >查看子项</Link>
                 <Link
-                  to={`/inspection/plan/comment`}
+                  to={`/inspection/comment`}
                   style={{marginRight:'12px'}}
                 >查看评论</Link>
               </Descriptions.Item>

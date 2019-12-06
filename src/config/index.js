@@ -31,7 +31,7 @@ const menuConfig = [
   },
   {
     title:'巡检管理',
-    key:'/inspection/plan',
+    key:'/inspection',
     icon: 'build' 
   },
   {

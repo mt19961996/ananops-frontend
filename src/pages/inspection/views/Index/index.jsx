@@ -73,7 +73,7 @@ class Plan extends Component{
               />
             </Col>
             <Col push={16}>
-              <Link to={"/inspection/plan/new"}>
+              <Link to={"/inspection/new"}>
                 <Button type="primary">
                             +新建巡检任务
                 </Button>
@@ -208,23 +208,23 @@ class Plan extends Component{
                 style={{ display: 'block' }}
               >
                 <Link
-                  to={`/inspection/plan/detail/${record.id}`}
+                  to={`/inspection/detail/${record.id}`}
                   style={{marginRight:'12px'}}
                 >详情</Link>
                 <Link
-                  to={`/inspection/plan/edit/${record.id}`}
+                  to={`/inspection/edit/${record.id}`}
                   style={{marginRight:'12px'}}
                 >修改</Link>
                 <Link
-                  to={`/inspection/plan/comment/new`}
+                  to={`/inspection/comment/new`}
                 >评论</Link>
                 <br/>
                 <Link
-                  to={`/inspection/plan/subTask/new`}
+                  to={`/inspection/subTask/new`}
                   style={{marginRight:'5px'}}
                 >添加子项</Link>
                 <Link
-                  to={`/inspection/plan/edit/${record.id}`}
+                  to={`/inspection/edit/${record.id}`}
                   style={{marginRight:'8px'}}
                 >创建订单</Link>
                 {/* <Popconfirm
