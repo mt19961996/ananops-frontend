@@ -2,28 +2,6 @@ import React from 'react';
 import { Form, Icon, Input, Button, message } from 'antd';
 import { Redirect } from 'react-router-dom';
 
-<<<<<<< HEAD
-class Login extends Component {
-
-login=()=>{
-  localStorage.setItem("login",true)
-}
-
-render(){
-  if(localStorage.getItem("login")){
-    return(
-      <Redirect to="/" />
-    )
-  }
-  return(
-    <div>
-                login
-      <button onClick={this.login}>
-      </button>
-    </div>
-  )
-}
-=======
 class Login extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
@@ -71,7 +49,6 @@ class Login extends React.Component {
       ) : LoginForm
     );
   }
->>>>>>> lyh
 }
 const WrappedNormalLoginForm = Form.create({ name: 'normal_login' })(Login);
 export default WrappedNormalLoginForm;

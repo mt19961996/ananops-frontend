@@ -5,8 +5,16 @@ import SiderBar from '../components/layout/SideBar.jsx'
 import HeaderBar from '../components/layout/HeaderBar.jsx'
 import Home from '../pages/home'
 import NotFind from '../pages/notFound'
-import Connect from '../pages/user/connect'
-
+import PlanApproval from '../pages/approval'
+import Acceptance from '../pages/acceptance'
+import Alarm from '../pages/alarm'
+import Authority from '../pages/authority'
+import Bill from '../pages/bill'
+import Contract from '../pages/contract'
+import Service from '../pages/service'
+import ServiceProvider from '../pages/serviceProvider'
+import User from '../pages/user'
+import Inspection from '../pages/inspection'
 
 class Index extends React.Component {
 
@@ -21,11 +29,19 @@ class Index extends React.Component {
             {/* <Suspense fallback={<div>Loading...</div>}> */}
             <Switch>
               <Route exact path="/" component={Home}/>
-              <Route path="/user/connect" component={Connect}/>
               {/* <Route path="/user/list" component={ List }/>
                 <Route path="/tool/rich" component={ Rich }/> */}
-
-              <Route component={NotFind}/>
+              <Route path="/service" component={Service}/>
+              <Route path="/contract" component={Contract}/>
+              <Route path="/inspection" component={Inspection}/>
+              <Route path="/approval" component={PlanApproval}/>
+              <Route path="/bill" component={Bill}/>
+              <Route path="/user" component={User}/>
+              <Route path="/authority" component={Authority}/>
+              <Route path="/alarm" component={Alarm}/>
+              <Route path="/acceptance" component={Acceptance}/>
+              <Route path="/serviceProvider" component={ServiceProvider}/>
+              <Route path="/404" component={NotFind}/>
             </Switch>
             {/* </Suspense> */}
           </div>
