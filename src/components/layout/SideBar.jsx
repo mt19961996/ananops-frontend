@@ -38,13 +38,16 @@ class SiderBar extends React.Component {
     const pathname = window.location.pathname;
     const currentKey = '/' + pathname.split('/')[1];
     const titleArray = this.selectBreadcrumb(currentKey, pathname);
-    if (menuConfigKeys.indexOf(currentKey) === 1) {
+    
+    /*如果不修改，则会导航栏中title除了第一项均为首页*/ 
+
+    // if (menuConfigKeys.indexOf(currentKey) === 1) {
       this.setState({
         defaultOpenKeys: [currentKey],
         defaultSelectedKeys: [pathname],
       });
       this.props.handleClick(titleArray);
-    }
+    // }
   };
 
   // 处理菜单列表

@@ -23,6 +23,18 @@ const menuConfig = [
     title: '项目管理',
     key: '/contract',
     icon: 'book',
+    children:[
+      {
+        title: '我的项目',
+        key: '/contract/project',
+      },{
+        title: '我的合同',
+        key: '/contract/management',
+      },{
+        title: '我的巡检',
+        key: '/contract/inspection',
+      }
+    ]
   },
   {
     title:'审批管理',
@@ -64,11 +76,11 @@ const menuConfig = [
     key:'/acceptance',
     icon: 'sound'  
   },
-  {
-    title:'Not Found',
-    key:'/404',
-    icon: 'frown'  
-  }
+  // {
+  //   title:'Not Found',
+  //   key:'/404',
+  //   icon: 'frown'  
+  // }
 ];
   
 export default menuConfig;

@@ -244,7 +244,7 @@ class SubTaskNew extends Component {
                       const {
                         history,
                       } = this.props
-                      history.push('/inspection/plan/subTask')
+                      history.push('/inspection/subTask')
                     }}
                   >取消
                   </Button>
