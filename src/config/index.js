@@ -10,12 +10,12 @@ const menuConfig = [
     icon: 'build',
     children: [
       {
-        title: '我的工单',
-        key: '/service/my',
+        title: '数据管理',
+        key: '/service/data',
       },
       {
-        title: '新建工单',
-        key: '/service/new',
+        title: '维修系统',
+        key: '/service/system',
       },
     ]
   },
@@ -62,9 +62,17 @@ const menuConfig = [
     icon: 'audit'  
   },
   {
-    title:'加盟服务商',
+    title:'加盟管理',
     key:'/serviceProvider',
-    icon: 'team'  
+    icon: 'team',
+    children:[
+    {
+      title: '加盟服务商',
+      key: '/serviceProvider/provider',
+    },{
+      title: '加盟工程师',
+      key: '/serviceProvider/engineer',
+    }]
   },
   {
     title:'报警管理',

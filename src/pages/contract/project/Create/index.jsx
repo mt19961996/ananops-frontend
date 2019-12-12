@@ -299,7 +299,7 @@ class ProjectNew extends Component{
                     const {
                       history,
                     } = this.props
-                    history.push('/contract/management')
+                    history.push('/contract/project')
                   }}
                 >取消
                 </Button>

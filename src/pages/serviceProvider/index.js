@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import { Spin } from 'antd';
 import Loadable from 'react-loadable';
 
-class contractRoute extends Component{
+class serviceProviderRoute extends Component{
     constructor(props){
         super(props);
         this.state = {};
@@ -20,126 +20,87 @@ class contractRoute extends Component{
             <Switch>
                  <Route 
                     exact   
-                    path="/contract/project"
+                    path="/serviceProvider/provider"
                     component={Loadable({
                         loader: () => import(
                         /* webpackChunkName: "EntranceWork" */
-                        './project/Index/index'),
+                        './engineer/Index/index'),
                         loading: Loading
                     })}
                  />
                   <Route 
                     exact   
-                    path="/contract/project/detail/:id"
+                    path="/serviceProvider/provider/detail/:id"
                     component={Loadable({
                         loader: () => import(
                         /* webpackChunkName: "EntranceWork" */
-                        './project/Detail/index'),
+                        './engineer/Detail/index'),
                         loading: Loading
                     })}
                  />
                    <Route 
                     exact   
-                    path="/contract/project/new"
+                    path="/serviceProvider/provider/new"
                     component={Loadable({
                         loader: () => import(
                         /* webpackChunkName: "EntranceWork" */
-                        './project/Create/index'),
+                        './engineer/Create/index'),
                         loading: Loading
                     })}
                  />
                   <Route 
                     exact   
-                    path="/contract/project/edit/:id"
+                    path="/serviceProvider/provider/edit/:id"
                     component={Loadable({
                         loader: () => import(
                         /* webpackChunkName: "EntranceWork" */
-                        './project/Create/index'),
+                        './engineer/Create/index'),
                         loading: Loading
                     })}
                  />
                  <Route 
                     exact   
-                    path="/contract/management"
+                    path="/serviceProvider/engineer"
                     component={Loadable({
                         loader: () => import(
                         /* webpackChunkName: "EntranceWork" */
-                        './management/Index/index'),
+                        './engineer/Index/index'),
                         loading: Loading
                     })}
                  />
                   <Route 
                     exact   
-                    path="/contract/management/detail/:id"
+                    path="/serviceProvider/engineer/detail/:id"
                     component={Loadable({
                         loader: () => import(
                         /* webpackChunkName: "EntranceWork" */
-                        './management/Detail/index'),
+                        './engineer/Detail/index'),
                         loading: Loading
                     })}
                  />
                    <Route 
                     exact   
-                    path="/contract/management/new"
+                    path="/serviceProvider/engineer/new"
                     component={Loadable({
                         loader: () => import(
                         /* webpackChunkName: "EntranceWork" */
-                        './management/Create/index'),
+                        './engineer/Create/index'),
                         loading: Loading
                     })}
                  />
                   <Route 
                     exact   
-                    path="/contract/management/edit/:id"
+                    path="/serviceProvider/engineer/edit/:id"
                     component={Loadable({
                         loader: () => import(
                         /* webpackChunkName: "EntranceWork" */
-                        './management/Create/index'),
+                        './engineer/Create/index'),
                         loading: Loading
                     })}
                  />
-                   <Route 
-                    exact   
-                    path="/contract/inspection"
-                    component={Loadable({
-                        loader: () => import(
-                        /* webpackChunkName: "EntranceWork" */
-                        './inspection/Index/index'),
-                        loading: Loading
-                    })}
-                 />
-                  <Route 
-                    exact   
-                    path="/contract/inspection/new"
-                    component={Loadable({
-                        loader: () => import(
-                        /* webpackChunkName: "EntranceWork" */
-                        './inspection/Create/index'),
-                        loading: Loading
-                    })}
-                 />
-                  <Route 
-                    exact   
-                    path="/contract/inspection/edit/:id"
-                    component={Loadable({
-                        loader: () => import(
-                        /* webpackChunkName: "EntranceWork" */
-                        './inspection/Create/index'),
-                        loading: Loading
-                    })}
-                 />
-                  <Route 
-                    exact   
-                    path="/contract/inspection/detail/:id"
-                    component={Loadable({
-                        loader: () => import(
-                        /* webpackChunkName: "EntranceWork" */
-                        './inspection/Detail/index'),
-                        loading: Loading
-                    })}
-                 />
+                 
             </Switch>
           )
     }
 }
-export default contractRoute
+export default serviceProviderRoute
