@@ -76,11 +76,11 @@ const menuConfig = [
     key:'/acceptance',
     icon: 'sound'  
   },
-  // {
-  //   title:'Not Found',
-  //   key:'/404',
-  //   icon: 'frown'  
-  // }
+  {
+    title:'报表管理',
+    key:'/report',
+    icon: 'file-pdf'  
+  }
 ];
   
 export default menuConfig;

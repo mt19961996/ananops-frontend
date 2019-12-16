@@ -4,7 +4,6 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import SiderBar from '../components/layout/SideBar.jsx'
 import HeaderBar from '../components/layout/HeaderBar.jsx'
 import Home from '../pages/home'
-import NotFind from '../pages/notFound'
 import PlanApproval from '../pages/approval'
 import Acceptance from '../pages/acceptance'
 import Alarm from '../pages/alarm'
@@ -15,6 +14,7 @@ import Service from '../pages/service'
 import ServiceProvider from '../pages/serviceProvider'
 import User from '../pages/user'
 import PlanRoute from '../pages/inspection'
+import Report from '../pages/report'
 
 class Index extends React.Component {
 
@@ -41,7 +41,7 @@ class Index extends React.Component {
               <Route path="/alarm" component={Alarm}/>
               <Route path="/acceptance" component={Acceptance}/>
               <Route path="/serviceProvider" component={ServiceProvider}/>
-              <Route path="/404" component={NotFind}/>
+              <Route path="/report" component={Report}/>
             </Switch>
             {/* </Suspense> */}
           </div>
