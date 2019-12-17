@@ -52,14 +52,36 @@ const menuConfig = [
     icon: 'account-book'  
   },
   {
-    title:'人员管理',
-    key:'/user',
-    icon: 'user'  
-  },
-  {
-    title:'权限管理',
-    key:'/authority',
-    icon: 'audit'  
+    title:'系统管理',
+    key:'/system',
+    icon:'laptop',
+    children:[
+      {
+        title:'角色管理',
+        key:'/role',
+        icon: 'robot'
+      },
+      {
+        title:'用户管理',
+        key:'/user',
+        icon: 'user'
+      },
+      {
+        title:'菜单管理',
+        key:'/menu',
+        icon: 'block'
+      },
+      {
+        title:'权限管理',
+        key:'/authority',
+        icon: 'audit'  
+      },
+      {
+        title:'组织管理',
+        key:'/group',
+        icon:'usergroup-add'
+      }
+    ]
   },
   {
     title:'加盟服务商',
