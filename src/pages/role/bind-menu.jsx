@@ -1,5 +1,5 @@
 import React,{PureComponent} from 'react'
-import {Form,Input,Tree} from 'antd'
+import {Form,Input,Tree,Row,Col} from 'antd'
 import PropTypes from 'prop-types'
 import menuList from '../../config'
 
@@ -35,6 +35,7 @@ export default class BindMenu extends PureComponent{
 
   //选中某个复选框
   onCheck = (checkedKeys) => {
+    
     this.setState({checkedKeys})
   }
 
@@ -42,7 +43,7 @@ export default class BindMenu extends PureComponent{
     this.treeNodes = this.getTreeNodes(menuList)
   }
   
-  //根据新传入的role来更新checkedKeys状态，这个生命周期方法是组件接收到新的属性才会调用，且是在render之前调用，初始显示是不会调用的
+  //根据新传入的role来更新checkedKeys状态，在render之前调用，初始显示不会调用
   componentWillReceiveProps(nextProps){
     console.log(' componentWillReceiveProps()',nextProps)
     const menus = nextProps.role.menus
@@ -53,19 +54,30 @@ export default class BindMenu extends PureComponent{
 
   render(){
     console.log('AuthForm render()')
-    const {role} = this.props
+    
+    const {roleName,roleCode} = this.props.role
+    
     const {checkedKeys} = this.state
   
     const formItemLayout = {
-      labelCol:{span:4},
-      wrapperCol:{span:15}
+      labelCol:{span:8},
+      wrapperCol:{span:16}
     }
   
     return (
       <div>
-        <Item label="角色名称" {...formItemLayout}>
-          <Input value={role.name} disabled/>
-        </Item>
+        <Row gutter={2}>
+          <Col span={12}>
+            <Item label="角色名称"  {...formItemLayout}>
+              <Input value={roleName} disabled/>
+            </Item>
+          </Col>
+          <Col span={12}>
+            <Item label="角色编码"  {...formItemLayout}>
+              <Input value={roleCode} disabled/>
+            </Item>
+          </Col>
+        </Row>
         <Tree
           checkable
           defaultExpandAll={true}

@@ -85,8 +85,9 @@ export default class User extends Component{
             <span>
               <LinkButton onClick={() => {this.updateStatus(_id,status===1?2:1)}}>{status===1?'启用':'禁用'}</LinkButton>|
               <LinkButton onClick={() => this.setState({isShowAddUpdate:true})}>修改</LinkButton>|
-              <LinkButton onClick={() => this.setState({isShowBindRole:true})}>角色绑定</LinkButton>
-              <LinkButton >重置密码</LinkButton>
+              <LinkButton onClick={() => this.setState({isShow:true})}>用户详情</LinkButton>|
+              <LinkButton onClick={() => this.setState({isShowBindRole:true})}>角色绑定</LinkButton>|
+              <LinkButton >重置密码</LinkButton>|
               <LinkButton >删除</LinkButton>
             </span>
             

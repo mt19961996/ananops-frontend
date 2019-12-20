@@ -2,10 +2,12 @@ import React,{Component} from 'react'
 import {Form,Input,Radio} from 'antd'
 import PropTypes from 'prop-types'
 const Item = Form.Item
+const TextArea = Input.TextArea
 class AddUpdateForm extends Component{
   //接收父组件参数
   static propTypes = {
-    setForm:PropTypes.func.isRequired
+    setForm:PropTypes.func.isRequired,
+    role:PropTypes.object
   }
 
   componentWillMount() {
@@ -14,6 +16,8 @@ class AddUpdateForm extends Component{
 
   render(){
 
+    const role = this.props.role
+  
     const formItemLayout = {
       labelCol:{span:4},
       wrapperCol:{span:15}
@@ -26,7 +30,7 @@ class AddUpdateForm extends Component{
         <Item label="角色编码：">
           {
             getFieldDecorator('roleCode',{
-              initialValue:'',
+              initialValue:role.roleCode,
               rules:[{
                 required:true,
                 message:'角色编码必须输入'
@@ -41,7 +45,7 @@ class AddUpdateForm extends Component{
         <Item label="角色名称：">
           {
             getFieldDecorator('roleName',{
-              initialValue:'',
+              initialValue:role.roleName,
               rules:[{
                 required:true,
                 message:'角色名称必须输入'
@@ -55,21 +59,28 @@ class AddUpdateForm extends Component{
       
         <Item label="角色说明：">
           {
-            getFieldDecorator('roleCode',{
-              initialValue:'',
+            getFieldDecorator('remark',{
+              initialValue:role.remark,
               
             })(
-              <Input placeholder="请输入角色说明"></Input>
+              <TextArea placeholder="请输入角色说明" autosize={{minRows:2,maxRows:6}}></TextArea>
             )
           }
          
         </Item>
 
         <Item label="状态：">
-          <Radio.Group defaultChecked={'on'}>
-            <Radio value={'on'}>启用</Radio>
-            <Radio value={'off'}>禁用</Radio>
-          </Radio.Group>
+          {
+            getFieldDecorator('status',{
+              initialValue:role.status=== undefined?'ENABLE':role.status,
+              
+            })(
+              <Radio.Group>
+                <Radio value="ENABLE">启用</Radio>
+                <Radio value="DISABLE">禁用</Radio>
+              </Radio.Group>
+            )
+          }
         </Item>
       </Form>
     )
