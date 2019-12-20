@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import { Spin } from 'antd';
 import Loadable from 'react-loadable';
 
-class Alarm extends Component{
+class system extends Component{
   constructor(props){
     super(props);
     this.state = {
@@ -24,7 +24,7 @@ class Alarm extends Component{
       <Switch>
         <Route 
           exact   
-          path="/alarm/all"
+          path="/system"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -34,7 +34,7 @@ class Alarm extends Component{
         />    
          <Route 
           exact   
-          path="/alarm/check"
+          path="/system/check"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -44,7 +44,7 @@ class Alarm extends Component{
         />   
          <Route 
           exact   
-          path="/alarm/approval"
+          path="/system/approval"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -54,7 +54,7 @@ class Alarm extends Component{
         />  
           <Route 
           exact   
-          path="/alarm/examine"
+          path="/system/examine"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -64,7 +64,7 @@ class Alarm extends Component{
         />
          <Route 
           exact   
-          path="/alarm/maintain"
+          path="/system/maintain"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -74,7 +74,7 @@ class Alarm extends Component{
         /> 
          <Route 
           exact   
-          path="/alarm/pay"
+          path="/system/pay"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -84,7 +84,7 @@ class Alarm extends Component{
         />   
          <Route 
           exact   
-          path="/alarm/comment"
+          path="/system/comment"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -94,7 +94,7 @@ class Alarm extends Component{
         />  
         <Route 
           exact   
-          path="/alarm/new"
+          path="/system/new"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -109,4 +109,4 @@ class Alarm extends Component{
 }
 
 
-export default Alarm;
+export default system;

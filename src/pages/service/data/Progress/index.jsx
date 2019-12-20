@@ -112,7 +112,7 @@ class Progress extends Component{
                       style={{marginRight:'12px'}}
                     >修改</Link> */}
                     <Link
-                      to={`/alarm`}
+                      to={`/system`}
                       style={{marginRight:'12px'}}
                     >返回上级</Link> 
                   </div>

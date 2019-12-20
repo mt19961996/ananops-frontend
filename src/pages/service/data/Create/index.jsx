@@ -139,7 +139,7 @@ class OrderNew extends Component{
                         const {
                         history,
                         } = this.props
-                        history.push('/orderDetail')
+                        history.push('/system')
                     }}
                     >取消
                     </Button>

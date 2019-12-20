@@ -11,6 +11,7 @@ import Alarm from '../pages/alarm'
 import Authority from '../pages/authority'
 import Bill from '../pages/bill'
 import Contract from '../pages/contract'
+import System from '../pages/system'
 import Service from '../pages/service'
 import ServiceProvider from '../pages/serviceProvider'
 import User from '../pages/user'
@@ -37,6 +38,7 @@ class Index extends React.Component {
               <Route exact path="/" component={Home}/>
               {/* <Route path="/user/list" component={ List }/>
                 <Route path="/tool/rich" component={ Rich }/> */}
+              <Route path="/system" component={System}/>
               <Route path="/service" component={Service}/>
               <Route path="/contract" component={Contract}/>
               <Route path="/inspection" component={PlanRoute}/>

@@ -27,7 +27,7 @@ class Data extends Component {
   onTabChange=(key)=>{
 
     this.setState({tabKey:key});
-    this.props.history.replace({pathname:"/alarm/"+key,state:{tabKey:key}});
+    this.props.history.replace({pathname:"/system/"+key,state:{tabKey:key}});
     
   }
   getUserInfo(){
@@ -66,7 +66,7 @@ class Data extends Component {
                 key=""
                 >
                 <Route exact 
-                    path="/alarm" 
+                    path="/system" 
                     component={All} 
                     />
                 </TabPane>
@@ -75,7 +75,7 @@ class Data extends Component {
                 key="2"
                 >
                 <Route exact 
-                    path="/alarm/approval" 
+                    path="/system/approval" 
                     component={Approval} 
                     />
                 </TabPane>
@@ -83,14 +83,14 @@ class Data extends Component {
                 key="3"
                 >  
                    <Route exact 
-                    path="/alarm/Pay" 
+                    path="/system/Pay" 
                     component={Pay} 
                     />                        
                 </TabPane>
         </Tabs>
         )
     }
-    else if(role=='服务商业务员'){
+    else if(role=='维修工程师'){
         return(
             <Tabs 
             activeKey={(this.props.location.state && this.props.location.state.tabKey) ? this.props.location.state.tabKey : ''}
@@ -100,7 +100,7 @@ class Data extends Component {
                 key=""
                 >
                 <Route exact 
-                    path="/alarm" 
+                    path="/system" 
                     component={All} 
                     />
                 </TabPane>
@@ -109,7 +109,7 @@ class Data extends Component {
                 key="2"
                 >
                 <Route exact 
-                    path="/alarm/check" 
+                    path="/system/check" 
                     component={Check} 
                     />
                 </TabPane>
@@ -117,7 +117,7 @@ class Data extends Component {
                 key="3"
                 >  
                    <Route exact 
-                    path="/alarm/maintain" 
+                    path="/system/maintain" 
                     component={Maintain} 
                     />                         
                 </TabPane>
@@ -134,7 +134,7 @@ class Data extends Component {
                 key=""
                 >
                   <Route exact 
-                    path="/alarm" 
+                    path="/system" 
                     component={All} 
                     />
                 </TabPane>
@@ -142,7 +142,7 @@ class Data extends Component {
                 key="check"
                 >  
                     <Route exact 
-                    path="/alarm/check" 
+                    path="/system/check" 
                     component={Check} 
                     />                                          
                 </TabPane>
@@ -151,7 +151,7 @@ class Data extends Component {
                 key="maintain"
                 >
                    <Route exact 
-                    path="/alarm/maintain" 
+                    path="/system/maintain" 
                     component={Maintain} 
                     />
                 </TabPane>
@@ -160,7 +160,7 @@ class Data extends Component {
                 key="examine"
                 >
                    <Route exact 
-                    path="/alarm/examine" 
+                    path="/system/examine" 
                     component={Examine} 
                     />
                 </TabPane>
@@ -169,7 +169,7 @@ class Data extends Component {
                 key="comment"
                 >
                     <Route exact 
-                    path="/alarm/comment" 
+                    path="/system/comment" 
                     component={Comment} 
                     />
                 </TabPane>
@@ -186,7 +186,7 @@ class Data extends Component {
                 key=""
                 >
                   <Route exact 
-                    path="/alarm" 
+                    path="/system" 
                     component={All} 
                     />
                 </TabPane>
@@ -195,7 +195,7 @@ class Data extends Component {
                 key="check"
                 >
                    <Route exact 
-                    path="/alarm/check" 
+                    path="/system/check" 
                     component={Check} 
                     />
                 </TabPane>
@@ -204,7 +204,7 @@ class Data extends Component {
                 key="approval"
                 >
                     <Route exact 
-                    path="/alarm/approval" 
+                    path="/system/approval" 
                     component={Approval} 
                     />
                 </TabPane>
@@ -221,7 +221,7 @@ class Data extends Component {
                 key=""
                 >
                     <Route exact 
-                    path="/alarm" 
+                    path="/system" 
                     component={All} 
                     />
                 </TabPane>

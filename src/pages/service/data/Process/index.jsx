@@ -20,7 +20,7 @@ class Process extends Component{
                     <Descriptions.Item label="结束时间" span={1.5}>34</Descriptions.Item>
                     <Descriptions.Item label="维修状态" span={3}>设备巡检</Descriptions.Item>
                     <Descriptions.Item label="维修任务名称" span={3}>44</Descriptions.Item>
-                    <Descriptions.Item label="操作" span={3}><Link to="/alarm">返回上级</Link></Descriptions.Item>
+                    <Descriptions.Item label="操作" span={3}><Link to="/system">返回上级</Link></Descriptions.Item>
                     </Descriptions>           
                 </div>  
             )

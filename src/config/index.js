@@ -6,7 +6,7 @@ const menuConfig = [
   },
   {
     title: '维修维护',
-    key: '/alarm',
+    key: '/system',
     icon: 'build',
     // children: [
     //   {
@@ -64,11 +64,11 @@ const menuConfig = [
       key: '/serviceProvider/engineer',
     }]
   },
-  // {
-  //   title:'报警管理',
-  //   key:'/alarm',
-  //   icon: 'alert'  
-  // },
+  {
+    title:'报警管理',
+    key:'/alarm',
+    icon: 'alert'  
+  },
   {
     title:'验收管理',
     key:'/acceptance',

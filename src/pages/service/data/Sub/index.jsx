@@ -48,10 +48,10 @@ class Sub extends Component{
                     enterButton
                     onSearch={value => this.selectActivity(value)}
                   /> */}
-                  <Link to='/alarm'>返回上级</Link>
+                  <Link to='/system'>返回上级</Link>
                 </Col>
                 <Col push={16}>
-                  <Link to={"/contract/management/new"}>
+                  <Link to={"/service/data/new"}>
                     <Button type="primary">
                                 +新建任务子项
                     </Button>

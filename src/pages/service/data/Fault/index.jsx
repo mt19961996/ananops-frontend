@@ -103,7 +103,7 @@ class Fault extends Component{
                     style={{ display: 'block' }}
                   >
                     <Link
-                      to={`/alarm`}
+                      to={`/system`}
                       style={{marginRight:'12px'}}
                     >返回</Link>
                     {/* <Link

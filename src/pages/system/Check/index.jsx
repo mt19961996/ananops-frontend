@@ -52,8 +52,8 @@ class Check extends Component{
       const total = allCount
       const current = page+1
       const size = limit
-      const duty=role==='maintain'||'provider'?true:false
-      const user=role==='user'?true:false
+      const duty=role==='用户负责人'||'服务商负责人'?true:false
+      const user=role==='用户值机员'?true:false
     return(
         <div>
         <div className="searchPart">
@@ -66,7 +66,7 @@ class Check extends Component{
                 onSearch={value => this.selectActivity(value)}
               />
             </Col>
-           { user&&<Col push={16}>
+           {user&&<Col push={16}>
               <Link to={`/service/data/new`}>
                 <Button type="primary">
                             +创建工单
