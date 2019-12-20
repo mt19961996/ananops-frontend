@@ -1,7 +1,9 @@
 import React, { Component, } from 'react';
-import { Form,Input,Select,Button,message } from 'antd';
+import { Form,Input,Select,Button,message,DatePicker,Radio } from 'antd';
 import { Link } from 'react-router-dom'
- 
+import moment from 'moment';
+import axios from 'axios';
+const token = window.localStorage.getItem('token')
 class ProjectNew extends Component{
     constructor(props){
         super(props)
@@ -10,6 +12,112 @@ class ProjectNew extends Component{
             }
         }
     }
+    disabledDate=(current)=> {
+      // Can not select days before today and today
+      return current && current < moment().endOf('day');
+    }
+    handleEmail (e) {
+      let value = e.target.value;
+      if(!(/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(value))) {
+        message.info('请填写有效邮箱信息');
+      }
+  }
+
+  componentDidMount(){
+    const {match : { params : { id } }} = this.props   
+    if(id){
+      axios({
+        method: 'POST',
+        url: '/pmc/project/getById/'+id,
+        headers: {
+          'deviceId': this.deviceId,
+          'Authorization':'Bearer '+token,
+        },
+      })
+      .then((res) => {
+        if(res && res.status === 200){     
+        console.log(res.data.result)
+        this.setState({
+          projectDetail:res.data.result
+        })
+        }
+      })
+      .catch(function (error) {
+          console.log(error);
+      });
+    }
+  }
+  handleSubmit = (e) => {
+    e.preventDefault()
+    const {
+      form,
+      history,
+      match : { params : {id } },
+    } = this.props
+    const { getFieldValue } = form;
+    const values = form.getFieldsValue()
+    if(!getFieldValue('projectName')){
+      message.error('项目名称')
+    }
+    if(!getFieldValue('projectType')){
+      message.error('项目类型')
+    }
+    if(!getFieldValue('startTime')){
+      message.error('请选择开始时间')
+    }
+    if(!getFieldValue('endTime')){
+      message.error('请选择结束时间')
+    }
+    if(!getFieldValue('partyBName')){
+      message.error('请输入乙方名称')
+    }
+    if(!getFieldValue('bname')){
+      message.error('请输入乙方负责人姓名')
+    }
+    if(!getFieldValue('partyBOne')){
+      message.error('请输入乙方项目负责人联系方式')
+    }
+    if(id){
+      values.id=id
+    }
+    values.startTime=getFieldValue('startTime').format('YYYY-MM-DD HH:mm:ss')
+    values.endTime=getFieldValue('endTime').format('YYYY-MM-DD HH:mm:ss')
+    values.partyAId=getFieldValue('partyAId')
+    values.partyBId=getFieldValue('partyBId')
+    values.atwoName=getFieldValue('atwoName')==="undefine"?getFieldValue('atwoname'):''
+    values.partyATwo=getFieldValue('partyATwo')=="undefine"?getFieldValue('partyATwo'):''
+    values.athreeName=getFieldValue('athreeName')=="undefine"?getFieldValue('athreeName'):''
+    values.partyAThree=getFieldValue('partyAThree')=="undefine"?getFieldValue('partyAThree'):''
+    values.partyBPhone=getFieldValue('partyBPhone')=="undefine"?getFieldValue('partyBPhone'):''
+    values.partyBTel=getFieldValue('partyBTel')=="undefine"?getFieldValue('partyBTel'):''
+    values.partyBEmail=getFieldValue('partyBEmail')=="undefine"?getFieldValue('partyBEmail'):''
+    values.contractId=getFieldValue('contractId')=="undefine"?getFieldValue('contractId'):''
+    values.contractName=getFieldValue('contractName')=="undefine"?getFieldValue('contractName'):''
+    values.description=getFieldValue('description')=="undefine"?getFieldValue('description'):''
+    
+    axios({
+      method: 'POST',
+      url: '/pmc/project/save',
+      headers: {
+        'Content-Type': 'application/json',
+        'deviceId': this.deviceId,
+        'Authorization':'Bearer '+token,
+      },
+      data:JSON.stringify(values)
+    })
+  .then((res) => {
+      if(res && res.status === 200){     
+      // this.setState({
+      //    projectDetail:res.data.result
+      // });
+      history.push('/contract/project')
+      }
+  })
+  .catch(function (error) {
+      console.log(error);
+  });
+ }
+
     render(){
         const createFormItemLayout = {
             labelCol: {span:8},
@@ -20,6 +128,7 @@ class ProjectNew extends Component{
             match : { params : { id } }
           } = this.props
           const { projectDetail } = this.state
+          console.log(id)
         return(
             <div>
                 <div className="inpection-plan-create-page">
@@ -60,18 +169,18 @@ class ProjectNew extends Component{
               label="开始时间"
             >
               {getFieldDecorator('startTime',{
-                initialValue: id && projectDetail.startTime,
+                initialValue: id && moment(projectDetail.startTime),
                 rules:[{
                   required:true,
                   message:"请选择开始时间",
                 }]
               })(
-                <Select
-                  //  mode="multiple"
-                  style={{ width: '100%' }}
-                  placeholder="请选择开始时间"
-                >
-                </Select>,
+                <DatePicker
+                format="YYYY-MM-DD HH:mm:ss"
+                disabledDate={this.disabledDate}
+                placeholder="请选择开始时间"
+                showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
+              />
               )}  
             </Form.Item>
             <Form.Item
@@ -79,23 +188,28 @@ class ProjectNew extends Component{
               label="结束时间"
             >
               {getFieldDecorator('endTime',{
-                initialValue: id && projectDetail.endTime,
+                initialValue: id && moment(projectDetail.endTime),
                 rules:[{
                   required:true,
                   message:"请选择结束时间",
                 }]
               })(
-                <Input placeholder="请输入结束时间" />
+                <DatePicker
+                format="YYYY-MM-DD HH:mm:ss"
+                disabledDate={this.disabledDate}
+                placeholder="请选择结束时间"
+                showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
+              />
               )}  
             </Form.Item>
             <Form.Item
               {...createFormItemLayout}
               label="甲方ID"
             >
-              {getFieldDecorator('partAId',{
-                initialValue: id && projectDetail.partAId,
+              {getFieldDecorator('partyAId',{
+                initialValue: id && projectDetail.partyAId,
                 rules:[{
-                  required:true,
+                  required:false,
                   message:"请输入甲方ID",
                 }]
               })(
@@ -106,14 +220,28 @@ class ProjectNew extends Component{
               {...createFormItemLayout}
               label="甲方名称"
             >
-              {getFieldDecorator('partAName',{
-                initialValue: id && projectDetail.partAName,
+              {getFieldDecorator('partyAName',{
+                initialValue: id && projectDetail.partyAName,
                 rules:[{
-                  required:true,
+                  required:false,
                   message:"请输入甲方名称",
                 }]
               })(
                 <Input placeholder="请输入甲方名称" />
+              )}  
+            </Form.Item>
+            <Form.Item
+              {...createFormItemLayout}
+              label="甲方联系人1姓名"
+            >
+              {getFieldDecorator('aoneName',{
+                initialValue: id && projectDetail.aoneName,
+                rules:[{
+                  required:false,
+                  message:"请输入甲方联系人1姓名",
+                }]
+              })(
+                <Input placeholder="请输入甲方联系人1姓名" />
               )}  
             </Form.Item>
             <Form.Item
@@ -123,11 +251,25 @@ class ProjectNew extends Component{
               {getFieldDecorator('partyAOne',{
                 initialValue: id && projectDetail.partyAOne,
                 rules:[{
-                  required:true,
+                  required:false,
                   message:"请输入甲方项目负责人联系方式1",
                 }]
               })(
                 <Input placeholder="请输入甲方项目负责人联系方式1" />
+              )}  
+            </Form.Item>
+            <Form.Item
+              {...createFormItemLayout}
+              label="甲方联系人2姓名"
+            >
+              {getFieldDecorator('atwoName',{
+                initialValue: id && projectDetail.atwoName,
+                rules:[{
+                  required:false,
+                  message:"请输入甲方联系人2姓名",
+                }]
+              })(
+                <Input placeholder="请输入甲方联系人2姓名" />
               )}  
             </Form.Item>
             <Form.Item
@@ -142,6 +284,20 @@ class ProjectNew extends Component{
                 }]
               })(
                 <Input placeholder="请输入甲方项目负责人联系方式2" />
+              )}  
+            </Form.Item>
+            <Form.Item
+              {...createFormItemLayout}
+              label="甲方联系人3姓名"
+            >
+              {getFieldDecorator('athreeName',{
+                initialValue: id && projectDetail.athreeName,
+                rules:[{
+                  required:false,
+                  message:"请输入甲方联系人3姓名",
+                }]
+              })(
+                <Input placeholder="请输入甲方联系人3姓名" />
               )}  
             </Form.Item>
             <Form.Item
@@ -179,11 +335,25 @@ class ProjectNew extends Component{
               {getFieldDecorator('partyBName',{
                 initialValue: id && projectDetail.partyBName,
                 rules:[{
-                  required:false,
+                  required:true,
                   message:"请输入乙方名称",
                 }]
               })(
                 <Input placeholder="请输入乙方名称" />
+              )}  
+            </Form.Item>
+            <Form.Item
+              {...createFormItemLayout}
+              label="乙方项目负责人姓名"
+            >
+              {getFieldDecorator('bname',{
+                initialValue: id && projectDetail.bname,
+                rules:[{
+                  required:true,
+                  message:"请输入乙方项目负责人姓名",
+                }]
+              })(
+                <Input placeholder="请输入乙方项目负责人姓名" />
               )}  
             </Form.Item>
             <Form.Item
@@ -193,7 +363,7 @@ class ProjectNew extends Component{
               {getFieldDecorator('partyBOne',{
                 initialValue: id && projectDetail.partyBOne,
                 rules:[{
-                  required:false,
+                  required:true,
                   message:"请输入乙方项目负责人联系方式",
                 }]
               })(
@@ -230,16 +400,34 @@ class ProjectNew extends Component{
             </Form.Item>
             <Form.Item
               {...createFormItemLayout}
+              label="乙方24小时开通邮箱"
+            >
+              {getFieldDecorator('partyBEmail',{
+                initialValue: id && projectDetail.partyBEmail,
+                rules:[{
+                  required:false,
+                  message:"请输入乙方24小时开通邮箱",
+                }]
+              })(
+                <Input onChange={this.handleEmail.bind(this)} placeholder="请输入乙方24小时开通邮箱" />
+              )}  
+            </Form.Item>
+            <Form.Item
+              {...createFormItemLayout}
               label="是否签署合同"
             >
               {getFieldDecorator('isContract',{
                 initialValue: id && projectDetail.isContract,
                 rules:[{
-                  required:false,
-                  message:"请输入是否签署合同",
+                  required:true,
+                  message:"请选择是否签署合同",
                 }]
               })(
-                <Input placeholder="请输入是否签署合同" />
+                // <Input placeholder="请输入是否签署合同" />
+                <Radio.Group defaultValue={1}>
+                <Radio value={1}>是</Radio>
+                <Radio value={0}>否</Radio>
+              </Radio.Group>
               )}  
             </Form.Item>
             <Form.Item
@@ -272,6 +460,24 @@ class ProjectNew extends Component{
             </Form.Item>
             <Form.Item
               {...createFormItemLayout}
+              label="项目是否作废"
+            >
+              {getFieldDecorator('isDestory',{
+                initialValue: id && projectDetail.isDestory,
+                rules:[{
+                  required:true,
+                  message:"请选择项目是否作废",
+                }]
+              })(
+                // <Input placeholder="请输入项目是否作废" />
+                <Radio.Group defaultValue={1}>
+                <Radio value={1}>是</Radio>
+                <Radio value={0}>否</Radio>
+              </Radio.Group>
+              )}  
+            </Form.Item>
+            <Form.Item
+              {...createFormItemLayout}
               label="描述"
             >
               {getFieldDecorator('description',{
@@ -299,7 +505,7 @@ class ProjectNew extends Component{
                     const {
                       history,
                     } = this.props
-                    history.push('/contract/management')
+                    history.push('/contract/project')
                   }}
                 >取消
                 </Button>

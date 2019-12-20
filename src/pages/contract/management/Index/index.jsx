@@ -2,67 +2,111 @@ import React, { Component, } from 'react';
 import { Button,Row,Col,Table,Input,Popconfirm,message  } from 'antd';
 import { Link } from 'react-router-dom'
 import moment from 'moment';
-
+import './index.styl'
+import axios from 'axios'
 const FIRST_PAGE = 0;
 const PAGE_SIZE = 10;
 const Search = Input.Search;
-
+const token=window.localStorage.getItem('token')
 class Management extends Component{
     constructor(props){
         super(props)
         this.state={
-            data:{
-                data:[{
-                    "agentContent" : "string",
-                    "alegalName" : "string",
-                    "assitMoney" : 0,
-                    "bankAccount" : "string",
-                    "bankName" : "string",
-                    "blegalName" : "string",
-                    "contractCode" : "string",
-                    "contractName" : "string",
-                    "contractType":"string",
-                    "description" : "string",
-                    "deviceCount" : 0,
-                    "endTime" : "2019-12-01 12:18:48",
-                    "filePath" : "string",
-                    "id" : 0,
-                    "isChange" : 0,
-                    "isDestory" : 0,
-                    "isPostpone" : 0,
-                    "isSparePart" : 0,
-                    "isSpareService" : 0,
-                    "lastResponseTime" : 0,
-                    "partyAId" : 0,
-                    "partyAName" : "string",
-                    "partyBId" : 0,
-                    "partyBName" : "string",
-                    "paymentTime" : "2019-12-01 12:18:48",
-                    "paymentType" : 0,
-                    "projectMoney" : 0,
-                    "recordTime" : 0,
-                    "signTime" : "2019-12-01 12:18:48",
-                    "startTime" : "2019-12-01 12:18:48",
-                    "verification" : "string"
-                }],
-                limit:3,
-                page:0,
-                allCount:0,
-            }
+          current: FIRST_PAGE,
+          size: PAGE_SIZE,
+          // total: 20, 
+          nowCurrent:FIRST_PAGE,
+          data:[],
         }
+        this.getGroupList = this.getGroupList.bind(this);
     }
+    componentDidMount(){
+      this.getGroupList(FIRST_PAGE);   
+    }
+    //分页
+    handlePageChange = (page) => {
+      this.getGroupList(page-1)
+    }
+    //获取列表信息
+    getGroupList = (page) => {
+      const { size,unit } = this.state;
+      const values={orderBy:'contractCode',pageSize:size,pageNum:page}
+      axios({
+          method: 'POST',
+          url: '/pmc/contract/getContractListWithPage',
+          headers: {
+            'deviceId': this.deviceId,
+            'Authorization':'Bearer '+token,
+          },
+          data:values
+        })
+      .then((res) => {
+          if(res && res.status === 200){
+          console.log(res.data.result)
+          this.setState({
+              data: res.data.result.list,
+              nowCurrent:res.data.result.pageNum-1
+          }) ;
+          console.log(this.state.data)
+          }
+      })
+      .catch(function (error) {
+          console.log(error);
+      });
+        
+    }
+    deleteGroup=(record)=>{
+      console.log(record)
+      axios({
+          method:'POST',
+          url:'/pmc/contract/deleteContractById/'+record.id,
+          headers:{
+              'deviceId': this.deviceId,
+              'Authorization':'Bearer '+token,
+          }           
+      }) 
+      .then((res) => {
+          if(res && res.status === 200){
+          console.log(res.data.result)
+          this.getGroupList(this.state.nowCurrent)
+          }
+      })
+      .catch(function (error) {
+          console.log(error);
+      });
+  }
+  selectActivity=(value)=>{
+    axios({
+      method: 'POST',
+      url: '/pmc/contract/getContactListByGroupId//'+value,
+      headers: {
+         'deviceId': this.deviceId,
+        'Authorization':'Bearer '+token,
+      },
+    })
+  .then((res) => {
+      if(res && res.status === 200){
+      console.log(res.data.result)
+      this.setState({
+          data: res.data.result.list,
+          // nowCurrent:res.data.result.pageNum-1
+      }) ;
+      console.log(this.state.data)
+      }
+  })
+  .catch(function (error) {
+      console.log(error);
+  });
+  }
     render(){
-        const {
-            data:{
-              allCount,
-              data,
-              limit,
-              page,
-            },
-          } = this.state;
-          const total = allCount
-          const current = page+1
-          const size = limit
+      const {
+        data,
+        nowCurrent,
+        size,
+       } = this.state;
+       // const total = allCount
+       const current = nowCurrent+1
+       const limit = size
         return(
             <div>
             <div className="searchPart">
@@ -70,7 +114,7 @@ class Management extends Component{
                 {/* <Col span={2}>巡检人姓名：</Col> */}
                 <Col span={5}>
                   <Search
-                    placeholder="搜索从这里开始"
+                    placeholder="组织ID"
                     enterButton
                     onSearch={value => this.selectActivity(value)}
                   />
@@ -78,7 +122,7 @@ class Management extends Component{
                 <Col push={16}>
                   <Link to={"/contract/management/new"}>
                     <Button type="primary">
-                                +新建合同信息
+                                +新建合同
                     </Button>
                   </Link>
                 </Col>
@@ -90,7 +134,6 @@ class Management extends Component{
               showHeader={true}
               pagination={{
                 current,
-                total,
                 pageSize: size,
                 onChange: this.handlePageChange,
                 // showTotal: () => `共${allCount} 条数据`
@@ -115,23 +158,11 @@ class Management extends Component{
                 render: (text, record) => {
                   return (record.contractType && record.contractType) || '--'
                 }
-              },{
-                title: '甲方ID', 
-                key: 'partyAId',
-                render: (text, record) => {
-                  return (record.partyAId && record.partyAId) || '--'
-                }
               }, {
                 title: '甲方组织名称',
                 key: 'partyAName',
                 render: (text, record) => {
                   return (record.partyAName && record.partyAName) || '--'
-                }
-              },{
-                title: '乙方ID',
-                key: 'partyBId',
-                render: (text, record) => {
-                  return (record.partyBId && record.partyBId) || '--'
                 }
               },{
                 title: '乙方组织名称',
@@ -153,9 +184,15 @@ class Management extends Component{
                       to={`/contract/management/edit/${record.id}`}
                       style={{marginRight:'12px'}}
                     >修改</Link>
-                    <Link
-                      to={`/contract/management/delete/${record.id}`}
-                    >删除</Link>
+                    <Popconfirm
+                        title="确定要删除吗？"
+                        onConfirm={()=> {this.deleteGroup(record)}}
+                    >
+                        <Button 
+                        type="simple"
+                        style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
+                        >删除</Button>
+                        </Popconfirm>
                   </div>
                 ),
               }]}

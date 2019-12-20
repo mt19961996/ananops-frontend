@@ -10,6 +10,7 @@ import Alarm from '../pages/alarm'
 import Authority from '../pages/authority'
 import Bill from '../pages/bill'
 import Contract from '../pages/contract'
+import System from '../pages/system'
 import Service from '../pages/service'
 import ServiceProvider from '../pages/serviceProvider'
 import User from '../pages/user'
@@ -19,8 +20,15 @@ import Group from '../pages/group'
 import PlanRoute from '../pages/inspection'
 import Report from '../pages/report'
 
+import axios from 'axios';
 class Index extends React.Component {
-
+  constructor(props){
+    super(props);
+    this.state={
+      
+    }
+  }
+  
   render() {
     const loggedIn = window.localStorage.getItem('loggedIn');
     const mainPage = (
@@ -34,6 +42,7 @@ class Index extends React.Component {
               <Route exact path="/" component={Home}/>
               {/* <Route path="/user/list" component={ List }/>
                 <Route path="/tool/rich" component={ Rich }/> */}
+              <Route path="/system" component={System}/>
               <Route path="/service" component={Service}/>
               <Route path="/contract" component={Contract}/>
               <Route path="/inspection" component={PlanRoute}/>

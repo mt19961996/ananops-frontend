@@ -8,10 +8,10 @@ export default class Alarm extends Component{
   render(){
     return (
       <Switch>
-        <Route exact path='/alarm' component={AlarmHome}/>
-        <Route path='/alarm/addupdate' component={AlarmAddUpdate}/>
-        <Route path='/alarm/detail' component={DetailAlarm}/>
-        <Redirect to='/alarm'/>
+        <Route exact path="/alarm" component={AlarmHome}/>
+        <Route path="/alarm/addupdate" component={AlarmAddUpdate}/>
+        <Route path="/alarm/detail" component={DetailAlarm}/>
+        <Redirect to="/alarm"/>
       </Switch>
     )
   }
