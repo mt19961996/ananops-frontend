@@ -149,7 +149,7 @@ class Provider extends Component{
                     style={{marginRight:'12px'}}
                     >详情</Link>               
                     <Link
-                    to={`/serviceProvider/provider/edit${record.id}`}
+                    to={`/serviceProvider/provider/edit/${record.id}`}
                     style={{marginRight:'12px'}}
                     >修改</Link>
                     <Link

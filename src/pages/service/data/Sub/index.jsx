@@ -2,7 +2,7 @@ import React,{Component,} from 'react'
 import { Button,Row,Col,Table,Input,Popconfirm,message  } from 'antd';
 import { Link } from 'react-router-dom'
 import moment from 'moment';
-
+import './index.styl'
 const FIRST_PAGE = 0;
 const PAGE_SIZE = 10;
 const Search = Input.Search;
@@ -13,11 +13,11 @@ class Sub extends Component{
         this.state={
             data:{
                 data:[{
-                    "deviceLatitude": 0,
-                    "deviceLongtitude": 0,
-                    "deviceName": "string",
-                    "deviceNo": 0,
-                    "orderId": 0
+                    "deviceLatitude": 0.0,
+                    "deviceLongtitude": 0.0,
+                    "deviceName": "ZKI-IJK-JKK",
+                    "deviceNo": 342343,
+                    "orderId": 324
                 }],
                 limit:3,
                 page:0,
@@ -43,11 +43,12 @@ class Sub extends Component{
               <Row>
                 {/* <Col span={2}>巡检人姓名：</Col> */}
                 <Col span={5}>
-                  <Search
+                  {/* <Search
                     placeholder="搜索从这里开始"
                     enterButton
                     onSearch={value => this.selectActivity(value)}
-                  />
+                  /> */}
+                  <Link to='/alarm'>返回上级</Link>
                 </Col>
                 <Col push={16}>
                   <Link to={"/contract/management/new"}>
@@ -87,7 +88,7 @@ class Sub extends Component{
                 title: '设备编号',
                 key: 'deviceName',
                 render: (text, record) => {
-                  return (record.deviceName && record.deviceName) || '--'
+                  return (record.deviceName && record.deviceNo) || '--'
                 }
               },{
                 title: '设备纬度', 

@@ -2,7 +2,7 @@ import React,{Component,} from 'react'
 import { Button,Row,Col,Table,Input,Steps, Icon   } from 'antd';
 import { Link } from 'react-router-dom'
 import moment from 'moment';
-
+import './index.styl'
 const FIRST_PAGE = 0;
 const PAGE_SIZE = 10;
 const Search = Input.Search;
@@ -14,8 +14,8 @@ class Progress extends Component{
         this.state={
             data:{
                 data:[{
-                    "last_operator": "string",
-                    "movement": "string",
+                    "last_operator": "admin",
+                    "movement": "check",
                     "status": 0,
                     "status_timestamp": "2019-12-11T06:56:21.176Z"
                 }],
@@ -57,10 +57,10 @@ class Progress extends Component{
                   </Link>
                 </Col> */}
                 <Steps>
-                    <Step status="finish" title="Login" icon={<Icon type="user" />} />
-                    <Step status="finish" title="Verification" icon={<Icon type="solution" />} />
-                    <Step status="process" title="Pay" icon={<Icon type="loading" />} />
-                    <Step status="wait" title="Done" icon={<Icon type="smile-o" />} />
+                    <Step status="finish" title="待接单" icon={<Icon type="user" />} />
+                    <Step status="finish" title="已接单" icon={<Icon type="solution" />} />
+                    <Step status="process" title="待维修" icon={<Icon type="loading" />} />
+                    <Step status="wait" title="维修结束" icon={<Icon type="smile-o" />} />
                 </Steps>,
               </Row> 
             </div>
@@ -107,14 +107,14 @@ class Progress extends Component{
                   <div className="operate-btns"
                     style={{ display: 'block' }}
                   >
-                    {/* <Link
+                    {/* {/* <Link
                       to={`/service/data/edit/${record.id}`}
                       style={{marginRight:'12px'}}
-                    >修改</Link>
+                    >修改</Link> */}
                     <Link
-                      to={`/service/data/delete/${record.id}`}
+                      to={`/alarm`}
                       style={{marginRight:'12px'}}
-                    >删除</Link> */}
+                    >返回上级</Link> 
                   </div>
                 ),
               }]}

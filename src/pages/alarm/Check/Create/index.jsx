@@ -10,7 +10,7 @@ class OrderNew extends Component{
         }
     }
     render(){
-
+        console.log('create')
         const createFormItemLayout = {
             labelCol: {span:8},
             wrapperCol : {span:8},
@@ -86,8 +86,8 @@ class OrderNew extends Component{
                 {...createFormItemLayout}
                 label="服务商ID"
                 >
-                {getFieldDecorator('principleId',{
-                    initialValue: id && orderDetail.principleId,
+                {getFieldDecorator('mainWork',{
+                    initialValue: id && orderDetail.mainWork,
                     rules:[{
                     required:false,
                     message:"请输入服务商ID",
@@ -139,7 +139,7 @@ class OrderNew extends Component{
                         const {
                         history,
                         } = this.props
-                        history.push('/orderDetail')
+                        history.push('/serviceorderDetail/orderDetail')
                     }}
                     >取消
                     </Button>
@@ -151,4 +151,4 @@ class OrderNew extends Component{
         )
     }
 }
-export default Form.create()(OrderNew)
+export default Form.create(OrderNew)

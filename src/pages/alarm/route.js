@@ -3,11 +3,15 @@ import { Switch, Route } from 'react-router-dom';
 import { Spin } from 'antd';
 import Loadable from 'react-loadable';
 
-class Service extends Component{
+class Alarm extends Component{
   constructor(props){
     super(props);
-    this.state = {};
+    this.state = {
+     
+    };
+ 
   }
+
   render(){
     const Loading = () => {
       return (
@@ -20,85 +24,84 @@ class Service extends Component{
       <Switch>
         <Route 
           exact   
-          path="/service/data"
+          path="/alarm/all"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
-              './data/Index/index'),
+              './All/index'),
             loading: Loading
           })}
-        />
-           <Route 
-          exact   
-          path="/service/data/new"
-          component={Loadable({
-            loader: () => import(
-              /* webpackChunkName: "EntranceWork" */
-              './data/Create/index'),
-            loading: Loading
-          })}
-        />
-           <Route 
-          exact   
-          path="/service/data/edit/:id"
-          component={Loadable({
-            loader: () => import(
-              /* webpackChunkName: "EntranceWork" */
-              './data/Create/index'),
-            loading: Loading
-          })}
-        />
-        <Route 
-          exact   
-          path="/service/data/process/:id"
-          component={Loadable({
-            loader: () => import(
-              /* webpackChunkName: "EntranceWork" */
-              './data/Process/index'),
-            loading: Loading
-          })}
-        />
+        />    
          <Route 
           exact   
-          path="/service/data/progress/:id"
+          path="/alarm/check"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
-              './data/Progress/index'),
+              './Check/index'),
             loading: Loading
           })}
-        />
+        />   
+         <Route 
+          exact   
+          path="/alarm/approval"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EntranceWork" */
+              './Approval/index'),
+            loading: Loading
+          })}
+        />  
           <Route 
           exact   
-          path="/service/data/sub/:id"
+          path="/alarm/examine"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
-              './data/Sub/index'),
+              './Examine/index'),
             loading: Loading
           })}
         />
          <Route 
           exact   
-          path="/service/data/fault/:id"
+          path="/alarm/maintain"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
-              './data/Fault/index'),
+              './Maintain/index'),
             loading: Loading
           })}
-        />
-        <Route
-          exact
-          path="/service/system"
+        /> 
+         <Route 
+          exact   
+          path="/alarm/pay"
           component={Loadable({
             loader: () => import(
-              /* webpackChunkName: "Device" */
-              './system/Index/index'),
+              /* webpackChunkName: "EntranceWork" */
+              './Pay/index'),
             loading: Loading
           })}
-        />
-       
+        />   
+         <Route 
+          exact   
+          path="/alarm/comment"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EntranceWork" */
+              './Comment/index'),
+            loading: Loading
+          })}
+        />  
+        <Route 
+          exact   
+          path="/alarm/new"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EntranceWork" */
+              './Check/Create/index'),
+            loading: Loading
+          })}
+        />     
       </Switch>
     );
   }
@@ -106,5 +109,4 @@ class Service extends Component{
 }
 
 
-export default Service;
-
+export default Alarm;

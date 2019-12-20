@@ -15,9 +15,15 @@ import Service from '../pages/service'
 import ServiceProvider from '../pages/serviceProvider'
 import User from '../pages/user'
 import PlanRoute from '../pages/inspection'
-
+import axios from 'axios';
 class Index extends React.Component {
-
+  constructor(props){
+    super(props);
+    this.state={
+      
+    }
+ }
+  
   render() {
     const loggedIn = window.localStorage.getItem('loggedIn');
     const mainPage = (

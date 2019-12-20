@@ -2,6 +2,7 @@ import React,{Component,} from 'react'
 import { Button,Row,Col,Table,Input,Steps, Icon   } from 'antd';
 import { Link } from 'react-router-dom'
 import moment from 'moment';
+import './index.styl'
 
 const FIRST_PAGE = 0;
 const PAGE_SIZE = 10;
@@ -14,8 +15,8 @@ class Fault extends Component{
         this.state={
             data:{
                 data:[{
-                    "last_operator": "string",
-                    "movement": "string",
+                    "last_operator": "admin",
+                    "movement": "check",
                     "status": 0,
                     "status_timestamp": "2019-12-11T06:56:21.176Z"
                 }],
@@ -101,11 +102,11 @@ class Fault extends Component{
                   <div className="operate-btns"
                     style={{ display: 'block' }}
                   >
-                    {/* <Link
-                      to={`/service/data/edit/${record.id}`}
-                      style={{marginRight:'12px'}}
-                    >修改</Link>
                     <Link
+                      to={`/alarm`}
+                      style={{marginRight:'12px'}}
+                    >返回</Link>
+                    {/* <Link
                       to={`/service/data/delete/${record.id}`}
                       style={{marginRight:'12px'}}
                     >删除</Link> */}

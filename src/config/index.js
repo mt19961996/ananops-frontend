@@ -6,18 +6,15 @@ const menuConfig = [
   },
   {
     title: '维修维护',
-    key: '/service',
+    key: '/alarm',
     icon: 'build',
-    children: [
-      {
-        title: '数据管理',
-        key: '/service/data',
-      },
-      {
-        title: '维修系统',
-        key: '/service/system',
-      },
-    ]
+    // children: [
+    //   {
+    //     title: '数据管理',
+    //     key: '/service/data',
+    //   },
+
+    // ]
   },
   {
     title: '项目管理',
@@ -25,26 +22,19 @@ const menuConfig = [
     icon: 'book',
     children:[
       {
-        title: '我的项目',
-        key: '/contract/project',
-      },{
         title: '我的合同',
         key: '/contract/management',
-      },{
-        title: '我的巡检',
-        key: '/contract/inspection',
-      }
+      },
+      {
+        title: '我的项目',
+        key: '/contract/project',
+      },
     ]
   },
   {
     title:'审批管理',
     key:'/approval',
     icon: 'solution'  
-  },
-  {
-    title:'巡检管理',
-    key:'/inspection',
-    icon: 'build' 
   },
   {
     title:'账单管理',
@@ -74,11 +64,11 @@ const menuConfig = [
       key: '/serviceProvider/engineer',
     }]
   },
-  {
-    title:'报警管理',
-    key:'/alarm',
-    icon: 'alert'  
-  },
+  // {
+  //   title:'报警管理',
+  //   key:'/alarm',
+  //   icon: 'alert'  
+  // },
   {
     title:'验收管理',
     key:'/acceptance',

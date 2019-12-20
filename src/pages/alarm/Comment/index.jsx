@@ -1,14 +1,11 @@
-import React,{Component,} from 'react'
-import { Button,Row,Col,Table,Input,Popconfirm,message  } from 'antd';
+import React,{Component} from 'react'
+import { Button,Row,Col,Table,Input,Modal,Rate  } from 'antd';
 import { Link } from 'react-router-dom'
 import moment from 'moment';
-import './index.styl'
-
 const FIRST_PAGE = 0;
 const PAGE_SIZE = 10;
 const Search = Input.Search;
-
-class Sub extends Component{
+class Comment extends Component{
     constructor(props){
         super(props)
         this.state={
@@ -39,9 +36,32 @@ class Sub extends Component{
                 limit:3,
                 page:0,
                 allCount:0,
-            }
+            },
+            visible:false
         }
     }
+    show=()=>{
+      this.setState({visible:true})
+    }
+    showModal = () => {
+      this.setState({
+        visible: true,
+      });
+    };
+  
+    handleOk = e => {
+      console.log(e);
+      this.setState({
+        visible: false,
+      });
+    };
+  
+    handleCancel = e => {
+      console.log(e);
+      this.setState({
+        visible: false,
+      });
+    };
     render(){
         const {
             data:{
@@ -66,13 +86,13 @@ class Sub extends Component{
                     onSearch={value => this.selectActivity(value)}
                   />
                 </Col>
-                <Col push={16}>
+                {/* <Col push={16}>
                   <Link to={"/service/data/new"}>
                     <Button type="primary">
                                 +创建工单
                     </Button>
                   </Link>
-                </Col>
+                </Col> */}
               </Row> 
             </div>
             <Table
@@ -142,10 +162,10 @@ class Sub extends Component{
                   <div className="operate-btns"
                     style={{ display: 'block' }}
                   >
-                    <Link
+                    {/* <Link
                       to={`/service/data/edit/${record.uid}`}
                       style={{marginRight:'12px'}}
-                    >修改</Link>
+                    >评价</Link> */}
                     
                     <Link
                       to={`/service/data/sub/${record.uid}`}
@@ -155,6 +175,11 @@ class Sub extends Component{
                       to={`/service/data/process/${record.uid}`}
                       style={{marginRight:'12px'}}
                     >维修过程</Link>
+                      <Button 
+                        type="simple"
+                        style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
+                        onClick={this.show}
+                        >评价</Button>
                     <br/>
                     <Link
                       to={`/service/data/progress/${record.uid}`}
@@ -164,16 +189,23 @@ class Sub extends Component{
                       to={`/service/data/fault/${record.uid}`}
                       style={{marginRight:'12px'}}
                     >故障信息</Link>
-                    <Link
+                    {/* <Link
                       to={`/service/data/delete/${record.uid}`}
                       style={{marginRight:'12px'}}
-                    >删除</Link>
+                    >删除</Link> */}
                   </div>
                 ),
               }]}
             />
+            <Modal
+            title="评价"
+            visible={this.state.visible}
+            onOk={this.handleOk}
+            onCancel={this.handleCancel}>
+              <Rate />
+            </Modal>
           </div>  
         )
     }
 }
-export default Sub
+export default Comment

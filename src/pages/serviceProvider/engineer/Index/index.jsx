@@ -146,7 +146,7 @@ class Engineer extends Component{
                     style={{marginRight:'12px'}}
                     >详情</Link>               
                     <Link
-                    to={`/serviceProvider/engineer/edit${record.id}`}
+                    to={`/serviceProvider/engineer/edit/${record.id}`}
                     style={{marginRight:'12px'}}
                     >修改</Link>
                     <Link

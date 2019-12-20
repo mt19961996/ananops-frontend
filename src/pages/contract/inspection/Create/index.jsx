@@ -1,14 +1,113 @@
 import React,{Component,} from 'react'
-import { Form,Input,Select,Button,message } from 'antd';
+import { Form,Input,Select,Button,message,DatePicker } from 'antd';
 import { Link } from 'react-router-dom'
-
+import moment from 'moment';
+import axios from 'axios';
+const token=window.localStorage.getItem('token')
 class InspectionNew extends Component{
     constructor(props){
         super(props)
         this.state={
-            inspectionDetail:{}
+            inspectionDetail:{
+                
+            }
         }
     }
+    componentDidMount(){
+        const {match : { params : { id } }} = this.props   
+        if(id){
+          axios({
+            method: 'POST',
+            url: '/pmc/InspectDevice/getTaskById/'+id,
+            headers: {
+              'deviceId': this.deviceId,
+              'Authorization':'Bearer '+token,
+            },
+          })
+          .then((res) => {
+            console.log(res)
+            if(res && res.status === 200){     
+            this.setState({
+              inspectionDetail:res.data.result
+            })
+            }
+          })
+          .catch(function (error) {
+              console.log(error);
+          });
+        }
+      }
+
+    handleSubmit = (e) => {
+        e.preventDefault()
+        const {
+          form,
+          history,
+          match : { params : {projectId,id } },
+        } = this.props
+        console.log(id+"ffff"+projectId)
+        const { getFieldValue } = form;
+        const values = form.getFieldsValue()
+        if(!getFieldValue('projectId')){
+          message.error('请填写项目ID')
+        }
+        if(!getFieldValue('projectName')){
+          message.error('请输入项目名称')
+        }
+        if(!getFieldValue('scheduledStartTime')){
+          message.error('请选择预计开始时间')
+        }
+        if(!getFieldValue('deadlineTime')){
+          message.error('请选择最晚开始时间')
+        }
+        if(!getFieldValue('cycleTime')){
+          message.error('请输入巡检周期')
+        }
+        if(!getFieldValue('inspectionContent')){
+          message.error('请输入巡检内容')
+        }
+        if(id){
+          values.id=id
+        }
+        values.scheduledStartTime=getFieldValue('scheduledStartTime').format('YYYY-MM-DD HH:mm:ss')
+        values.deadlineTime=getFieldValue('deadlineTime').format('YYYY-MM-DD HH:mm:ss')
+    
+        // values.partyAId=getFieldValue('partyAId')
+        // values.partyBId=getFieldValue('partyBId')
+        // values.atwoName=getFieldValue('atwoName')==="undefine"?getFieldValue('atwoname'):''
+        // values.partyATwo=getFieldValue('partyATwo')=="undefine"?getFieldValue('partyATwo'):''
+        // values.athreeName=getFieldValue('athreeName')=="undefine"?getFieldValue('athreeName'):''
+        // values.partyAThree=getFieldValue('partyAThree')=="undefine"?getFieldValue('partyAThree'):''
+        // values.partyBPhone=getFieldValue('partyBPhone')=="undefine"?getFieldValue('partyBPhone'):''
+        // values.partyBTel=getFieldValue('partyBTel')=="undefine"?getFieldValue('partyBTel'):''
+        // values.partyBEmail=getFieldValue('partyBEmail')=="undefine"?getFieldValue('partyBEmail'):''
+        // values.contractId=getFieldValue('contractId')=="undefine"?getFieldValue('contractId'):''
+        // values.contractName=getFieldValue('contractName')=="undefine"?getFieldValue('contractName'):''
+        // values.description=getFieldValue('description')=="undefine"?getFieldValue('description'):''
+        console.log(values)
+        axios({
+          method: 'POST',
+          url: '/pmc/InspectDevice/save',
+          headers: {
+            'Content-Type': 'application/json',
+            'deviceId': this.deviceId,
+            'Authorization':'Bearer '+token,
+          },
+          data:JSON.stringify(values)
+        })
+      .then((res) => {
+          if(res && res.status === 200){     
+          // this.setState({
+          //    projectDetail:res.data.result
+          // });
+          history.push('/contract/inspection/'+projectId)
+          }
+      })
+      .catch(function (error) {
+          console.log(error);
+      });
+     }
+
     render(){
         const createFormItemLayout = {
             labelCol: {span:8},
@@ -16,9 +115,9 @@ class InspectionNew extends Component{
           }
           const { 
             form: { getFieldDecorator }, 
-            match : { params : { id } }
+            match : { params : { id,projectId} }
           } = this.props
-          const { inspectionDetailtail } = this.state
+          const { inspectionDetail } = this.state
         return(
             <div>
                 <div className="inpection-plan-create-page">
@@ -31,7 +130,7 @@ class InspectionNew extends Component{
                     label="项目ID"
                     >
                     {getFieldDecorator('projectId',{
-                        initialValue: id && inspectionDetailtail.projectId,
+                        initialValue: id && inspectionDetail.projectId,
                         rules:[{
                         required:true,
                         message:"请填写项目ID",
@@ -45,7 +144,7 @@ class InspectionNew extends Component{
                     label="项目名称"
                     >
                     {getFieldDecorator('projectName',{
-                        initialValue: id && inspectionDetailtail.projectName,
+                        initialValue: id && inspectionDetail.projectName,
                         rules:[{
                         required:true,
                         message:"请输入项目名称",
@@ -59,18 +158,17 @@ class InspectionNew extends Component{
                     label="预计开始时间"
                     >
                     {getFieldDecorator('scheduledStartTime',{
-                        initialValue: id && inspectionDetailtail.scheduledStartTime,
+                        initialValue: id && moment(inspectionDetail.scheduledStartTime),
                         rules:[{
                         required:true,
                         message:"请选择预计开始时间",
                         }]
                     })(
-                        <Select
-                        //  mode="multiple"
-                        style={{ width: '100%' }}
+                        <DatePicker
+                        format="YYYY-MM-DD HH:mm:ss"
                         placeholder="请选择预计开始时间"
-                        >
-                        </Select>,
+                        showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
+                      />,
                     )}  
                     </Form.Item>
                     <Form.Item
@@ -78,13 +176,17 @@ class InspectionNew extends Component{
                     label="最晚开始时间"
                     >
                     {getFieldDecorator('deadlineTime',{
-                        initialValue: id && inspectionDetailtail.deadlineTime,
+                        initialValue: id && moment(inspectionDetail.deadlineTime),
                         rules:[{
                         required:true,
                         message:"请选择最晚开始时间",
                         }]
                     })(
-                        <Input placeholder="请选择最晚开始时间" />
+                        <DatePicker
+                        format="YYYY-MM-DD HH:mm:ss"
+                        placeholder="请选择最晚开始时间"
+                        showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
+                    />
                     )}  
                     </Form.Item>
                     <Form.Item
@@ -92,9 +194,9 @@ class InspectionNew extends Component{
                     label="设备名"
                     >
                     {getFieldDecorator('deviceName',{
-                        initialValue: id && inspectionDetailtail.deviceName,
+                        initialValue: id && inspectionDetail.deviceName,
                         rules:[{
-                        required:true,
+                        required:false,
                         message:"请输入设备名",
                         }]
                     })(
@@ -106,9 +208,9 @@ class InspectionNew extends Component{
                     label="设备类型"
                     >
                     {getFieldDecorator('deviceType',{
-                        initialValue: id && inspectionDetailtail.deviceType,
+                        initialValue: id && inspectionDetail.deviceType,
                         rules:[{
-                        required:true,
+                        required:false,
                         message:"请输入设备类型",
                         }]
                     })(
@@ -120,7 +222,7 @@ class InspectionNew extends Component{
                     label="巡检周期（天）"
                     >
                     {getFieldDecorator('cycleTime',{
-                        initialValue: id && inspectionDetailtail.cycleTime,
+                        initialValue: id && inspectionDetail.cycleTime,
                         rules:[{
                         required:true,
                         message:"请输入巡检周期",
@@ -134,9 +236,9 @@ class InspectionNew extends Component{
                     label="巡检内容"
                     >
                     {getFieldDecorator('inspectionContent',{
-                        initialValue: id && inspectionDetailtail.inspectionContent,
+                        initialValue: id && inspectionDetail.inspectionContent,
                         rules:[{
-                        required:false,
+                        required:true,
                         message:"请输入巡检内容",
                         }]
                     })(
@@ -148,7 +250,7 @@ class InspectionNew extends Component{
                     label="巡检情况"
                     >
                     {getFieldDecorator('inspectionCondition',{
-                        initialValue: id && inspectionDetailtail.inspectionCondition,
+                        initialValue: id && inspectionDetail.inspectionCondition,
                         rules:[{
                         required:false,
                         message:"请输入巡检情况",
@@ -162,9 +264,9 @@ class InspectionNew extends Component{
                     label="处理结果"
                     >
                     {getFieldDecorator('dealResult',{
-                        initialValue: id && inspectionDetailtail.dealResult,
+                        initialValue: id && inspectionDetail.dealResult,
                         rules:[{
-                        required:true,
+                        required:false,
                         message:"请输入处理结果",
                         }]
                     })(
@@ -176,7 +278,7 @@ class InspectionNew extends Component{
                     label="描述"
                     >
                     {getFieldDecorator('description',{
-                        initialValue: id && inspectionDetailtail.description,
+                        initialValue: id && inspectionDetail.description,
                         rules:[{
                         required:false,
                         message:"请输入描述",
@@ -200,7 +302,7 @@ class InspectionNew extends Component{
                             const {
                             history,
                             } = this.props
-                            history.push('/contract/inspection')
+                            history.push('/contract/inspection/'+projectId)
                         }}
                         >取消
                         </Button>
@@ -212,4 +314,4 @@ class InspectionNew extends Component{
         )
     }
 }
-export default Form.create(InspectionNew)
+export default Form.create()(InspectionNew)
