@@ -4,7 +4,6 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import SiderBar from '../components/layout/SideBar.jsx'
 import HeaderBar from '../components/layout/HeaderBar.jsx'
 import Home from '../pages/home'
-import NotFind from '../pages/notFound'
 import PlanApproval from '../pages/approval'
 import Acceptance from '../pages/acceptance'
 import Alarm from '../pages/alarm'
@@ -15,7 +14,12 @@ import System from '../pages/system'
 import Service from '../pages/service'
 import ServiceProvider from '../pages/serviceProvider'
 import User from '../pages/user'
+import Role from '../pages/role'
+import Menu from '../pages/menu'
+import Group from '../pages/group'
 import PlanRoute from '../pages/inspection'
+import Report from '../pages/report'
+
 import axios from 'axios';
 class Index extends React.Component {
   constructor(props){
@@ -23,7 +27,7 @@ class Index extends React.Component {
     this.state={
       
     }
- }
+  }
   
   render() {
     const loggedIn = window.localStorage.getItem('loggedIn');
@@ -45,11 +49,14 @@ class Index extends React.Component {
               <Route path="/approval" component={PlanApproval}/>
               <Route path="/bill" component={Bill}/>
               <Route path="/user" component={User}/>
+              <Route path="/role" component={Role}/>
+              <Route path="/menu" component={Menu}/>
               <Route path="/authority" component={Authority}/>
+              <Route path="/group" component={Group}/>
               <Route path="/alarm" component={Alarm}/>
               <Route path="/acceptance" component={Acceptance}/>
               <Route path="/serviceProvider" component={ServiceProvider}/>
-              <Route path="/404" component={NotFind}/>
+              <Route path="/report" component={Report}/>
             </Switch>
             {/* </Suspense> */}
           </div>

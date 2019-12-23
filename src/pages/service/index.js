@@ -28,7 +28,7 @@ class Service extends Component{
             loading: Loading
           })}
         />
-           <Route 
+        <Route 
           exact   
           path="/service/data/new"
           component={Loadable({
@@ -38,7 +38,7 @@ class Service extends Component{
             loading: Loading
           })}
         />
-           <Route 
+        <Route 
           exact   
           path="/service/data/edit/:id"
           component={Loadable({
@@ -58,7 +58,7 @@ class Service extends Component{
             loading: Loading
           })}
         />
-         <Route 
+        <Route 
           exact   
           path="/service/data/progress/:id"
           component={Loadable({
@@ -68,7 +68,7 @@ class Service extends Component{
             loading: Loading
           })}
         />
-          <Route 
+        <Route 
           exact   
           path="/service/data/sub/:id"
           component={Loadable({
@@ -78,7 +78,7 @@ class Service extends Component{
             loading: Loading
           })}
         />
-         <Route 
+        <Route 
           exact   
           path="/service/data/fault/:id"
           component={Loadable({

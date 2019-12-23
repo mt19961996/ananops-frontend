@@ -18,7 +18,7 @@ class ManageRoute extends Component{
     };
     return (
       <Switch>
-          <Route 
+        <Route 
           exact   
           path="/contract/management"
           component={Loadable({
@@ -98,7 +98,7 @@ class ManageRoute extends Component{
             loading: Loading
           })}
         />
-          <Route 
+        <Route 
           exact   
           path="/contract/inspection/:id"
           component={Loadable({
