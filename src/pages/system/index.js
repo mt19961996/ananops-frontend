@@ -231,6 +231,7 @@ class Data extends Component {
   }
   render() {
     const role=window.localStorage.getItem('role')
+    console.log(role)
     return (    
       <div className="plan-approval-list-page">
           {this.getRole(role)}
