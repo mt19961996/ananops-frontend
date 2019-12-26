@@ -18,13 +18,43 @@ class serviceProviderRoute extends Component{
           };
           return(
             <Switch>
+                  <Route 
+                    exact   
+                    path="/serviceProvider/basicInfo"
+                    component={Loadable({
+                        loader: () => import(
+                        /* webpackChunkName: "EntranceWork" */
+                        './basicInfo/Index/index'),
+                        loading: Loading
+                    })}
+                 />
+                 <Route 
+                    exact   
+                    path="/serviceProvider/basicInfo/detail/:id"
+                    component={Loadable({
+                        loader: () => import(
+                        /* webpackChunkName: "EntranceWork" */
+                        './basicInfo/Index/index'),
+                        loading: Loading
+                    })}
+                 />
+                 <Route 
+                    exact   
+                    path="/serviceProvider/basicInfo/edit"
+                    component={Loadable({
+                        loader: () => import(
+                        /* webpackChunkName: "EntranceWork" */
+                        './basicInfo/Edit/index'),
+                        loading: Loading
+                    })}
+                 />
                  <Route 
                     exact   
                     path="/serviceProvider/provider"
                     component={Loadable({
                         loader: () => import(
                         /* webpackChunkName: "EntranceWork" */
-                        './engineer/Index/index'),
+                        './provider/Index/index'),
                         loading: Loading
                     })}
                  />
@@ -44,7 +74,7 @@ class serviceProviderRoute extends Component{
                     component={Loadable({
                         loader: () => import(
                         /* webpackChunkName: "EntranceWork" */
-                        './engineer/Create/index'),
+                        './provider/Create/index'),
                         loading: Loading
                     })}
                  />

@@ -145,13 +145,13 @@ class Provider extends Component{
                     style={{ display: 'block' }}
                 >
                     <Link
-                    to={`/serviceProvider/provider/detail/${record.id}`}
+                    to={`/serviceProvider/basicInfo/detail/${record.id}`}
                     style={{marginRight:'12px'}}
                     >详情</Link>               
                     <Link
                     to={`/serviceProvider/provider/edit/${record.id}`}
                     style={{marginRight:'12px'}}
-                    >修改</Link>
+                    >激活</Link>
                     <Link
                     to={`/serviceProvider/provider/delete/${record.id}`}
                     style={{marginRight:'8px'}}

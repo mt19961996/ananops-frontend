@@ -6,7 +6,7 @@ const menuConfig = [
   },
   {
     title: '维修维护',
-    key: '/system',
+    key: '/maintain',
     icon: 'build',
     // children: [
     //   {
@@ -79,11 +79,21 @@ const menuConfig = [
     icon: 'team',
     children:[
       {
-        title: '加盟服务商',
+        title: '基本信息',
+        key: '/serviceProvider/basicInfo',
+      },
+      {
+        title: '服务商管理',
         key: '/serviceProvider/provider',
       },{
-        title: '加盟工程师',
+        title: '工程师管理',
         key: '/serviceProvider/engineer',
+      },{
+        title: '全量信息',
+        key: '/serviceProvider/entireInfo',
+      },{
+        title: '工单管理',
+        key: '/serviceProvider/workOrders',
       }]
   },
   {
