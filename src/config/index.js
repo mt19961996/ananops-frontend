@@ -89,9 +89,6 @@ const menuConfig = [
         title: '工程师管理',
         key: '/serviceProvider/engineer',
       },{
-        title: '全量信息',
-        key: '/serviceProvider/entireInfo',
-      },{
         title: '工单管理',
         key: '/serviceProvider/workOrders',
       }]
