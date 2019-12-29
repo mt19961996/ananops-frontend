@@ -290,6 +290,19 @@ class Login extends React.Component {
                     )}
                 </Form.Item>
                 <Form.Item
+                    {...formItemLayout}
+                    label="联系人邮箱"
+                    >
+                    {getFieldDecorator('personEmail',{
+                        rules:[
+                            {required:true,message:'必填项不能为空'},
+                            {validator: this.onPhoneRq}
+                        ]
+                    })(
+                        <Input placeholder="请输入邮箱" />
+                    )}
+                </Form.Item>
+                <Form.Item
                     labelCol={{ span: 6 }}
                     wrapperCol= {{ span: 12 }}
                     label="手机验证码"

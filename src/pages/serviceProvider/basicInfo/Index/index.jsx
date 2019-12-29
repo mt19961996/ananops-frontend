@@ -10,7 +10,7 @@ export default class IndexBasicInfo extends Component{
             data:{
                 data:[
                     {
-                        "company": "中国通信建设集团有限公司",
+                        "company": "安安运维（北京）科技有限公司",
                         "identityNumber": "string",
                         "location": "string",
                         "name": "string",
@@ -48,7 +48,7 @@ export default class IndexBasicInfo extends Component{
                     <tbody>
                         <tr>
                             <td className="font-jiacu">主体名称：</td>
-                            <td className="text-left" colSpan="3">中国通信建设集团有限公司</td>
+                            <td className="text-left" colSpan="3">安安运维（北京）科技有限公司</td>
                         </tr>
                         <tr>
                             <th width="20%" className="font-jiacu">法定代表人姓名：</th>
