@@ -31,33 +31,56 @@ export default class Role extends Component{
       {
         title:'序号',
         dataIndex:'id',
+        fixed:'left',
+        width:170
       },
       {
-        width:100,
         title:'状态',
         dataIndex:'status',
+        width:70,
         render:(status)=>{return <span>{status==='ENABLE'?'启用':'禁用'}</span>}
       },
       {
         title:'角色名称',
-        dataIndex:'roleName'
+        dataIndex:'roleName',
+        width:150
       },
       {
         title:'角色编码',
-        dataIndex:'roleCode'
+        dataIndex:'roleCode',
+        width:150
       },
       {
         title:'修改时间',
         dataIndex:'updateTime',
+        width:180,
         render: formatDate
       },
       {
         title:'操作人',
         dataIndex:'lastOperator',
-       
+        width:150
+      },
+      {
+        title:'创建时间',
+        dataIndex:'createdTime',
+        width:180,
+        render: formatDate
+      },
+      {
+        title:'创建人',
+        dataIndex:'creator',
+        width:150
+      },
+      {
+        title:'备注',
+        dataIndex:'remark',
+        width:500
       },
       {
         title:'操作',
+        fixed:'right',
+        width:380,
         render: (role) => {
           const {id,status} = role
           return (
@@ -200,12 +223,7 @@ export default class Role extends Component{
     const {searchCode,searchName,searchType} = this.state
     
     const dataPost = {
-      "createdTime": "",
-      "creator": "",
-      "creatorId": 0,
       "id": 0,
-      "lastOperator": "",
-      "lastOperatorId": 0,
       "orderBy": "createdTime",
       "pageNum": `${pageNum}`,
       "pageSize": 10,
@@ -213,7 +231,6 @@ export default class Role extends Component{
       "roleCode": `${searchCode}`,
       "roleName": `${searchName}`,
       "status": `${searchType===''?'':(searchType==='roleOn'?'ENABLE':'DISABLE')}`,
-      "updateTime": "",
       "version": 0
     }
     const result = await reqRoleList(dataPost)
@@ -223,6 +240,8 @@ export default class Role extends Component{
       const roles = result.result.list
       const total = result.result.total
       this.setState({roles,total})
+    }else{
+      this.setState({loading:false})
     }
   }
 
@@ -299,6 +318,7 @@ export default class Role extends Component{
           rowKey="id"
           dataSource={roles}
           columns={this.columns}
+          scroll={{ x: 1500 }}
           rowSelection={rowSelection}
           onRow={(record)=>({
             onClick:()=>{

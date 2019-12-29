@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Menu, Dropdown, Icon, Breadcrumb } from 'antd';
+import { Layout, Menu, Dropdown, Icon, Breadcrumb,Modal } from 'antd';
 // import customUrl from '../../images/custom.jpeg';
 import { connect } from 'react-redux';
 const { Header } = Layout;
@@ -7,32 +7,66 @@ const { Header } = Layout;
 class UserInfo extends React.Component {
   state = {
     visible: false,   // 菜单是否显示
+    isShowChangePwd:false
   };
 
-  handleMenuClick = e => {
+  handleLogout = e => {
     if (e.key === 'outLogin') {
       this.setState({
         visible: false
       });
       window.localStorage.removeItem('loggedIn');
+      window.localStorage.removeItem('loginName')
+      window.localStorage.removeItem('loginAfter')
+      window.localStorage.removeItem('access_token')
+      window.localStorage.removeItem('refresh_token')
+      window.localStorage.removeItem('resMenu')
+      window.localStorage.removeItem('token')
+      
       this.props.history.push('/login');
     }
   };
+
+  handleUserInfo = () => {
+
+  }
+
+  handleChangePwd = () => {
+
+  }
+
+  isShowChangePwd = () => {
+    this.setState({isShowChangePwd:true})
+  }
 
   handleVisibleChange = flag => {
     this.setState({ visible: flag });
   };
 
   render() {
+    const {isShowChangePwd} = this.state
     const menu = (
-      <Menu onClick={this.handleMenuClick}>
-        <Menu.Item key="outLogin">退出登录</Menu.Item>
+      <Menu>
+        {/* <Menu.Item key="userInfo" onClick={this.handleUserInfo}>个人信息</Menu.Item>
+        <Menu.Item key="changePwd" onClick={this.isShowChangePwd}>修改密码</Menu.Item> */}
+        <Menu.Item key="outLogin" onClick={this.handleLogout}>退出登录</Menu.Item>
       </Menu>
     );
+    const changePwd = (
+      <Modal
+        title="修改密码"
+        visible={isShowChangePwd}
+        onOk={this.handleChangePwd}
+        onCancel={() => {this.setState({isShowChangePwd:false});this.form.resetFields();}}
+        okText="确认"
+        cancelText="取消"
+      >
+        
+      </Modal>
+    )
     return (
       <Dropdown overlay={menu} onVisibleChange={this.handleVisibleChange} visible={this.state.visible}>
         <div className="ant-dropdown-link">
-          {/* <img className="custom-img" src={ customUrl } alt=""/> */}
           用户
           <Icon type="caret-down" />
         </div>

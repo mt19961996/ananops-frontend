@@ -28,6 +28,8 @@ export default class Authority extends Component{
       {
         title:'序号',
         dataIndex:'id',
+        width:170,
+        fixed:'left'
       }, 
       {
         width:100,
@@ -38,31 +40,60 @@ export default class Authority extends Component{
      
       {
         title:'权限名称',
-        dataIndex:'actionName'
+        dataIndex:'actionName',
+        width:200
       },
       {
         title:'权限编码',
-        dataIndex:'actionCode'
+        dataIndex:'actionCode',
+        width:200
       },
       {
         title:'URL地址',
-        dataIndex:'url'
+        dataIndex:'url',
+        width:250
       },
       {
         title:'菜单名称',
-        dataIndex:'menuName'
+        dataIndex:'menuName',
+        width:120
+      },
+      {
+        title:'菜单ID',
+        dataIndex:'menuId',
+        width:170
       },
       {
         title:'修改时间',
         dataIndex:'updateTime',
+        width:170,
         render: formatDate
       },
       {
         title:'操作人',
-        dataIndex:'lastOperator'
+        dataIndex:'lastOperator',
+        width:150
+      },
+      {
+        title:'创建时间',
+        dataIndex:'createdTime',
+        width:170,
+        render: formatDate
+      },
+      {
+        title:'创建人',
+        dataIndex:'creator',
+        width:150
+      },
+      {
+        title:'备注',
+        dataIndex:'remark',
+        width:200,
       },
       {
         title:'操作',
+        width:200,
+        fixed:'right',
         render: (auth) => {
           const {id,status} = auth
           return (
@@ -111,7 +142,7 @@ export default class Authority extends Component{
         const result = await reqDeleteAuth(auth.id)
         if(result.code===200){
           message.success('删除角色成功')
-          this.getRoles(1)
+          this.getAuths(1)
         }
       }
     })
@@ -267,6 +298,7 @@ export default class Authority extends Component{
           rowKey="id"
           dataSource={auths}
           columns={this.columns}
+          scroll={{ x: 1500 }}
           rowSelection={rowSelection}
           onRow={(record)=>({
             onClick:()=>{

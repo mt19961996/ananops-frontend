@@ -2,10 +2,14 @@ import React,{Component} from 'react'
 import {Form,Input,Radio,Select} from 'antd'
 import PropTypes from 'prop-types'
 const Item = Form.Item
+const TextArea = Input.TextArea
+const Option = Select.Option
 class AddUpdateForm extends Component{
   //接收父组件参数
   static propTypes = {
-    setForm:PropTypes.func.isRequired
+    setForm:PropTypes.func.isRequired,
+    user:PropTypes.object,
+    groupList:PropTypes.array.isRequired
   }
 
   componentWillMount() {
@@ -13,11 +17,17 @@ class AddUpdateForm extends Component{
   }
 
   render(){
+    const user = this.props.user
+    const groupList = this.props.groupList
 
     const formItemLayout = {
       labelCol:{span:4},
       wrapperCol:{span:15}
     }
+  
+    const group = groupList.map((item,index)=>
+      <Option value={item[0]} key={index}>{item[1]}</Option>
+    )
 
     const {getFieldDecorator} = this.props.form
     return (
@@ -25,8 +35,8 @@ class AddUpdateForm extends Component{
 
         <Item label="登录名：">
           {
-            getFieldDecorator('roleCode',{
-              initialValue:'',
+            getFieldDecorator('loginName',{
+              initialValue:user.loginName,
               rules:[{
                 required:true,
                 message:'登录名必须输入'
@@ -40,8 +50,8 @@ class AddUpdateForm extends Component{
         
         <Item label="手机号：">
           {
-            getFieldDecorator('roleName',{
-              initialValue:'',
+            getFieldDecorator('mobileNo',{
+              initialValue:user.mobileNo,
               rules:[{
                 required:true,
                 message:'手机号必须输入'
@@ -55,8 +65,8 @@ class AddUpdateForm extends Component{
       
         <Item label="真实姓名：">
           {
-            getFieldDecorator('roleCode',{
-              initialValue:'',
+            getFieldDecorator('userName',{
+              initialValue:user.userName,
               rules:[{
                 required:true,
                 message:'真实姓名必须输入'
@@ -70,8 +80,8 @@ class AddUpdateForm extends Component{
 
         <Item label="工号：">
           {
-            getFieldDecorator('roleCode',{
-              initialValue:'',
+            getFieldDecorator('userCode',{
+              initialValue:user.userCode,
               
             })(
               <Input placeholder="6-16位数字、字母"></Input>
@@ -81,22 +91,24 @@ class AddUpdateForm extends Component{
         </Item>
         <Item label="组织名称：">
           {
-            getFieldDecorator('roleCode',{
-              initialValue:'',
+            getFieldDecorator('groupId',{
+              initialValue:user.groupName,
               rules:[{
                 required:true,
                 message:'请选择组织名称'
               }]
             })(
-              <Select></Select>
+              <Select>
+                {group}
+              </Select>
             )
           }
          
         </Item>
         <Item label="邮箱：">
           {
-            getFieldDecorator('roleCode',{
-              initialValue:'',
+            getFieldDecorator('email',{
+              initialValue:user.email,
               rules:[{
                 required:true,
                 message:'邮箱必须输入'
@@ -107,26 +119,49 @@ class AddUpdateForm extends Component{
           }
          
         </Item>
-        <Item label="密码：">
+        {
+          user.id?null:(
+            <Item label="密码：">
+              {
+                getFieldDecorator('loginPwd',{
+                  initialValue:'',
+                  rules:[{
+                    required:true,
+                    message:'密码必须输入'
+                  }]
+                })(
+                  <Input placeholder="请输入数组字母下划线组合"></Input>
+                )
+              }
+         
+            </Item>
+          )
+        }
+
+        <Item label="用户说明：">
           {
-            getFieldDecorator('roleCode',{
-              initialValue:'',
-              rules:[{
-                required:true,
-                message:'密码必须输入'
-              }]
+            getFieldDecorator('remark',{
+              initialValue:user.remark,
+              
             })(
-              <Input placeholder="请输入数组字母下划线组合"></Input>
+              <TextArea placeholder="请输入用户说明" autoSize={{minRows:2,maxRows:6}}></TextArea>
             )
           }
          
         </Item>
 
         <Item label="状态：">
-          <Radio.Group defaultChecked={'on'}>
-            <Radio value={'on'}>启用</Radio>
-            <Radio value={'off'}>禁用</Radio>
-          </Radio.Group>
+          {
+            getFieldDecorator('status',{
+              initialValue:user.status=== undefined?'ENABLE':user.status,
+              
+            })(
+              <Radio.Group>
+                <Radio value="ENABLE">启用</Radio>
+                <Radio value="DISABLE">禁用</Radio>
+              </Radio.Group>
+            )
+          }
         </Item>
       </Form>
     )

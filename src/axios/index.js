@@ -22,3 +22,33 @@ export const reqDeleteAuth = (id) => ajax('/uac/action/deleteActionById/'+id)
 export const reqSwitchAuthStatus = (switchAuth) => ajax('/uac/action/modifyStatus',switchAuth)
 //添加/更新权限
 export const reqAddOrUpdateAuth = (newAuth) => ajax('/uac/action/save',newAuth)
+
+
+//loginAfter获取用户整体信息
+export const reqLoginAfter = () => ajax('/uac/user/loginAfter/1')
+
+
+//获取用户列表
+export const reqUserList = (searchData) => ajax('/uac/user/queryListWithPage',searchData)
+//更改用户状态
+export const reqSwitchUserStatus = (switchUser) => ajax('/uac/user/modifyUserStatusById',switchUser)
+//添加/更新用户
+export const reqAddOrUpdateUser = (newUser) => ajax('/uac/user/save',newUser)
+//根据用户id重置密码
+export const reqResetPwd = (userId) => ajax('/uac/user/resetLoginPwd/'+userId)
+//删除用户
+export const reqDeleteUser = (id) => ajax('/uac/user/deleteUserById/'+id)
+//根据登陆用户查询组织列表
+export const reqGroupList = () => ajax('/uac/group/getGroupTree') 
+//查询在线用户列表
+export const reqOnlineUsers = (dataPost) => ajax('/uac/token/queryListWithPage',dataPost)
+//查询某用户的操作日志
+export const reqUserLogs = (dataPost) => ajax('/uac/user/queryUserLogListWithPage',dataPost)
+
+
+//获取操作日志
+export const reqLogs = (dataPost) => ajax('/uac/log/queryListWithPage',dataPost)
+//强制退出用户
+export const reqForceLogout = (accessToken) => ajax('/uac/user/logout?accessToken='+accessToken)
+//带搜索获取异常信息
+export const reqExceptions = (dataPost) => ajax('/mdc/exception/queryListWithPage',dataPost)

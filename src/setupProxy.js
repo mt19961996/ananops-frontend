@@ -11,7 +11,7 @@ const proxy = require('http-proxy-middleware');
 
 module.exports = function(app) {
   app.use(
-    proxy(['/uac','/pmc','/mdmc'],{target})
+    proxy(['/uac','/pmc','/mdc','/mdmc'],{target})
     // proxy(['/default'],{target})
   );
 };
