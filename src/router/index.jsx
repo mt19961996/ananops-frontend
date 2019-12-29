@@ -51,12 +51,12 @@ class Index extends React.Component {
               <Route exact path="/" component={Home}/>
               {/* <Route path="/user/list" component={ List }/>
                 <Route path="/tool/rich" component={ Rich }/> */}
-              <Route path="/system" component={System}/>
-              <Route path="/service" component={Service}/>
-              <Route path="/contract" component={Contract}/>
-              <Route path="/inspection" component={PlanRoute}/>
-              <Route path="/approval" component={PlanApproval}/>
-              <Route path="/bill" component={Bill}/>
+              <Route path="/cbd/check" component={System}/>
+              <Route path="/cbd/maintain" component={Service}/>
+              <Route path="/cbd/project" component={Contract}/>
+              <Route path="/cbd/inspection" component={PlanRoute}/>
+              <Route path="/cbd/examine" component={PlanApproval}/>
+              <Route path="/cbd/bill" component={Bill}/>
               <Route exact path="/uas/user/list" component={User}/>
               <Route path="/uas/user/list/online" component={OnlineUsers}/>
               <Route path="/uas/user/list/detail" component={DetailUser}/>
@@ -64,9 +64,9 @@ class Index extends React.Component {
               <Route path="/uas/menu/list" component={Menu}/>
               <Route path="/uas/action/list" component={Authority}/>
               <Route path="/uas/group/list" component={Group}/>
-              <Route path="/alarm" component={Alarm}/>
-              <Route path="/acceptance" component={Acceptance}/>
-              <Route path="/serviceProvider" component={ServiceProvider}/>
+              <Route path="/cbd/alarm" component={Alarm}/>
+              <Route path="/cbd/check" component={Acceptance}/>
+              <Route path="/cbd/alliance" component={ServiceProvider}/>
               <Route path="/report" component={Report}/>
             
               <Route path="/uas/monitor/zipkin" component={Zipkin}/>
