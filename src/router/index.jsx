@@ -42,9 +42,9 @@ class Index extends React.Component {
               <Route exact path="/" component={Home}/>
               {/* <Route path="/user/list" component={ List }/>
                 <Route path="/tool/rich" component={ Rich }/> */}
-              <Route path="/system" component={System}/>
+              <Route path="/cbd/maintain/data" component={System}/>
               <Route path="/service" component={Service}/>
-              <Route path="/contract" component={Contract}/>
+              <Route path="/cbd/pro" component={Contract}/>
               <Route path="/inspection" component={PlanRoute}/>
               <Route path="/approval" component={PlanApproval}/>
               <Route path="/bill" component={Bill}/>

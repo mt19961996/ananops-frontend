@@ -109,12 +109,12 @@ class Sub extends Component{
                     enterButton
                     onSearch={value => this.selectActivity(value)}
                 /> */}
-                <Link to={`/contract/inspection/${projectId}`}>
+                <Link to={`/cbd/pro/inspection/${projectId}`}>
                     <Icon type="arrow-left" ></Icon>返回巡检任务
                 </Link>
                 </Col>
                 <Col push={16}>
-                <Link to={`/contract/sub/new/${projectId}/${id}`}>
+                <Link to={`/cbd/pro/sub/new/${projectId}/${id}`}>
                     <Button type="primary">
                                 +新建巡检详情
                     </Button>
@@ -180,11 +180,11 @@ class Sub extends Component{
                     style={{ display: 'block' }}
                 >
                     <Link
-                    to={`/contract/sub/detail/${projectId}/${id}/${record.id}`}
+                    to={`/cbd/pro/sub/detail/${projectId}/${id}/${record.id}`}
                     style={{marginRight:'12px'}}
                     >详情</Link>               
                     <Link
-                    to={`/contract/sub/edit/${projectId}/${id}/${record.id}`}
+                    to={`/cbd/pro/sub/edit/${projectId}/${id}/${record.id}`}
                     style={{marginRight:'12px'}}
                     >修改</Link>
                     <Popconfirm

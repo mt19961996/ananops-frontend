@@ -89,12 +89,12 @@ class Inspection extends Component{
                     enterButton
                     onSearch={value => this.selectActivity(value)}
                 /> */}
-                <Link to={`/contract/project`}>
+                <Link to={`/cbd/pro/project`}>
                     <Icon type="arrow-left" ></Icon>返回项目
                 </Link>
                 </Col>
                 <Col push={16}>
-                <Link to={`/contract/inspection/new/${id}`}>
+                <Link to={`/cbd/pro/inspection/new/${id}`}>
                     <Button type="primary">
                                 +新建巡检方案
                     </Button>
@@ -166,11 +166,11 @@ class Inspection extends Component{
                     style={{ display: 'block' }}
                 >
                     <Link
-                    to={`/contract/inspection/detail/${id}/${record.id}`}
+                    to={`/cbd/pro/inspection/detail/${id}/${record.id}`}
                     style={{marginRight:'12px'}}
                     >详情</Link>               
                     <Link
-                    to={`/contract/inspection/edit/${id}/${record.id}`}
+                    to={`/cbd/pro/inspection/edit/${id}/${record.id}`}
                     style={{marginRight:'12px'}}
                     >修改</Link>
                     <Popconfirm
@@ -183,7 +183,7 @@ class Inspection extends Component{
                             >删除</Button>
                         </Popconfirm>
                         <Link
-                    to={`/contract/sub/${id}/${record.id}`}
+                    to={`/cbd/pro/sub/${id}/${record.id}`}
                     style={{marginRight:'12px'}}
                     >巡检子项</Link>   
                 </div>

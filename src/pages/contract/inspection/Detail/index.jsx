@@ -65,7 +65,7 @@ class InspectionDetail extends Component{
               <Descriptions.Item label="巡检内容" span={3}>{inspectionDetail.inspectionContent}</Descriptions.Item>           
               <Descriptions.Item label="巡检情况" span={3}>{inspectionDetail.inspectionCondition}</Descriptions.Item>
               <Descriptions.Item label="处理结果" span={3}>{inspectionDetail.dealResult}</Descriptions.Item>
-              <Descriptions.Item label="操作" span={3}><Link to={`/contract/inspection/${projectId}`}>返回上级</Link></Descriptions.Item>
+              <Descriptions.Item label="操作" span={3}><Link to={`/cbd/pro/inspection/${projectId}`}>返回上级</Link></Descriptions.Item>
             </Descriptions>
           
           </div>  

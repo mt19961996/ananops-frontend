@@ -248,7 +248,7 @@ if(role==='用户负责人'){
             key=""
             >
             <Route exact 
-                path="/system" 
+                path="/cbd/maintain/data" 
                 component={Test} 
                 />
             </TabPane>
@@ -257,7 +257,7 @@ if(role==='用户负责人'){
             key="orderApproval"
             >
             <Route exact 
-                path="/system/orderApproval" 
+                path="/cbd/maintain/data/orderApproval" 
                 component={Test} 
                 />
             </TabPane>
@@ -266,7 +266,7 @@ if(role==='用户负责人'){
             key="planApproval"
             >
             <Route exact 
-                path="/system/planApproval" 
+                path="/cbd/maintain/data/planApproval" 
                 component={Test} 
                 />
             </TabPane>
@@ -275,7 +275,7 @@ if(role==='用户负责人'){
             key="serviceConfirm"
             >
             <Route exact 
-                path="/system/serviceConfirm" 
+                path="/cbd/maintain/data/serviceConfirm" 
                 component={Test} 
                 />
             </TabPane>
@@ -283,7 +283,7 @@ if(role==='用户负责人'){
             key="pay"
             >  
                <Route exact 
-                path="/system/pay" 
+                path="/cbd/maintain/data/pay" 
                 component={Test} 
                 />                        
             </TabPane>
@@ -300,7 +300,7 @@ else if(role=='维修工程师'){
             key=""
             >
             <Route exact 
-                path="/system" 
+                path="/cbd/maintain/data" 
                 component={Test} 
                 />
             </TabPane>
@@ -309,7 +309,7 @@ else if(role=='维修工程师'){
             key="maintainerWait"
             >
             <Route exact 
-                path="/system/maintainerWait" 
+                path="/cbd/maintain/data/maintainerWait" 
                 component={Test} 
                 />
             </TabPane>
@@ -317,7 +317,7 @@ else if(role=='维修工程师'){
             key="planConfirm"
             >  
                <Route exact 
-                path="/system/planConfirm" 
+                path="/cbd/maintain/data/planConfirm" 
                 component={Test} 
                 />                         
             </TabPane>
@@ -325,7 +325,7 @@ else if(role=='维修工程师'){
             key="resultSubmit"
             >  
                <Route exact 
-                path="/system/resultSubmit" 
+                path="/cbd/maintain/data/resultSubmit" 
                 component={Test} 
                 />                         
             </TabPane>
@@ -342,7 +342,7 @@ else if(role=='用户值机员'){
             key=""
             >
               <Route exact 
-                path="/system" 
+                path="/cbd/maintain/data" 
                 component={Test} 
                 />
             </TabPane>
@@ -350,7 +350,7 @@ else if(role=='用户值机员'){
             key="orderSubmit"
             >  
                 <Route exact 
-                path="/system/orderSubmit" 
+                path="/cbd/maintain/data/orderSubmit" 
                 component={Test} 
                 />                                          
             </TabPane>
@@ -359,7 +359,7 @@ else if(role=='用户值机员'){
             key="serviceFinish"
             >
                <Route exact 
-                path="/system/serviceFinish" 
+                path="/cbd/maintain/data/serviceFinish" 
                 component={Test} 
                 />
             </TabPane>
@@ -368,14 +368,14 @@ else if(role=='用户值机员'){
             key="comment"
             >
                <Route exact 
-                path="/system/comment" 
+                path="/cbd/maintain/data/comment" 
                 component={Test} 
                 />
             </TabPane>
     </Tabs>
     )
 }
-else if(role=='服务商负责人'){
+else if(role=='服务商业务员'){
     return(
         <Tabs
         activeKey={(this.props.location.state && this.props.location.state.tabKey) ? this.props.location.state.tabKey : ''}
@@ -385,7 +385,7 @@ else if(role=='服务商负责人'){
             key=""
             >
               <Route exact 
-                path="/system" 
+                path="/cbd/maintain/data" 
                 component={Test} 
                 />
             </TabPane>
@@ -394,7 +394,7 @@ else if(role=='服务商负责人'){
             key="serverWait"
             >
                <Route exact 
-                path="/system/serverWait" 
+                path="/cbd/maintain/data/serverWait" 
                 component={Test} 
                 />
             </TabPane>
@@ -403,7 +403,7 @@ else if(role=='服务商负责人'){
             key="billApproval"
             >
                 <Route exact 
-                path="/system/billApproval" 
+                path="/cbd/maintain/data/billApproval" 
                 component={Test} 
                 />
             </TabPane>
@@ -420,7 +420,7 @@ else{
             key=""
             >
                 <Route exact 
-                path="/system" 
+                path="/cbd/maintain/data" 
                 component={Test} 
                 />
             </TabPane>

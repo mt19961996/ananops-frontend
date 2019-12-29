@@ -78,7 +78,7 @@ class Management extends Component{
   selectActivity=(value)=>{
     axios({
       method: 'POST',
-      url: '/pmc/contract/getContactListByGroupId//'+value,
+      url: '/pmc/contract/getContactListByGroupId/'+value,
       headers: {
          'deviceId': this.deviceId,
         'Authorization':'Bearer '+token,
@@ -112,15 +112,15 @@ class Management extends Component{
             <div className="searchPart">
               <Row>
                 {/* <Col span={2}>巡检人姓名：</Col> */}
-                <Col span={5}>
+                {/* <Col span={5}>
                   <Search
                     placeholder="组织ID"
                     enterButton
                     onSearch={value => this.selectActivity(value)}
                   />
-                </Col>
+                </Col> */}
                 <Col push={16}>
-                  <Link to={"/contract/management/new"}>
+                  <Link to={"/cbd/pro/contract/new"}>
                     <Button type="primary">
                                 +新建合同
                     </Button>
@@ -177,11 +177,11 @@ class Management extends Component{
                     style={{ display: 'block' }}
                   >
                     <Link
-                      to={`/contract/management/detail/${record.id}`}
+                      to={`/cbd/pro/contract/${record.id}`}
                       style={{marginRight:'12px'}}
                     >详情</Link>
                     <Link
-                      to={`/contract/management/edit/${record.id}`}
+                      to={`/cbd/pro/contract/edit/${record.id}`}
                       style={{marginRight:'12px'}}
                     >修改</Link>
                     <Popconfirm

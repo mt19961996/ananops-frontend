@@ -73,7 +73,7 @@ class SubNew extends Component{
           // this.setState({
           //    projectDetail:res.data.result
           // });
-          history.push('/contract/sub/'+projectId+'/'+id)
+          history.push('/cbd/pro/sub/'+projectId+'/'+id)
           }
       })
       .catch(function (error) {
@@ -256,7 +256,7 @@ class SubNew extends Component{
                             const {
                             history,
                             } = this.props
-                            history.push('/contract/inspection/'+projectId)
+                            history.push('/cbd/pro/inspection/'+projectId)
                         }}
                         >取消
                         </Button>

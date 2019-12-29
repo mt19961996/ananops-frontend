@@ -49,43 +49,43 @@ class Test extends Component{
    
     var status
  
-    if(location=='/system'){
+    if(location=='/cbd/maintain/data'){
       status=null
     }
-    else if(location==='/system/serviceWait'){
+    else if(location==='/cbd/maintain/data/serviceWait'){
       status=3
     }
-    else if(location==='/system/billApproval'){
+    else if(location==='/cbd/maintain/data/billApproval'){
       status=11
     }
-    else if(location==='/system/maintainerWait'){
+    else if(location==='/cbd/maintain/data/maintainerWait'){
       status=4
     }
-    else if(location==='/system/planConfirm'){
+    else if(location==='/cbd/maintain/data/planConfirm'){
       status=5
     }
-    else if(location==='/system/resultSubmit'){
+    else if(location==='/cbd/maintain/data/resultSubmit'){
       status=7
     }
-    else if(location==='/system/orderApproval'){
+    else if(location==='/cbd/maintain/data/orderApproval'){
       status=2
     }
-    else if(location==='/system/planApproval'){
+    else if(location==='/cbd/maintain/data/planApproval'){
       status=6
     }
-    else if(location==='/system/serviceConfirm'){
+    else if(location==='/cbd/maintain/data/serviceConfirm'){
       status=9
     }
-    else if(location==='/system/orderSubmit'){
+    else if(location==='/cbd/maintain/data/orderSubmit'){
       status=2
     }
-    else if(location==='/system/serviceFinish'){
+    else if(location==='/cbd/maintain/data/serviceFinish'){
       status=10
     }
-    else if(location==='/system/pay'){
+    else if(location==='/cbd/maintain/data/pay'){
       status=11
     }
-    else if(location==='/system/comment'){
+    else if(location==='/cbd/maintain/data/comment'){
       status=12
     }
     // this.setState({status:status})

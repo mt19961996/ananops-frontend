@@ -110,7 +110,7 @@ class ProjectNew extends Component{
       // this.setState({
       //    projectDetail:res.data.result
       // });
-      history.push('/contract/project')
+      history.push('/cbd/pro/project')
       }
   })
   .catch(function (error) {
@@ -505,7 +505,7 @@ class ProjectNew extends Component{
                     const {
                       history,
                     } = this.props
-                    history.push('/contract/project')
+                    history.push('/cbd/pro/project')
                   }}
                 >取消
                 </Button>

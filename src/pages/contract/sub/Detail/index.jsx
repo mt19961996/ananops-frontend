@@ -63,7 +63,7 @@ class SubDetail extends Component{
               <Descriptions.Item label="结果" span={1.5}>{inspectionDetail.result}</Descriptions.Item>
               <Descriptions.Item label="状态" span={1.5}>{inspectionDetail.status}</Descriptions.Item>
               <Descriptions.Item label="描述" span={3}>{inspectionDetail.description}</Descriptions.Item>           
-              <Descriptions.Item label="操作" span={3}><Link to={`/contract/sub/${projectId}/${id}`}>返回上级</Link></Descriptions.Item>
+              <Descriptions.Item label="操作" span={3}><Link to={`/cbd/pro/sub/${projectId}/${id}`}>返回上级</Link></Descriptions.Item>
             </Descriptions>
           
           </div>  
