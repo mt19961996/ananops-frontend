@@ -1,9 +1,9 @@
 import React from 'react';
 import { Form, Icon, Input, Button, message,Col } from 'antd';
 import { Redirect } from 'react-router-dom';
+import axios from 'axios'
 import './login.styl'
 import api from '../../axios/index'
-import axios from 'axios'
 import { tokenToString } from 'typescript';
 import {reqLoginAfter} from '../../axios'
 
@@ -27,10 +27,6 @@ class Login extends React.Component {
       }
     });
   };
-
-
-  
-
   login =(values)=> {
     let loginName =values.username;
     let loginPwd = values.password;
@@ -58,11 +54,34 @@ class Login extends React.Component {
       if (res && res.data.code === 200) {
         console.log('登陆成功');
         console.log(res.data.result)
+        // window.localStorage.setItem('loginName',res.data.result.loginName);
         window.localStorage.setItem('loggedIn', true);
-        window.localStorage.setItem('loginName',res.data.result.loginName);
+        window.localStorage.setItem('token',res.data.result.access_token)
         window.localStorage.setItem('access_token',res.data.result.access_token)
         window.localStorage.setItem('refresh_token',res.data.result.refresh_token)
         window.localStorage.setItem('token',res.data.result.access_token)
+        var username=res.data.result.loginName
+        axios({
+          method: 'POST',
+          url: '/uac/user/queryUserInfo/'+username,
+          headers: {
+            'deviceId': this.deviceId,
+            'Authorization':'Bearer '+window.localStorage.getItem('token'),
+          },
+        })
+          .then((res) => {
+            if(res && res.status === 200){
+              var role=res.data.result.roles?res.data.result.roles[0].roleName:null
+              var roleCode=res.data.result.roles?res.data.result.roles[0].roleCode:null
+              window.localStorage.setItem('role',role)
+              window.localStorage.setItem('roleCode',roleCode)
+              this.setState({role:role})
+              window.localStorage.setItem('id',res.data.result.id)
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          })
       
         const result = await reqLoginAfter()
         if(result.code===200){
@@ -78,9 +97,6 @@ class Login extends React.Component {
           }
           
         }
-      
-
-        
       }
     }).catch((err) => {
       console.log(err);

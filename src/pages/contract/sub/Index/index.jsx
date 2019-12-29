@@ -3,19 +3,17 @@ import { Button,Row,Col,Table,Input,Popconfirm,message,Icon } from 'antd';
 import { Link } from 'react-router-dom'
 import moment from 'moment';
 import axios from 'axios'
-import './index.styl'
+
 const FIRST_PAGE = 0;
 const PAGE_SIZE = 10;
 const Search = Input.Search;
-const token=window.localStorage.getItem('token')
-class Inspection extends Component{
+
+class Sub extends Component{
     constructor(props){
         super(props)
         this.state={
             current: FIRST_PAGE,
-            // size: PAGE_SIZE,
-            // // total: 20, 
-            // nowCurrent:FIRST_PAGE,
+            token:window.localStorage.getItem('token'),
             data:[],
         }
         this.getGroupList = this.getGroupList.bind(this);
@@ -24,17 +22,16 @@ class Inspection extends Component{
         const { 
             match : { params : { id } }
           } = this.props
-          console.log(id)
         this.getGroupList(id);   
     }
     //获取列表信息
     getGroupList = (id) => {
         axios({
             method: 'POST',
-            url: '/pmc/InspectDevice/getTasksByProjectId/'+id,
+            url: '/pmc/inspectDetail/getInspectDetailList/'+id,
             headers: {
                'deviceId': this.deviceId,
-              'Authorization':'Bearer '+token,
+              'Authorization':'Bearer '+this.state.token,
             },
           })
         .then((res) => {
@@ -55,12 +52,35 @@ class Inspection extends Component{
         const { 
             match : { params : { id } }
           } = this.props
+          console.log(record.id)
         axios({
             method:'POST',
-            url:'/pmc/InspectDevice/deleteTaskById/'+record.id,
+            url:'/pmc/inspectDetail/deleteDetailById/'+record.id,
             headers:{
                 'deviceId': this.deviceId,
-                'Authorization':'Bearer '+token,
+                'Authorization':'Bearer '+this.state.token,
+            }           
+        }) 
+        .then((res) => {
+            if(res && res.status === 200){
+            console.log(res.data.result)
+            this.getGroupList(id)
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+    deleteGroup=(record)=>{
+        const { 
+            match : { params : { id } }
+          } = this.props
+        axios({
+            method:'POST',
+            url:'/pmc/inspectDetail/deleteDetailByTaskId/'+record.id,
+            headers:{
+                'deviceId': this.deviceId,
+                'Authorization':'Bearer '+this.state.token,
             }           
         }) 
         .then((res) => {
@@ -75,7 +95,7 @@ class Inspection extends Component{
     }
     render(){
         const { 
-            match : { params : { id } }
+            match : { params : { id,projectId } }
           } = this.props
         const {data}=this.state
         return(
@@ -89,14 +109,14 @@ class Inspection extends Component{
                     enterButton
                     onSearch={value => this.selectActivity(value)}
                 /> */}
-                <Link to={`/cbd/pro/project`}>
-                    <Icon type="arrow-left" ></Icon>返回项目
+                <Link to={`/cbd/pro/inspection/${projectId}`}>
+                    <Icon type="arrow-left" ></Icon>返回巡检任务
                 </Link>
                 </Col>
                 <Col push={16}>
-                <Link to={`/cbd/pro/inspection/new/${id}`}>
+                <Link to={`/cbd/pro/sub/new/${projectId}/${id}`}>
                     <Button type="primary">
-                                +新建巡检方案
+                                +新建巡检详情
                     </Button>
                 </Link>
                 </Col>
@@ -116,47 +136,41 @@ class Inspection extends Component{
             rowClassName={this.setRowClassName}
             dataSource={data}
             columns={[{
-                title: '巡检设备ID',
+                title: 'ID',
                 key: 'id',
                 render: (text, record) => {
                 return ((record.id && record.id) || '--')
                 }   
             }, {
-                title: '项目ID',
-                key: 'projectId',
+                title: '巡检任务ID',
+                key: 'inspectionTaskId',
                 render: (text, record) => {
-                return (record.projectId && record.projectId) || '--'
+                return (record.inspectionTaskId && record.inspectionTaskId) || '--'
                 }
             }, {
-                title: '项目名称',
-                key: 'projectName',
+                title: '巡检任务名称',
+                key: 'inspectionTaskName',
                 render: (text, record) => {
-                return (record.projectName && record.projectName) || '--'
+                return (record.inspectionTaskName && record.inspectionTaskName) || '--'
                 }
             },
             {
-                title: '设备名字', 
-                key: 'deviceName',
+                title: '名称', 
+                key: 'name',
                 render: (text, record) => {
-                return (record.deviceName && record.deviceName) || '--'
-                }
-            }, {
-                title: '巡检内容',
-                key: 'inspectionContent',
-                render: (text, record) => {
-                return (record.inspectionContent && record.inspectionContent) || '--'
+                return (record.name && record.name) || '--'
                 }
             },{
-                title: '巡检情况',
-                key: 'inspectionCondition',
+                title: '描述',
+                key: 'description',
                 render: (text, record) => {
-                return (record.inspectionCondition && record.inspectionCondition) || '--'
+                return (record.description && record.description) || '--'
                 }
             },{
                 title: '处理结果',
-                key: 'dealResult',
+                key: 'result',
                 render: (text, record) => {
-                return (record.dealResult && record.dealResult) || '--'
+                return (record.result && record.result) || '--'
                 }
             },
             {
@@ -166,11 +180,11 @@ class Inspection extends Component{
                     style={{ display: 'block' }}
                 >
                     <Link
-                    to={`/cbd/pro/inspection/detail/${id}/${record.id}`}
+                    to={`/cbd/pro/sub/detail/${projectId}/${id}/${record.id}`}
                     style={{marginRight:'12px'}}
                     >详情</Link>               
                     <Link
-                    to={`/cbd/pro/inspection/edit/${id}/${record.id}`}
+                    to={`/cbd/pro/sub/edit/${projectId}/${id}/${record.id}`}
                     style={{marginRight:'12px'}}
                     >修改</Link>
                     <Popconfirm
@@ -179,13 +193,9 @@ class Inspection extends Component{
                         >
                             <Button 
                             type="simple"
-                            style={{border:'none',padding:0,color:"#357aff",background:'transparent',marginRight:'12px'}}
+                            style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
                             >删除</Button>
                         </Popconfirm>
-                        <Link
-                    to={`/cbd/pro/sub/${id}/${record.id}`}
-                    style={{marginRight:'12px'}}
-                    >巡检子项</Link>   
                 </div>
                 ),
             }]}
@@ -194,4 +204,4 @@ class Inspection extends Component{
         )
     }
 }
-export default Inspection;
+export default Sub;

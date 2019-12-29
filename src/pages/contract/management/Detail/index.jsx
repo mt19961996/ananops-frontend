@@ -95,7 +95,7 @@ class ManagementDetail extends Component{
               <Descriptions.Item label="是否自动顺延" >{contractDetail.isPostpone===0?"是":"否"}</Descriptions.Item>
               <Descriptions.Item label="描述" span={3}>{contractDetail.description}</Descriptions.Item>
               <Descriptions.Item label="操作">
-                <Link to={`/contract/management`} style={{marginRight:'12px'}}>返回上级</Link>
+                <Link to={`/cbd/pro/contract`} style={{marginRight:'12px'}}>返回上级</Link>
                 <Upload {...props}>
                   <Button>
                     <Icon type="upload" /> 上传

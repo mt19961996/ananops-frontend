@@ -76,7 +76,7 @@ class ProjectDetail extends Component{
                     <Descriptions.Item label="乙方24小时开通邮箱" span={1.5}>{projectDetail.partyBEmail}</Descriptions.Item>
                     <Descriptions.Item label="描述" span={3}>{projectDetail.description}</Descriptions.Item>
                     <Descriptions.Item label="操作">
-                      <Link to={`/contract/project`}>返回上一级</Link>
+                      <Link to={`/cbd/pro/project`}>返回上一级</Link>
                     </Descriptions.Item>
                   </Descriptions>
                 

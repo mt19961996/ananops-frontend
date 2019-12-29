@@ -3,10 +3,10 @@ import { Button,Row,Col,Table,Select,Icon  } from 'antd';
 import { Link } from 'react-router-dom'
 import moment from 'moment';
 import axios from 'axios'
-import './index.styl'
+// import './index.styl'
 const FIRST_PAGE = 0;
 const PAGE_SIZE = 100;
-class Fault extends Component{
+class SubPlan extends Component{
     constructor(props){
         super(props)
         this.state={
@@ -17,24 +17,24 @@ class Fault extends Component{
           // total: 20, 
           roleCode:window.localStorage.getItem('roleCode'),
           nowCurrent:FIRST_PAGE,
-        //  status:0,
+          status:null,
         }
         this.getGroupList = this.getGroupList.bind(this); 
      }
 
     componentDidMount(){
       const { 
-          match : { params : { id } }
+          match : { params : { subId } }
         } = this.props
-      this.getGroupList(id,FIRST_PAGE);   
+      this.getGroupList(subId,FIRST_PAGE);   
     }
      //获取列表信息
      getGroupList = (id,page) => {
-      const { size, } = this.state;
-      const values={orderBy: "string",pageSize:size,pageNum:page,taskId:id,status:null}
+      const { size,status } = this.state;
+      const values={orderBy: "string",pageSize:size,pageNum:page,taskId:id,status:status}
       axios({
-          method: 'POST',
-          url: '/mdmc/mdmcDevice/getDeviceByTaskId',
+          method: 'GET',
+          url: '/mdmc/mdmcDevice/getDeviceByItemId/'+id,
           headers: {
              'deviceId': this.deviceId,
             'Authorization':'Bearer '+this.state.token,
@@ -60,14 +60,37 @@ class Fault extends Component{
    selectActivity = (value) => {     
     this.setState({status:value})
   }
+  //改变备品备件状态
+//   changeStatus(){
+//     const values={"status": status,"statusMsg": statusMsg,"taskId":id}
+//     axios({
+//         method: 'POST',
+//         url: '/mdmc/mdmcTask/modifyTaskStatusByTaskId/{taskId}',
+//         headers: {
+//           'Content-Type': 'application/json',
+//           'deviceId': this.deviceId,
+//           'Authorization':'Bearer '+this.state.token,
+//         },
+//         data:JSON.stringify(values)
+//       })
+//     .then((res) => {
+//         if(res && res.status === 200){
+//         this.getInfo(FIRST_PAGE)
+//         }
+//     })
+//     .catch(function (error) {
+//         console.log(error);
+//     });
+//   }
     render(){
       const { 
-        match : { params : { id } }
+        match : { params : { id,subId } }
       } = this.props
         const {
             data,
             nowCurrent,
             size, 
+            roleCode
           } = this.state;
          // const total = allCount
           const current = nowCurrent+1
@@ -75,11 +98,13 @@ class Fault extends Component{
         return(
             <div>
             <div className="searchPart">
-              <Row>
-                {/* <Col span={3}>备品备件方案状态：</Col>
-                <Col span={3}>
-                <Select placeholder="请选择"
-                style={{ width: 130 }}
+            <Row>            
+                <Col span={2}>
+                  <Link to='/system'>返回</Link>
+                </Col>
+                {/* <Col span={4}>
+                <Select placeholder="请选择任务子项状态"
+                style={{ width: 180 }}
                 onChange={this.selectActivity}
               >
                   <Select.Option key='0'
@@ -99,25 +124,15 @@ class Fault extends Component{
                 <Col span={2}>
               <Button  
                 type="primary" 
-                onClick={() => {this.getGroupList(id,0)}}
+                onClick={() => {this.getGroupList(subId,0)}}
               >搜索</Button>
-            </Col>
-                {this.state.roleCode=='engineer'&&<Col push={16}>
-                  <Link to={"/system/data/new"}>
+              </Col> */}
+                <Col push={18}>
+                  {this.state.roleCode=="engineer"&&<Link to={`/service/data/plan/new/${id}/${subId}`}>
                     <Button type="primary">
-                                +新建备品备件
+                                +新建备品备件方案
                     </Button>
-                  </Link>
-                </Col>} */}
-                 <Col span={5}>
-                {/* <Search
-                    placeholder="搜索从这里开始"
-                    enterButton
-                    onSearch={value => this.selectActivity(value)}
-                /> */}
-                <Link to={`/system`}>
-                    <Icon type="arrow-left" ></Icon>返回项目
-                </Link>
+                  </Link>}
                 </Col>
               </Row> 
             </div>
@@ -251,11 +266,7 @@ class Fault extends Component{
                   <div className="operate-btns"
                     style={{ display: 'block' }}
                   >
-                    <Link
-                      to={`/system`}
-                      style={{marginRight:'12px'}}
-                    >返回</Link>
-                    {/* {roleCode==='user_leader'&&
+                    {/* {(roleCode==='user_leader'&&this.state.status=='2')&&
                     <div>
                       <Button 
                       type="simple"
@@ -277,4 +288,4 @@ class Fault extends Component{
         )
     }
 }
-export default Fault
+export default SubPlan

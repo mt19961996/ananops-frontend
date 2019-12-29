@@ -7,66 +7,66 @@ const FIRST_PAGE = 0;
 const PAGE_SIZE = 10;
 const Search = Input.Search;
 class Check extends Component{
-    constructor(props){
-        super(props)
-        this.state={
-            data:{
-                data:[{
-                    "facilitatorId": 0,
-                    "payMode": 0,
-                    "principalId": 0,
-                    "projectId": 0,
-                    "taskItems": [
-                      {
-                        "audioUrl": "string",
-                        "description": "string",
-                        "deviceId": 0,
-                        "deviceLatitude": 0,
-                        "deviceLongitude": 0,
-                        "deviceName": "string",
-                        "imageUrl": "string",
-                        "laborCost": 0,
-                        "troubleType": "string",
-                        "videoUrl": "string"
-                      }
-                    ],
-                    "title": "string",
-                    "totalCost": 0,
-                    "uid": 231,
-                }],
-                limit:3,
-                page:0,
-                allCount:0,
+  constructor(props){
+    super(props)
+    this.state={
+      data:{
+        data:[{
+          "facilitatorId": 0,
+          "payMode": 0,
+          "principalId": 0,
+          "projectId": 0,
+          "taskItems": [
+            {
+              "audioUrl": "string",
+              "description": "string",
+              "deviceId": 0,
+              "deviceLatitude": 0,
+              "deviceLongitude": 0,
+              "deviceName": "string",
+              "imageUrl": "string",
+              "laborCost": 0,
+              "troubleType": "string",
+              "videoUrl": "string"
             }
-        }
+          ],
+          "title": "string",
+          "totalCost": 0,
+          "uid": 231,
+        }],
+        limit:3,
+        page:0,
+        allCount:0,
+      }
     }
+  }
   render(){
     const {
-        data:{
-          allCount,
-          data,
-          limit,
-          page,
-        },
-      } = this.state;
-      const total = allCount
-      const current = page+1
-      const size = limit
-      const duty=role==='用户负责人'||'服务商负责人'?true:false
-      const user=role==='用户值机员'?true:false
+      data:{
+        allCount,
+        data,
+        limit,
+        page,
+      },
+    } = this.state;
+    const total = allCount
+    const current = page+1
+    const size = limit
+    const duty=role==='用户负责人'||'服务商负责人'?true:false
+    const user=role==='用户值机员'?true:false
     return(
-        <div>
+      <div>
         <div className="searchPart">
           <Row>
             {/* <Col span={2}>巡检人姓名：</Col> */}
-            <Col span={5}>
+            {/* <Col span={5}>
               <Search
                 placeholder="搜索从这里开始"
                 enterButton
                 onSearch={value => this.selectActivity(value)}
               />
-            </Col>
-           {user&&<Col push={16}>
+            </Col> */}
+            {user&&<Col push={16}>
               <Link to={`/service/data/new`}>
                 <Button type="primary">
                             +创建工单
@@ -153,7 +153,7 @@ class Check extends Component{
                 {duty&&<Button 
                   type="simple"
                   style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
-                  >同意</Button>}
+                >同意</Button>}
                 <br/>
                 <Link
                   to={`/service/data/progress/${record.uid}`}
@@ -166,13 +166,13 @@ class Check extends Component{
                 {duty&&<Button 
                   type="simple"
                   style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
-                  >拒绝</Button>}
+                >拒绝</Button>}
               </div>
             ),
           }]}
         />
       </div>  
     )
-}
+  }
 }
 export default Check;

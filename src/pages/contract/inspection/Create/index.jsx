@@ -100,7 +100,7 @@ class InspectionNew extends Component{
           // this.setState({
           //    projectDetail:res.data.result
           // });
-          history.push('/contract/inspection/'+projectId)
+          history.push('/cbd/pro/inspection/'+projectId)
           }
       })
       .catch(function (error) {
@@ -302,7 +302,7 @@ class InspectionNew extends Component{
                             const {
                             history,
                             } = this.props
-                            history.push('/contract/inspection/'+projectId)
+                            history.push('/cbd/pro/inspection/'+projectId)
                         }}
                         >取消
                         </Button>
