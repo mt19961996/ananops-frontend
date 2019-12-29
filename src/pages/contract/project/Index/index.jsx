@@ -34,7 +34,7 @@ class Project extends Component{
         const values={orderBy:'',pageSize:size,pageNum:page}
         axios({
             method: 'POST',
-            url: '/pmc/project/getProjectListWithPage/',
+            url: '/pmc/project/getProjectListWithPage',
             headers: {
                'deviceId': this.deviceId,
               'Authorization':'Bearer '+token,

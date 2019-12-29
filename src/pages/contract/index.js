@@ -138,7 +138,47 @@ class ManageRoute extends Component{
             loading: Loading
           })}
         />
-       
+        />
+        <Route
+          exact
+          path="/contract/sub/:projectId/:id"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EmergencyPlanDetail" */
+              './sub/Index/index'),
+            loading: Loading
+          })}
+        />
+         <Route
+          exact
+          path="/contract/sub/new/:projectId/:id"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EmergencyPlanDetail" */
+              './sub/Create/index'),
+            loading: Loading
+          })}
+        />
+         <Route
+          exact
+          path="/contract/sub/edit/:projectId/:id/:subId"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EmergencyPlanDetail" */
+              './sub/Create/index'),
+            loading: Loading
+          })}
+        />
+         <Route
+          exact
+          path="/contract/sub/detail/:projectId/:id/:subId"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EmergencyPlanDetail" */
+              './sub/Detail/index'),
+            loading: Loading
+          })}
+        />
       </Switch>
     );
   }

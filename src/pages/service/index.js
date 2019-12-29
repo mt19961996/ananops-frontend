@@ -50,7 +50,7 @@ class Service extends Component{
         />
         <Route 
           exact   
-          path="/service/data/process/:id"
+          path="/service/data/log/:id"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -78,13 +78,63 @@ class Service extends Component{
             loading: Loading
           })}
         />
+         <Route 
+          exact   
+          path="/service/data/sub/new/:id"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EntranceWork" */
+              './data/SubNew/index'),
+            loading: Loading
+          })}
+        />
         <Route 
           exact   
-          path="/service/data/fault/:id"
+          path="/service/data/spare/:id"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
               './data/Fault/index'),
+            loading: Loading
+          })}
+        />
+         <Route 
+          exact   
+          path="/service/data/sublog/:id/:subId"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EntranceWork" */
+              './data/SubLog/index'),
+            loading: Loading
+          })}
+        />
+         <Route 
+          exact   
+          path="/service/data/subplan/:id/:subId"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EntranceWork" */
+              './data/SubPlan/index'),
+            loading: Loading
+          })}
+        />
+          <Route 
+          exact   
+          path="/service/data/plan/new/:id"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EntranceWork" */
+              './data/SubPlan/index'),
+            loading: Loading
+          })}
+        />
+        <Route 
+          exact   
+          path="/service/data/plan/new/:id/:subId"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EntranceWork" */
+              './data/SubPlanNew/index'),
             loading: Loading
           })}
         />

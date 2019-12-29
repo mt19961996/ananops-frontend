@@ -28,47 +28,107 @@ class system extends Component{
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
-              './All/index'),
+              './Test/index'),
             loading: Loading
           })}
         />    
          <Route 
           exact   
-          path="/system/check"
+          path="/system/billApproval"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
-              './Check/index'),
+              './Test/index'),
             loading: Loading
           })}
         />   
          <Route 
           exact   
-          path="/system/approval"
+          path="/system/serviceWait"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
-              './Approval/index'),
+              './Test/index'),
             loading: Loading
           })}
         />  
           <Route 
           exact   
-          path="/system/examine"
+          path="/system/maintainerWait"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
-              './Examine/index'),
+              './Test/index'),
             loading: Loading
           })}
         />
          <Route 
           exact   
-          path="/system/maintain"
+          path="/system/planConfirm"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
-              './Maintain/index'),
+              './Test/index'),
+            loading: Loading
+          })}
+        /> 
+          <Route 
+          exact   
+          path="/system/resultSubmit"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EntranceWork" */
+              './Test/index'),
+            loading: Loading
+          })}
+        /> 
+        <Route 
+          exact   
+          path="/system/orderApproval"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EntranceWork" */
+              './Test/index'),
+            loading: Loading
+          })}
+        /> 
+        <Route 
+          exact   
+          path="/system/planApproval"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EntranceWork" */
+              './Test/index'),
+            loading: Loading
+          })}
+        /> 
+        <Route 
+          exact   
+          path="/system/serviceConfirm"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EntranceWork" */
+              './Test/index'),
+            loading: Loading
+          })}
+        /> 
+        <Route 
+          exact   
+          path="/system/orderSubmit"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EntranceWork" */
+              './Test/index'),
+            loading: Loading
+          })}
+        /> 
+        <Route 
+          exact   
+          path="/system/serviceFinish"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EntranceWork" */
+              './Test/index'),
             loading: Loading
           })}
         /> 
@@ -78,7 +138,7 @@ class system extends Component{
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
-              './Pay/index'),
+              './Test/index'),
             loading: Loading
           })}
         />   
@@ -88,17 +148,17 @@ class system extends Component{
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
-              './Comment/index'),
+              './Test/index'),
             loading: Loading
           })}
         />  
         <Route 
           exact   
-          path="/system/new"
+          path="/system/resultSubmit"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
-              './Check/Create/index'),
+              './Test/index'),
             loading: Loading
           })}
         />     

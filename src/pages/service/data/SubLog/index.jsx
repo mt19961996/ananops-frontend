@@ -3,7 +3,7 @@ import {Row,Col,Table,Icon } from 'antd';
 import { Link } from 'react-router-dom'
 import moment from 'moment';
 import axios from 'axios'
-class Process extends Component{
+class SubLog extends Component{
 
     constructor(props){
         super(props)
@@ -15,16 +15,16 @@ class Process extends Component{
     }
     componentDidMount(){
         const { 
-            match : { params : { id } }
+            match : { params : { subId } }
           } = this.props
-          console.log(id)
-        this.getGroupList(id);   
+          console.log(subId)
+        this.getGroupList(subId);   
     }
      //获取列表信息
      getGroupList = (id) => {
         axios({
             method: 'GET',
-            url: '/mdmc/mdmcTask/getTaskLogs/'+id,
+            url: '/mdmc/mdmcItem/getItemLogs/'+id,
             headers: {
                'deviceId': this.deviceId,
               'Authorization':'Bearer '+this.state.token,
@@ -55,7 +55,7 @@ class Process extends Component{
             <Row>
                 <Col span={5}>
                 <Link to={`/system`}>
-                    <Icon type="arrow-left" ></Icon>返回项目
+                    <Icon type="arrow-left" ></Icon>返回
                 </Link>
                 </Col>
             </Row> 
@@ -80,10 +80,10 @@ class Process extends Component{
                 return ((record.id && record.id) || '--')
                 }   
             }, {
-                title: '工单ID',
-                key: 'taskId',
+                title: '任务子项ID',
+                key: 'taskItemId',
                 render: (text, record) => {
-                return (record.taskId && record.taskId) || '--'
+                return (record.taskItemId && record.taskItemId) || '--'
                 }
             }, {
                 title: '状态',
@@ -149,4 +149,4 @@ class Process extends Component{
         )
     }
 }
-export default Process
+export default SubLog

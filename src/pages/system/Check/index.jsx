@@ -59,13 +59,13 @@ class Check extends Component{
         <div className="searchPart">
           <Row>
             {/* <Col span={2}>巡检人姓名：</Col> */}
-            <Col span={5}>
+            {/* <Col span={5}>
               <Search
                 placeholder="搜索从这里开始"
                 enterButton
                 onSearch={value => this.selectActivity(value)}
               />
-            </Col>
+            </Col> */}
            {user&&<Col push={16}>
               <Link to={`/service/data/new`}>
                 <Button type="primary">

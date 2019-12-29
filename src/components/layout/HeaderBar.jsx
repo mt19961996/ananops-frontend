@@ -14,7 +14,8 @@ class UserInfo extends React.Component {
       this.setState({
         visible: false
       });
-      window.localStorage.removeItem('loggedIn');
+      //window.localStorage.removeItem('loggedIn');
+      window.localStorage.clear();
       this.props.history.push('/login');
     }
   };
