@@ -115,8 +115,8 @@ class Fault extends Component{
                     enterButton
                     onSearch={value => this.selectActivity(value)}
                 /> */}
-                <Link to={`/system`}>
-                    <Icon type="arrow-left" ></Icon>返回项目
+                <Link to={`/cbd/maintain/data`}>
+                    <Icon type="arrow-left" ></Icon>返回
                 </Link>
                 </Col>
               </Row> 
@@ -252,7 +252,7 @@ class Fault extends Component{
                     style={{ display: 'block' }}
                   >
                     <Link
-                      to={`/system`}
+                      to={`/cbd/maintain/data`}
                       style={{marginRight:'12px'}}
                     >返回</Link>
                     {/* {roleCode==='user_leader'&&

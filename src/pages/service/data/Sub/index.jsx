@@ -109,7 +109,7 @@ class Sub extends Component{
             <div className="searchPart">
               <Row>            
                 <Col span={3}>
-                  <Link to='/system'>返回上级</Link>
+                  <Link to='/cbd/maintain/data'>返回上级</Link>
                 </Col>
                 {/* <Col span={3}>任务子项状态：</Col> */}
                 <Col span={4}>
@@ -138,7 +138,7 @@ class Sub extends Component{
               >搜索</Button>
               </Col>
                 <Col push={12}>
-                  {roleCode=="user_watcher"&&<Link to={`/service/data/sub/new/${id}`}>
+                  {roleCode=="user_watcher"&&<Link to={`/cbd/check/sub/new/${id}`}>
                     <Button type="primary">
                                 +新建任务子项
                     </Button>
@@ -220,11 +220,11 @@ class Sub extends Component{
                     style={{ display: 'block' }}
                   >
                     <Link
-                      to={`/service/data/sublog/${id}/${record.id}`}
+                      to={`/cbd/check/sublog/${id}/${record.id}`}
                       style={{marginRight:'12px'}}
                     >子项日志</Link>
                     <Link
-                      to={`/service/data/subplan/${id}/${record.id}`}
+                      to={`cbd/check/subplan/${id}/${record.id}`}
                       style={{marginRight:'12px'}}
                     >备件方案</Link>
                      {(roleCode==='user_leader'&&this.state.status=='2')&&

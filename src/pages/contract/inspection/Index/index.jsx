@@ -22,8 +22,9 @@ class Inspection extends Component{
     }
     componentDidMount(){
         const { 
-            match : { params : { id } }
+            match : { params : { projectId } }
           } = this.props
+          var id=projectId
           console.log(id)
         this.getGroupList(id);   
     }
@@ -75,9 +76,10 @@ class Inspection extends Component{
     }
     render(){
         const { 
-            match : { params : { id } }
+            match : { params : { projectId } }
           } = this.props
         const {data}=this.state
+        
         return(
             <div>
             <div className="searchPart">
@@ -94,7 +96,7 @@ class Inspection extends Component{
                 </Link>
                 </Col>
                 <Col push={16}>
-                <Link to={`/cbd/pro/inspection/new/${id}`}>
+                <Link to={`/cbd/pro/inspection/new/${projectId}`}>
                     <Button type="primary">
                                 +新建巡检方案
                     </Button>
@@ -166,11 +168,11 @@ class Inspection extends Component{
                     style={{ display: 'block' }}
                 >
                     <Link
-                    to={`/cbd/pro/inspection/detail/${id}/${record.id}`}
+                    to={`/cbd/pro/inspection/detail/${projectId}/${record.id}`}
                     style={{marginRight:'12px'}}
                     >详情</Link>               
                     <Link
-                    to={`/cbd/pro/inspection/edit/${id}/${record.id}`}
+                    to={`/cbd/pro/inspection/edit/${projectId}/${record.id}`}
                     style={{marginRight:'12px'}}
                     >修改</Link>
                     <Popconfirm
@@ -183,7 +185,7 @@ class Inspection extends Component{
                             >删除</Button>
                         </Popconfirm>
                         <Link
-                    to={`/cbd/pro/sub/${id}/${record.id}`}
+                    to={`/cbd/pro/sub/${projectId}/${record.id}`}
                     style={{marginRight:'12px'}}
                     >巡检子项</Link>   
                 </div>

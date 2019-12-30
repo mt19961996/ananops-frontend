@@ -50,7 +50,7 @@ class SubNew extends Component{
           // this.setState({
           //    projectDetail:res.data.result
           // });
-          history.push('/system')
+          history.push('cbd/maintain/data')
           }
       })
       .catch(function (error) {
@@ -187,7 +187,7 @@ class SubNew extends Component{
                             const {
                             history,
                             } = this.props
-                            history.push('/system')
+                            history.push('/cbd/maintain/data')
                         }}
                         >取消
                         </Button>

@@ -495,7 +495,7 @@ class Test extends Component{
               />
             </Col> */}
              {(roleCode=="user_watcher"&&status==2)&&<Col push={21}>
-              <Link to={`/service/data/new`}>
+              <Link to={`/cbd/check/new`}>
                 <Button type="primary">
                             +创建工单
                 </Button>
@@ -574,16 +574,16 @@ class Test extends Component{
                 style={{ display: 'block' }}
               >
                 <Link
-                  to={`/service/data/sub/${record.id}`}
+                  to={`/cbd/check/sub/${record.id}`}
                   style={{marginRight:'12px'}}
                 >任务子项</Link>                
                 <Link
-                  to={`/service/data/log/${record.id}`}
+                  to={`/cbd/check/log/${record.id}`}
                   style={{marginRight:'12px'}}
                 >任务日志</Link>
                 <br/>
                 <Link
-                  to={`/service/data/spare/${record.id}`}
+                  to={`/cbd/check/spare/${record.id}`}
                   style={{marginRight:'12px'}}
                 >备品备件</Link>
                 {this.getFunction(record,status,roleCode)}            

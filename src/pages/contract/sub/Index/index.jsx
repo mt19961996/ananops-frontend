@@ -109,7 +109,7 @@ class Sub extends Component{
                     enterButton
                     onSearch={value => this.selectActivity(value)}
                 /> */}
-                <Link to={`/cbd/pro/inspection/${projectId}`}>
+                <Link to={`/cbd/pro/inspection/${id}`}>
                     <Icon type="arrow-left" ></Icon>返回巡检任务
                 </Link>
                 </Col>

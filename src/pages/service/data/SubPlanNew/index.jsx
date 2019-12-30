@@ -81,7 +81,7 @@ class SubPlanNew extends Component{
       })
     .then((res) => {
         if(res && res.status === 200){
-            history.push('/system')
+            history.push('cbd/maintain/data')
         }
     })
     .catch(function (error) {
@@ -206,7 +206,7 @@ class SubPlanNew extends Component{
                             const {
                             history,
                             } = this.props
-                            history.push('/system')
+                            history.push('cbd/maintain/data')
                         }}
                         >取消
                         </Button>

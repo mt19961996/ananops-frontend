@@ -56,7 +56,7 @@ class OrderNew extends Component{
             console.log(res.data.result.id)
             // var id=res.data.result.id
             // this.changeStatus(id,2,'维修申请提交后，进入审核')   
-            history.push('/system')
+            history.push('/cbd/maintain/data')
             
             }
         })
@@ -257,7 +257,7 @@ class OrderNew extends Component{
                         const {
                         history,
                         } = this.props
-                        history.push('/system')
+                        history.push('/cbd/maintain/data')
                     }}
                     >取消
                     </Button>

@@ -31,7 +31,7 @@ class Data extends Component {
   onTabChange=(key)=>{
 
     this.setState({tabKey:key});
-    this.props.history.replace({pathname:"/system/"+key,state:{tabKey:key}});
+    this.props.history.replace({pathname:"/cbd/maintain/data/"+key,state:{tabKey:key}});
     
   }
 

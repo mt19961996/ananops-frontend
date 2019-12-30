@@ -100,7 +100,7 @@ class ManageRoute extends Component{
         />
         <Route 
           exact   
-          path="/cbd/pro/inspection/:id"
+          path="/cbd/pro/inspection/:projectId"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EmergencyPlan" */

@@ -44,7 +44,7 @@ class system extends Component{
         />   
          <Route 
           exact   
-          path="/cbd/maintain/data/serviceWait"
+          path="/cbd/maintain/data/maintainWait"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -104,7 +104,7 @@ class system extends Component{
         /> 
         <Route 
           exact   
-          path="/cbd/maintain/data/serviceConfirm"
+          path="/cbd/maintain/data/maintainConfirm"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -124,7 +124,7 @@ class system extends Component{
         /> 
         <Route 
           exact   
-          path="/cbd/maintain/data/serviceFinish"
+          path="/cbd/maintain/data/maintainFinish"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */

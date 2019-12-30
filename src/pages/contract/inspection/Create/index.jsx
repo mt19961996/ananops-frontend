@@ -118,6 +118,7 @@ class InspectionNew extends Component{
             match : { params : { id,projectId} }
           } = this.props
           const { inspectionDetail } = this.state
+          console.log(id+'ppppp'+projectId)
         return(
             <div>
                 <div className="inpection-plan-create-page">

@@ -20,7 +20,7 @@ class Service extends Component{
       <Switch>
         <Route 
           exact   
-          path="/service/data"
+          path="/cbd/check"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -30,7 +30,7 @@ class Service extends Component{
         />
         <Route 
           exact   
-          path="/service/data/new"
+          path="/cbd/check/new"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -40,7 +40,7 @@ class Service extends Component{
         />
         <Route 
           exact   
-          path="/service/data/edit/:id"
+          path="/cbd/check/edit/:id"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -50,7 +50,7 @@ class Service extends Component{
         />
         <Route 
           exact   
-          path="/service/data/log/:id"
+          path="/cbd/check/log/:id"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -60,7 +60,7 @@ class Service extends Component{
         />
         <Route 
           exact   
-          path="/service/data/progress/:id"
+          path="/cbd/check/progress/:id"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -70,7 +70,7 @@ class Service extends Component{
         />
         <Route 
           exact   
-          path="/service/data/sub/:id"
+          path="/cbd/check/sub/:id"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -80,7 +80,7 @@ class Service extends Component{
         />
         <Route 
           exact   
-          path="/service/data/sub/new/:id"
+          path="/cbd/check/sub/new/:id"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -90,7 +90,7 @@ class Service extends Component{
         />
         <Route 
           exact   
-          path="/service/data/spare/:id"
+          path="/cbd/check/spare/:id"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -100,7 +100,7 @@ class Service extends Component{
         />
         <Route 
           exact   
-          path="/service/data/sublog/:id/:subId"
+          path="/cbd/check/sublog/:id/:subId"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -110,7 +110,7 @@ class Service extends Component{
         />
         <Route 
           exact   
-          path="/service/data/subplan/:id/:subId"
+          path="/cbd/check/subplan/:id/:subId"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -120,7 +120,7 @@ class Service extends Component{
         />
         <Route 
           exact   
-          path="/service/data/plan/new/:id"
+          path="/cbd/check/plan/new/:id"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -130,7 +130,7 @@ class Service extends Component{
         />
         <Route 
           exact   
-          path="/service/data/plan/new/:id/:subId"
+          path="/cbd/check/plan/new/:id/:subId"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -138,17 +138,6 @@ class Service extends Component{
             loading: Loading
           })}
         />
-        <Route
-          exact
-          path="/service/system"
-          component={Loadable({
-            loader: () => import(
-              /* webpackChunkName: "Device" */
-              './system/Index/index'),
-            loading: Loading
-          })}
-        />
-       
       </Switch>
     );
   }

@@ -100,7 +100,7 @@ class SubPlan extends Component{
             <div className="searchPart">
             <Row>            
                 <Col span={2}>
-                  <Link to='/system'>返回</Link>
+                  <Link to='/cbd/maintain/data'>返回</Link>
                 </Col>
                 {/* <Col span={4}>
                 <Select placeholder="请选择任务子项状态"
@@ -128,7 +128,7 @@ class SubPlan extends Component{
               >搜索</Button>
               </Col> */}
                 <Col push={18}>
-                  {this.state.roleCode=="engineer"&&<Link to={`/service/data/plan/new/${id}/${subId}`}>
+                  {this.state.roleCode=="engineer"&&<Link to={`/cbd/check/plan/new/${id}/${subId}`}>
                     <Button type="primary">
                                 +新建备品备件方案
                     </Button>

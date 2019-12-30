@@ -54,7 +54,7 @@ class Process extends Component{
             <div className="searchPart">
             <Row>
                 <Col span={5}>
-                <Link to={`/system`}>
+                <Link to={`/cbd/maintain/data`}>
                     <Icon type="arrow-left" ></Icon>返回项目
                 </Link>
                 </Col>
