@@ -63,7 +63,7 @@ class AddUpdateForm extends Component{
               initialValue:role.remark,
               
             })(
-              <TextArea placeholder="请输入角色说明" autosize={{minRows:2,maxRows:6}}></TextArea>
+              <TextArea placeholder="请输入角色说明" autoSize={{minRows:2,maxRows:6}}></TextArea>
             )
           }
          

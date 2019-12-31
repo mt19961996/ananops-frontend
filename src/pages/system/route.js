@@ -24,81 +24,141 @@ class system extends Component{
       <Switch>
         <Route 
           exact   
-          path="/system"
+          path="/cbd/maintain/data"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
-              './All/index'),
+              './Test/index'),
             loading: Loading
           })}
         />    
          <Route 
           exact   
-          path="/system/check"
+          path="/cbd/maintain/data/billApproval"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
-              './Check/index'),
+              './Test/index'),
             loading: Loading
           })}
         />   
          <Route 
           exact   
-          path="/system/approval"
+          path="/cbd/maintain/data/maintainWait"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
-              './Approval/index'),
+              './Test/index'),
             loading: Loading
           })}
         />  
           <Route 
           exact   
-          path="/system/examine"
+          path="/cbd/maintain/data/maintainerWait"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
-              './Examine/index'),
+              './Test/index'),
             loading: Loading
           })}
         />
          <Route 
           exact   
-          path="/system/maintain"
+          path="/cbd/maintain/data/planConfirm"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
-              './Maintain/index'),
+              './Test/index'),
+            loading: Loading
+          })}
+        /> 
+          <Route 
+          exact   
+          path="/cbd/maintain/data/resultSubmit"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EntranceWork" */
+              './Test/index'),
+            loading: Loading
+          })}
+        /> 
+        <Route 
+          exact   
+          path="/cbd/maintain/data/orderApproval"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EntranceWork" */
+              './Test/index'),
+            loading: Loading
+          })}
+        /> 
+        <Route 
+          exact   
+          path="/cbd/maintain/data/planApproval"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EntranceWork" */
+              './Test/index'),
+            loading: Loading
+          })}
+        /> 
+        <Route 
+          exact   
+          path="/cbd/maintain/data/maintainConfirm"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EntranceWork" */
+              './Test/index'),
+            loading: Loading
+          })}
+        /> 
+        <Route 
+          exact   
+          path="/cbd/maintain/data/orderSubmit"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EntranceWork" */
+              './Test/index'),
+            loading: Loading
+          })}
+        /> 
+        <Route 
+          exact   
+          path="/cbd/maintain/data/maintainFinish"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EntranceWork" */
+              './Test/index'),
             loading: Loading
           })}
         /> 
          <Route 
           exact   
-          path="/system/pay"
+          path="/cbd/maintain/data/pay"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
-              './Pay/index'),
+              './Test/index'),
             loading: Loading
           })}
         />   
          <Route 
           exact   
-          path="/system/comment"
+          path="/cbd/maintain/data/comment"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
-              './Comment/index'),
+              './Test/index'),
             loading: Loading
           })}
         />  
         <Route 
           exact   
-          path="/system/new"
+          path="/cbd/maintain/data/resultSubmit"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
-              './Check/Create/index'),
+              './Test/index'),
             loading: Loading
           })}
         />     

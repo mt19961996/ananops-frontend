@@ -1,10 +1,11 @@
 import React from 'react';
 import { Form,Icon,Input,Button,message,Col,Row} from 'antd';
 import { Redirect } from 'react-router-dom';
+import axios from 'axios'
 import './login.styl'
 import api from '../../axios/index'
-import axios from 'axios'
 import { tokenToString } from 'typescript';
+import {reqLoginAfter} from '../../axios'
 
 class Login extends React.Component {
   constructor(props){
@@ -77,29 +78,91 @@ class Login extends React.Component {
         // imageCode: this.loginForm.captchaCode
       },
      
-    }).then((res) => {
-      this.getImage();
-      // this.getImage();
-      console.log('123')
-      console.log(res)
+    }).then(async (res) => {
+      this.getImage()
       if (res && res.data.code === 200) {
-        console.log('its ok');
+        console.log('登陆成功');
         console.log(res.data.result)
+        // window.localStorage.setItem('loginName',res.data.result.loginName);
         window.localStorage.setItem('loggedIn', true);
-        window.localStorage.setItem('loginName',res.data.result.loginName);
+        window.localStorage.setItem('token',res.data.result.access_token)
         window.localStorage.setItem('access_token',res.data.result.access_token)
         window.localStorage.setItem('refresh_token',res.data.result.refresh_token)
         window.localStorage.setItem('token',res.data.result.access_token)
-        console.log('access_token:',window.localStorage.getItem('access_token'))
-        console.log('refresh_token:',window.localStorage.getItem('refresh_token'))
-        this.props.history.push('/');
-        // window.location.href = this.redirectUri;
+        var username=res.data.result.loginName
+        axios({
+          method: 'POST',
+          url: '/uac/user/queryUserInfo/'+username,
+          headers: {
+            'deviceId': this.deviceId,
+            'Authorization':'Bearer '+window.localStorage.getItem('token'),
+          },
+        })
+          .then((res) => {
+            if(res && res.status === 200){
+              var role=res.data.result.roles?res.data.result.roles[0].roleName:null
+              var roleCode=res.data.result.roles?res.data.result.roles[0].roleCode:null
+              window.localStorage.setItem('role',role)
+              window.localStorage.setItem('roleCode',roleCode)
+              this.setState({role:role})
+              window.localStorage.setItem('id',res.data.result.id)
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          })
+      
+        const result = await reqLoginAfter()
+        if(result.code===200){
+          const loginAfter = result.result
+          window.localStorage.setItem('loginAfter',JSON.stringify(loginAfter))
+          console.log("login after取到用户信息:",loginAfter)
+
+          const resMenu = this.mapMenu(loginAfter.menuList)
+          console.log('resMenu',resMenu)
+          window.localStorage.setItem('resMenu',JSON.stringify(resMenu))
+          if(resMenu){
+            window.location.reload()
+            this.props.history.push('/');
+          }
+          
+        }
       }
     }).catch((err) => {
       console.log(err);
-      message.info('验证码错误')
+      // message.info('验证码错误')
     });
-  } 
+  }
+
+  mapMenu = (inputArr) => {
+    return inputArr.reduce((pre,item)=>{
+      if(!item.subMenu){
+        const data = {}
+        data.title = item.menuName
+        data.key = item.url
+        data.icon = item.icon
+        data.menuCode = item.menuCode
+        data.number = item.number
+        data.remark = item.remark
+        data.parentMenu = item.parentMenu
+        pre.push(data)
+      }else{
+        const data = {}
+        data.title = item.menuName
+        data.key = item.url
+        data.icon = item.icon
+        data.menuCode = item.menuCode
+        data.number = item.number
+        data.remark = item.remark
+        data.parentMenu = item.parentMenu
+        data.children = this.mapMenu(item.subMenu)
+        pre.push(data)
+      }
+
+      return pre
+    },[])
+  }
+       
   getImage=()=> {
     var deviceId=new Date().getTime();
     this.setState({deviceId:deviceId});

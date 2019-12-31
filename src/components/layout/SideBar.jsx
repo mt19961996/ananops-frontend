@@ -21,13 +21,22 @@ class SiderBar extends React.Component {
     SiderBar.that = this;
   }
 
-  componentWillMount() {
-    this.handleDefaultSelect();
-    const menuList = this.setMenu(menuConfig);
-    this.setState({
-      menuList
-    });
+  componentDidMount() {
+    
+    //const menuConfig = JSON.parse(localStorage.getItem('resMenu'))
+    console.log('menuConfig',menuConfig)
+    if(menuConfig){
+      this.menuConfig = menuConfig
+      this.handleDefaultSelect();
+      const menuList = this.setMenu(menuConfig);
+      this.setState({
+        menuList
+      });
+    }
+    
   }
+
+  
 
   // 刷新页面，处理默认选中
   handleDefaultSelect = () => {
@@ -42,11 +51,11 @@ class SiderBar extends React.Component {
     /*如果不修改，则会导航栏中title除了第一项均为首页*/ 
 
     // if (menuConfigKeys.indexOf(currentKey) === 1) {
-      this.setState({
-        defaultOpenKeys: [currentKey],
-        defaultSelectedKeys: [pathname],
-      });
-      this.props.handleClick(titleArray);
+    this.setState({
+      defaultOpenKeys: [currentKey],
+      defaultSelectedKeys: [pathname],
+    });
+    this.props.handleClick(titleArray);
     // }
   };
 
@@ -107,7 +116,7 @@ class SiderBar extends React.Component {
   render() {
     let name;
     if (!this.state.collapsed) {
-      name = <span className="name">React管理后台</span>;
+      name = <span className="name">安安运维系统</span>;
     }
     return (
       <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>

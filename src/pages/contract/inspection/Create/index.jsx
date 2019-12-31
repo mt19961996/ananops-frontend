@@ -1,6 +1,7 @@
 import React,{Component,} from 'react'
-import { Form,Input,Select,Button,message,DatePicker } from 'antd';
+import { Form,Input,Select,Button,message,DatePicker,Radio } from 'antd';
 import { Link } from 'react-router-dom'
+import locale from 'antd/es/date-picker/locale/zh_CN';
 import moment from 'moment';
 import axios from 'axios';
 const token=window.localStorage.getItem('token')
@@ -100,7 +101,7 @@ class InspectionNew extends Component{
           // this.setState({
           //    projectDetail:res.data.result
           // });
-          history.push('/contract/inspection/'+projectId)
+          history.push('/cbd/pro/inspection/'+projectId)
           }
       })
       .catch(function (error) {
@@ -118,6 +119,7 @@ class InspectionNew extends Component{
             match : { params : { id,projectId} }
           } = this.props
           const { inspectionDetail } = this.state
+          console.log(id+'ppppp'+projectId)
         return(
             <div>
                 <div className="inpection-plan-create-page">
@@ -165,6 +167,7 @@ class InspectionNew extends Component{
                         }]
                     })(
                         <DatePicker
+                        locale={locale}
                         format="YYYY-MM-DD HH:mm:ss"
                         placeholder="请选择预计开始时间"
                         showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
@@ -183,6 +186,7 @@ class InspectionNew extends Component{
                         }]
                     })(
                         <DatePicker
+                        locale={locale}
                         format="YYYY-MM-DD HH:mm:ss"
                         placeholder="请选择最晚开始时间"
                         showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
@@ -191,30 +195,30 @@ class InspectionNew extends Component{
                     </Form.Item>
                     <Form.Item
                     {...createFormItemLayout}
-                    label="设备名"
+                    label="任务名称"
                     >
-                    {getFieldDecorator('deviceName',{
-                        initialValue: id && inspectionDetail.deviceName,
+                    {getFieldDecorator('taskName',{
+                        initialValue: id && inspectionDetail.taskName,
                         rules:[{
                         required:false,
-                        message:"请输入设备名",
+                        message:"请输入任务名称",
                         }]
                     })(
-                        <Input placeholder="请输入设备名" />
+                        <Input placeholder="请输入任务名称" />
                     )}  
                     </Form.Item>
                     <Form.Item
                     {...createFormItemLayout}
-                    label="设备类型"
+                    label="任务类型"
                     >
-                    {getFieldDecorator('deviceType',{
-                        initialValue: id && inspectionDetail.deviceType,
+                    {getFieldDecorator('taskType',{
+                        initialValue: id && inspectionDetail.taskType,
                         rules:[{
                         required:false,
-                        message:"请输入设备类型",
+                        message:"请输入任务类型",
                         }]
                     })(
-                        <Input placeholder="请输入设备类型" />
+                        <Input placeholder="请输入任务类型" />
                     )}  
                     </Form.Item>
                     <Form.Item
@@ -233,6 +237,24 @@ class InspectionNew extends Component{
                     </Form.Item>
                     <Form.Item
                     {...createFormItemLayout}
+                    label="是否立即执行"
+                    >
+                    {getFieldDecorator('isNow',{
+                        initialValue: id && inspectionDetail.isNow,
+                        rules:[{
+                        required:true,
+                        message:"请选择是否立即执行",
+                        }]
+                    })(  
+                        <Radio.Group defaultValue={1}>
+                          <Radio value={1}>是</Radio>
+                          <Radio value={0}>否</Radio>
+                        </Radio.Group>
+                       
+                    )}  
+                    </Form.Item>
+                    <Form.Item
+                    {...createFormItemLayout}
                     label="巡检内容"
                     >
                     {getFieldDecorator('inspectionContent',{
@@ -242,7 +264,7 @@ class InspectionNew extends Component{
                         message:"请输入巡检内容",
                         }]
                     })(
-                        <Input placeholder="请输入巡检内容" />
+                        <Input.TextArea auto={ { minRows: 4, maxRows: 6 }} placeholder="请输入巡检内容" />
                     )}  
                     </Form.Item>
                     <Form.Item
@@ -256,7 +278,7 @@ class InspectionNew extends Component{
                         message:"请输入巡检情况",
                         }]
                     })(
-                        <Input placeholder="请输入巡检情况" />
+                        <Input.TextArea auto={ { minRows: 4, maxRows: 6 }} placeholder="请输入巡检情况" />
                     )}  
                     </Form.Item>
                     <Form.Item
@@ -270,7 +292,7 @@ class InspectionNew extends Component{
                         message:"请输入处理结果",
                         }]
                     })(
-                        <Input placeholder="请输入处理结果" />
+                        <Input.TextArea auto={ { minRows: 4, maxRows: 6 }}  placeholder="请输入处理结果" />
                     )}  
                     </Form.Item>
                     <Form.Item
@@ -284,7 +306,7 @@ class InspectionNew extends Component{
                         message:"请输入描述",
                         }]
                     })(
-                        <Input placeholder="请输入描述" />
+                        <Input.TextArea auto={ { minRows: 4, maxRows: 6 }}  placeholder="请输入描述" />
                     )}  
                     </Form.Item>
                     <section className="operator-container">
@@ -302,7 +324,7 @@ class InspectionNew extends Component{
                             const {
                             history,
                             } = this.props
-                            history.push('/contract/inspection/'+projectId)
+                            history.push('/cbd/pro/inspection/'+projectId)
                         }}
                         >取消
                         </Button>

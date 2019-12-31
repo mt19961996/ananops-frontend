@@ -72,30 +72,30 @@ class ManagementDetail extends Component{
               <Descriptions.Item label="甲方ID" span={1.5}>{contractDetail.partyAId}</Descriptions.Item> 
               <Descriptions.Item label="乙方名称" span={1.5}>{contractDetail.partyBName}</Descriptions.Item> 
               <Descriptions.Item label="乙方ID" span={1.5}>{contractDetail.partyBId}</Descriptions.Item> 
-              <Descriptions.Item label="甲方负责人" span={1.5}>{contractDetail.alegalName}</Descriptions.Item> 
-              <Descriptions.Item label="乙方负责人" span={1.5}>{contractDetail.blegalName}</Descriptions.Item> 
+              <Descriptions.Item label="甲方法人" span={1.5}>{contractDetail.alegalName}</Descriptions.Item> 
+              <Descriptions.Item label="乙方法人" span={1.5}>{contractDetail.blegalName}</Descriptions.Item> 
               <Descriptions.Item label="乙方代理内容" span={3}>{contractDetail.agentContent}</Descriptions.Item> 
-              <Descriptions.Item label="乙方开户银行" span={1.5}>{contractDetail.agentContent}</Descriptions.Item> 
-              <Descriptions.Item label="乙方银行账号" span={1.5}>{contractDetail.agentContent}</Descriptions.Item> 
-              <Descriptions.Item label="乙方供辅助金额" span={3}>{contractDetail.agentContent}</Descriptions.Item> 
+              <Descriptions.Item label="乙方开户银行" span={1.5}>{contractDetail.bankName}</Descriptions.Item> 
+              <Descriptions.Item label="乙方银行账号" span={1.5}>{contractDetail.bankAccount}</Descriptions.Item> 
+              <Descriptions.Item label="乙方供辅助金额" span={3}>{contractDetail.assitMoney}</Descriptions.Item> 
               <Descriptions.Item label="合同开始时间" span={1.5}>{contractDetail.startTime}</Descriptions.Item>
               <Descriptions.Item label="合同结束时间" span={1.5}>{contractDetail.endTime}</Descriptions.Item>
               <Descriptions.Item label="合同签订时间" span={1.5}>{contractDetail.signTime}</Descriptions.Item>   
               <Descriptions.Item label="合同存放路径" span={1.5}>{contractDetail.filePath}</Descriptions.Item>    
               <Descriptions.Item label="付款时间" span={1.5}>{contractDetail.paymentTime}</Descriptions.Item>
-              <Descriptions.Item label="支付方式" span={1.5}>{contractDetail.paymentType}</Descriptions.Item>
+              <Descriptions.Item label="支付方式" span={1.5}>{contractDetail.paymentType===1?'现结':(contractDetail.paymentType===2?'账期':'年结')}</Descriptions.Item>
               <Descriptions.Item label="项目金额" span={1.5}>{contractDetail.projectMoney}</Descriptions.Item>
-              <Descriptions.Item label="乙方是否包备品备件" span={1.5}>{contractDetail.isSparePart===0?"是":"否"}</Descriptions.Item>
-              <Descriptions.Item label="乙方是否提供备品备件替换服务" span={1.5}>{contractDetail.isSpareService===0?"是":"否"}</Descriptions.Item>
+              <Descriptions.Item label="乙方是否包备品备件" span={1.5}>{contractDetail.isSparePart===0?"不包括":"包括"}</Descriptions.Item>
+              <Descriptions.Item label="乙方是否提供备品备件替换服务" span={1.5}>{contractDetail.isSpareService===0?"不提供":"提供"}</Descriptions.Item>
               <Descriptions.Item label="维修维护最迟响应时间（小时）" span={1.5}>{contractDetail.lastResponseTime}</Descriptions.Item>
               <Descriptions.Item label="月度记录表提交周期（天）" span={1.5}>{contractDetail.recordTime}</Descriptions.Item>
               <Descriptions.Item label="维修工身份验证流程" span={3}>{contractDetail.verification}</Descriptions.Item>
-              <Descriptions.Item label="合同是否变更">{contractDetail.isChange===0?"是":"否"}</Descriptions.Item>
-              <Descriptions.Item label="合同是否作废">{contractDetail.isDestory===0?"是":"否"}</Descriptions.Item>
-              <Descriptions.Item label="是否自动顺延" >{contractDetail.isPostpone===0?"是":"否"}</Descriptions.Item>
+              <Descriptions.Item label="合同是否变更">{contractDetail.isChange===0?"否":"是"}</Descriptions.Item>
+              <Descriptions.Item label="合同是否作废">{contractDetail.isDestory===0?"有效":"作废"}</Descriptions.Item>
+              <Descriptions.Item label="是否自动顺延" >{contractDetail.isPostpone===0?"否":"是"}</Descriptions.Item>
               <Descriptions.Item label="描述" span={3}>{contractDetail.description}</Descriptions.Item>
               <Descriptions.Item label="操作">
-                <Link to={`/contract/management`} style={{marginRight:'12px'}}>返回上级</Link>
+                <Link to={`/cbd/pro/contract`} style={{marginRight:'12px'}}>返回上级</Link>
                 <Upload {...props}>
                   <Button>
                     <Icon type="upload" /> 上传

@@ -20,7 +20,7 @@ class ManageRoute extends Component{
       <Switch>
         <Route 
           exact   
-          path="/contract/management"
+          path="/cbd/pro/contract"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EmergencyPlan" */
@@ -30,7 +30,7 @@ class ManageRoute extends Component{
         />
         <Route
           exact
-          path="/contract/management/new"
+          path="/cbd/pro/contract/new"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EmergencyPlanNew" */
@@ -40,7 +40,7 @@ class ManageRoute extends Component{
         />
         <Route
           exact
-          path="/contract/management/edit/:id"
+          path="/cbd/pro/contract/edit/:id"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "Deviwwce" */
@@ -50,7 +50,7 @@ class ManageRoute extends Component{
         />
         <Route
           exact
-          path="/contract/management/detail/:id"
+          path="/cbd/pro/contract/detail/:id"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EmergencyPlanDetail" */
@@ -60,7 +60,7 @@ class ManageRoute extends Component{
         />
         <Route 
           exact   
-          path="/contract/project"
+          path="/cbd/pro/project"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EmergencyPlan" */
@@ -70,7 +70,7 @@ class ManageRoute extends Component{
         />
         <Route
           exact
-          path="/contract/project/new"
+          path="/cbd/pro/project/new"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EmergencyPlanNew" */
@@ -80,7 +80,7 @@ class ManageRoute extends Component{
         />
         <Route
           exact
-          path="/contract/project/edit/:id"
+          path="/cbd/pro/project/edit/:id"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "Deviwwce" */
@@ -90,7 +90,7 @@ class ManageRoute extends Component{
         />
         <Route
           exact
-          path="/contract/project/detail/:id"
+          path="/cbd/pro/project/detail/:id"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EmergencyPlanDetail" */
@@ -100,7 +100,7 @@ class ManageRoute extends Component{
         />
         <Route 
           exact   
-          path="/contract/inspection/:id"
+          path="/cbd/pro/inspection/:projectId"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EmergencyPlan" */
@@ -110,7 +110,7 @@ class ManageRoute extends Component{
         />
         <Route
           exact
-          path="/contract/inspection/new/:projectId"
+          path="/cbd/pro/inspection/new/:projectId"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EmergencyPlanNew" */
@@ -120,7 +120,7 @@ class ManageRoute extends Component{
         />
         <Route
           exact
-          path="/contract/inspection/edit/:projectId/:id"
+          path="/cbd/pro/inspection/edit/:projectId/:id"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "Deviwwce" */
@@ -130,7 +130,7 @@ class ManageRoute extends Component{
         />
         <Route
           exact
-          path="/contract/inspection/detail/:projectId/:id"
+          path="/cbd/pro/inspection/detail/:projectId/:id"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EmergencyPlanDetail" */
@@ -138,7 +138,47 @@ class ManageRoute extends Component{
             loading: Loading
           })}
         />
-       
+        />
+        <Route
+          exact
+          path="/cbd/pro/sub/:projectId/:id"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EmergencyPlanDetail" */
+              './sub/Index/index'),
+            loading: Loading
+          })}
+        />
+         <Route
+          exact
+          path="/cbd/pro/sub/new/:projectId/:id"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EmergencyPlanDetail" */
+              './sub/Create/index'),
+            loading: Loading
+          })}
+        />
+         <Route
+          exact
+          path="/cbd/pro/sub/edit/:projectId/:id/:subId"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EmergencyPlanDetail" */
+              './sub/Create/index'),
+            loading: Loading
+          })}
+        />
+         <Route
+          exact
+          path="/cbd/pro/sub/detail/:projectId/:id/:subId"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EmergencyPlanDetail" */
+              './sub/Detail/index'),
+            loading: Loading
+          })}
+        />
       </Switch>
     );
   }

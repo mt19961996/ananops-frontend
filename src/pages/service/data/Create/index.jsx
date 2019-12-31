@@ -1,14 +1,70 @@
 import React, { Component, } from 'react';
-import { Form,Input,Select,Button,message } from 'antd';
+import { Form,Input,Select,Button,message,DatePicker } from 'antd';
 import { Link } from 'react-router-dom'
+import axios from 'axios'
+import moment from 'moment';
+const token=window.localStorage.getItem('token')
+const id=window.localStorage.getItem('id')
 
 class OrderNew extends Component{
     constructor(props){
         super(props)
         this.state={
-            orderDetail:{}
+            orderDetail:{},
+            id:'',
+            token:window.localStorage.getItem('token')
         }
     }
+    componentDidMount(){
+        this.setState({id:id})
+      }
+
+      handleSubmit = (e) => {
+        e.preventDefault()
+        const {
+          form,
+          history,
+          match : { params : {id } },
+        } = this.props
+        const { getFieldValue } = form;
+        const values = form.getFieldsValue()
+        if(!getFieldValue('title')){
+          message.error('请输入维修任务名称')
+        }
+        if(!getFieldValue('call')){
+          message.error('请输入报修人电话')
+        }
+        if(!id){
+          values.id=null
+          values.userId=this.state.id
+        }
+        values.mdmcAddTaskItemDtoList=[{id:null}]
+      //  values.appointTime=getFieldValue('appointTime').format('YYYY-MM-DD HH:mm:ss')
+        
+        axios({
+            method: 'POST',
+            url: '/mdmc/mdmcTask/save',
+            headers: {
+                'Content-Type': 'application/json',
+                'deviceId': this.deviceId,
+                'Authorization':'Bearer '+this.state.token,
+            },
+            data:JSON.stringify(values)
+            })
+        .then((res) => {
+            if(res && res.status === 200){  
+            console.log(res.data.result.id)
+            // var id=res.data.result.id
+            // this.changeStatus(id,2,'维修申请提交后，进入审核')   
+            history.push('/cbd/maintain/data')
+            
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+     }
+    
     render(){
 
         const createFormItemLayout = {
@@ -28,20 +84,6 @@ class OrderNew extends Component{
             >
                 <Form.Item
                 {...createFormItemLayout}
-                label="报修人ID"
-                >
-                {getFieldDecorator('userId',{
-                    initialValue: id && orderDetail.userId,
-                    rules:[{
-                    required:true,
-                    message:"请填写报修ID",
-                    }]
-                })(
-                    <Input placeholder="请输入报修ID" />
-                )}  
-                </Form.Item>
-                <Form.Item
-                {...createFormItemLayout}
                 label="维修任务名称"
                 >
                 {getFieldDecorator('title',{
@@ -56,12 +98,59 @@ class OrderNew extends Component{
                 </Form.Item>
                 <Form.Item
                 {...createFormItemLayout}
+                label="报修人电话"
+                >
+                {getFieldDecorator('call',{
+                    initialValue: id && orderDetail.call,
+                    rules:[{
+                    required:true,
+                    message:"请输入报修人电话",
+                    }]
+                })(
+                    <Input placeholder="请输入报修人电话" />
+                )}  
+                </Form.Item>
+                <Form.Item
+                {...createFormItemLayout}
+                label="预约时间"
+                >
+                {getFieldDecorator('appointTime',{
+                    initialValue: id && moment(orderDetail.appointTime),
+                    rules:[{
+                    required:true,
+                    message:"请选择预约时间",
+                    }]
+                })(
+                    <DatePicker
+                        format="YYYY-MM-DD HH:mm:ss"
+                        placeholder="请选择开始时间"
+                        showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
+                    />
+                )}  
+                </Form.Item>
+                <Form.Item
+                {...createFormItemLayout}
+                label="紧急程度"
+                >
+                {getFieldDecorator('level',{
+                    initialValue: id && orderDetail.level,
+                    rules:[{
+                    required:false,
+                    message:"请输入紧急程度",
+                    }]
+                })(
+                    <Input placeholder="请输入紧急程度" />
+                )}  
+                </Form.Item>
+               
+                <Form.Item
+                {...createFormItemLayout}
                 label="审核人ID"
                 >
                 {getFieldDecorator('principalId',{
                     initialValue: id && orderDetail.principalId,
                     rules:[{
-                    required:true,
+                    required:false,
                     message:"请选择审核人ID",
                     }]
                 })(
@@ -75,7 +164,7 @@ class OrderNew extends Component{
                 {getFieldDecorator('projectId',{
                     initialValue: id && orderDetail.projectId,
                     rules:[{
-                    required:true,
+                    required:false,
                     message:"请输入项目ID",
                     }]
                 })(
@@ -84,10 +173,24 @@ class OrderNew extends Component{
                 </Form.Item>
                 <Form.Item
                 {...createFormItemLayout}
+                label="合同ID"
+                >
+                {getFieldDecorator('contractId',{
+                    initialValue: id && orderDetail.contractId,
+                    rules:[{
+                    required:false,
+                    message:"请输入合同ID",
+                    }]
+                })(
+                    <Input placeholder="请输入合同ID" />
+                )}  
+                </Form.Item>
+                <Form.Item
+                {...createFormItemLayout}
                 label="服务商ID"
                 >
-                {getFieldDecorator('principleId',{
-                    initialValue: id && orderDetail.principleId,
+                {getFieldDecorator('facilitatorId',{
+                    initialValue: id && orderDetail.facilitatorId,
                     rules:[{
                     required:false,
                     message:"请输入服务商ID",
@@ -96,18 +199,19 @@ class OrderNew extends Component{
                     <Input placeholder="请输入服务商ID" />
                 )}  
                 </Form.Item>
+               
                 <Form.Item
                 {...createFormItemLayout}
-                label="支付方式"
+                label="维修建议"
                 >
-                {getFieldDecorator('payMode',{
-                    initialValue: id && orderDetail.payMode,
+                {getFieldDecorator('suggestion',{
+                    initialValue: id && orderDetail.suggestion,
                     rules:[{
-                    required:true,
-                    message:"请输入支付方式",
+                    required:false,
+                    message:"请输入维修建议",
                     }]
                 })(
-                    <Input placeholder="请输入支付方式" />
+                    <Input placeholder="请输入维修建议" />
                 )}  
                 </Form.Item>
                 <Form.Item
@@ -117,11 +221,25 @@ class OrderNew extends Component{
                 {getFieldDecorator('totalCost',{
                     initialValue: id && orderDetail.totalCost,
                     rules:[{
-                    required:true,
+                    required:false,
                     message:"请选择总花费",
                     }]
                 })(
                     <Input placeholder="请输入总花费" />
+                )}  
+                </Form.Item>
+                <Form.Item
+                {...createFormItemLayout}
+                label="维修结果"
+                >
+                {getFieldDecorator('result',{
+                    initialValue: id && orderDetail.result,
+                    rules:[{
+                    required:false,
+                    message:"请输入维修结果",
+                    }]
+                })(
+                    <Input placeholder="请输入维修结果" />
                 )}  
                 </Form.Item>
                 <section className="operator-container">
@@ -139,7 +257,7 @@ class OrderNew extends Component{
                         const {
                         history,
                         } = this.props
-                        history.push('/system')
+                        history.push('/cbd/maintain/data')
                     }}
                     >取消
                     </Button>

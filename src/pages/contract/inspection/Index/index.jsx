@@ -22,8 +22,9 @@ class Inspection extends Component{
     }
     componentDidMount(){
         const { 
-            match : { params : { id } }
+            match : { params : { projectId } }
           } = this.props
+          var id=projectId
           console.log(id)
         this.getGroupList(id);   
     }
@@ -75,9 +76,10 @@ class Inspection extends Component{
     }
     render(){
         const { 
-            match : { params : { id } }
+            match : { params : { projectId } }
           } = this.props
         const {data}=this.state
+        
         return(
             <div>
             <div className="searchPart">
@@ -89,12 +91,12 @@ class Inspection extends Component{
                     enterButton
                     onSearch={value => this.selectActivity(value)}
                 /> */}
-                <Link to={`/contract/project`}>
+                <Link to={`/cbd/pro/project`}>
                     <Icon type="arrow-left" ></Icon>返回项目
                 </Link>
                 </Col>
                 <Col push={16}>
-                <Link to={`/contract/inspection/new/${id}`}>
+                <Link to={`/cbd/pro/inspection/new/${projectId}`}>
                     <Button type="primary">
                                 +新建巡检方案
                     </Button>
@@ -116,7 +118,7 @@ class Inspection extends Component{
             rowClassName={this.setRowClassName}
             dataSource={data}
             columns={[{
-                title: '巡检设备ID',
+                title: '巡检任务ID',
                 key: 'id',
                 render: (text, record) => {
                 return ((record.id && record.id) || '--')
@@ -135,10 +137,10 @@ class Inspection extends Component{
                 }
             },
             {
-                title: '设备名字', 
+                title: '任务名称', 
                 key: 'deviceName',
                 render: (text, record) => {
-                return (record.deviceName && record.deviceName) || '--'
+                return (record.taskName && record.taskName) || '--'
                 }
             }, {
                 title: '巡检内容',
@@ -166,11 +168,11 @@ class Inspection extends Component{
                     style={{ display: 'block' }}
                 >
                     <Link
-                    to={`/contract/inspection/detail/${id}/${record.id}`}
+                    to={`/cbd/pro/inspection/detail/${projectId}/${record.id}`}
                     style={{marginRight:'12px'}}
                     >详情</Link>               
                     <Link
-                    to={`/contract/inspection/edit/${id}/${record.id}`}
+                    to={`/cbd/pro/inspection/edit/${projectId}/${record.id}`}
                     style={{marginRight:'12px'}}
                     >修改</Link>
                     <Popconfirm
@@ -179,9 +181,13 @@ class Inspection extends Component{
                         >
                             <Button 
                             type="simple"
-                            style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
+                            style={{border:'none',padding:0,color:"#357aff",background:'transparent',marginRight:'12px'}}
                             >删除</Button>
                         </Popconfirm>
+                        <Link
+                    to={`/cbd/pro/sub/${projectId}/${record.id}`}
+                    style={{marginRight:'12px'}}
+                    >巡检子项</Link>   
                 </div>
                 ),
             }]}

@@ -53,19 +53,21 @@ class InspectionDetail extends Component{
         return(
             <div className="bg">
             <Descriptions bordered className="descriptions">
-              <Descriptions.Item label="巡检设备ID">{inspectionDetail.id}</Descriptions.Item>
-              <Descriptions.Item label="设备名字">{inspectionDetail.deviceName}</Descriptions.Item>
-              <Descriptions.Item label="设备类型">{inspectionDetail.deviceType}</Descriptions.Item>
+              <Descriptions.Item label="巡检任务ID">{inspectionDetail.id}</Descriptions.Item>
+              <Descriptions.Item label="任务名称">{inspectionDetail.taskName}</Descriptions.Item>
+              <Descriptions.Item label="任务类型">{inspectionDetail.taskType}</Descriptions.Item>
               <Descriptions.Item label="项目ID" span={1.5}>{inspectionDetail.projectId}</Descriptions.Item>
               <Descriptions.Item label="项目名称" span={1.5}>{inspectionDetail.projectName}</Descriptions.Item>
               <Descriptions.Item label="预计开始时间" span={1.5}>{inspectionDetail.scheduledStartTime}</Descriptions.Item>
+              <Descriptions.Item label="预计完成时间" span={1.5}>{inspectionDetail.scheduledFinishTime}</Descriptions.Item>
               <Descriptions.Item label="最晚开始时间" span={1.5}>{inspectionDetail.deadlineTime}</Descriptions.Item>
               <Descriptions.Item label="巡检周期（天）" span={1.5}>{inspectionDetail.cycleTime}</Descriptions.Item>
+              <Descriptions.Item label="是否立即执行" span={1.5}>{inspectionDetail.isNow==0?'否':'是'}</Descriptions.Item>
               <Descriptions.Item label="描述" span={1.5}>{inspectionDetail.description}</Descriptions.Item>
               <Descriptions.Item label="巡检内容" span={3}>{inspectionDetail.inspectionContent}</Descriptions.Item>           
               <Descriptions.Item label="巡检情况" span={3}>{inspectionDetail.inspectionCondition}</Descriptions.Item>
               <Descriptions.Item label="处理结果" span={3}>{inspectionDetail.dealResult}</Descriptions.Item>
-              <Descriptions.Item label="操作" span={3}><Link to={`/contract/inspection/${projectId}`}>返回上级</Link></Descriptions.Item>
+              <Descriptions.Item label="操作" span={3}><Link to={`/cbd/pro/inspection/${projectId}`}>返回上级</Link></Descriptions.Item>
             </Descriptions>
           
           </div>  

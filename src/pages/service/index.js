@@ -18,19 +18,10 @@ class Service extends Component{
     };
     return (
       <Switch>
+       
         <Route 
           exact   
-          path="/service/data"
-          component={Loadable({
-            loader: () => import(
-              /* webpackChunkName: "EntranceWork" */
-              './data/Index/index'),
-            loading: Loading
-          })}
-        />
-        <Route 
-          exact   
-          path="/service/data/new"
+          path="/cbd/service/new"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -40,7 +31,7 @@ class Service extends Component{
         />
         <Route 
           exact   
-          path="/service/data/edit/:id"
+          path="/cbd/service/edit/:id"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -50,7 +41,7 @@ class Service extends Component{
         />
         <Route 
           exact   
-          path="/service/data/process/:id"
+          path="/cbd/service/log/:id"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -60,7 +51,7 @@ class Service extends Component{
         />
         <Route 
           exact   
-          path="/service/data/progress/:id"
+          path="/cbd/service/progress/:id"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -70,7 +61,7 @@ class Service extends Component{
         />
         <Route 
           exact   
-          path="/service/data/sub/:id"
+          path="/cbd/service/sub/:id"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -80,7 +71,17 @@ class Service extends Component{
         />
         <Route 
           exact   
-          path="/service/data/fault/:id"
+          path="/cbd/service/sub/new/:id"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EntranceWork" */
+              './data/SubNew/index'),
+            loading: Loading
+          })}
+        />
+        <Route 
+          exact   
+          path="/cbd/service/spare/:id"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -88,17 +89,56 @@ class Service extends Component{
             loading: Loading
           })}
         />
-        <Route
-          exact
-          path="/service/system"
+         <Route 
+          exact   
+          path="/cbd/service/detail/:id"
           component={Loadable({
             loader: () => import(
-              /* webpackChunkName: "Device" */
-              './system/Index/index'),
+              /* webpackChunkName: "EntranceWork" */
+              './data/Detail/index'),
             loading: Loading
           })}
         />
-       
+        <Route 
+          exact   
+          path="/cbd/service/sublog/:id/:subId"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EntranceWork" */
+              './data/SubLog/index'),
+            loading: Loading
+          })}
+        />
+        <Route 
+          exact   
+          path="/cbd/service/subplan/:id/:subId"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EntranceWork" */
+              './data/SubPlan/index'),
+            loading: Loading
+          })}
+        />
+        <Route 
+          exact   
+          path="/cbd/service/plan/new/:id"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EntranceWork" */
+              './data/SubPlan/index'),
+            loading: Loading
+          })}
+        />
+        <Route 
+          exact   
+          path="/cbd/service/plan/new/:id/:subId"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EntranceWork" */
+              './data/SubPlanNew/index'),
+            loading: Loading
+          })}
+        />
       </Switch>
     );
   }
