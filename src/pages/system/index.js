@@ -1,13 +1,6 @@
 import React, { Component, } from 'react';
 import {Route} from 'react-router-dom';
 import { Tabs } from 'antd';
-import Examine from './Examine';
-import Check from './Check';
-import Maintain from './Maintain';
-import Comment from './Comment';
-import Approval from './Approval'
-import Pay from './Pay'
-import All from './All';
 import Test from './Test';
 import axios from 'axios'
 import './index.styl'

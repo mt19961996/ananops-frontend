@@ -45,6 +45,29 @@ class SubDetail extends Component{
     
 
     }
+    status=(status)=>{
+      if(status===-1){
+        return '不存在该状态'
+      }
+      else if(status===1){
+        return '待服务商接单'
+      }
+      else if(status===2){
+        return '巡检任务执行中'
+      }
+      else if(status===3){
+        return '巡检结果待确认'
+      }
+      else if(status===4){
+        return '巡检待付款'
+      }
+      else if(status===5){
+        return '巡检已付款，等待甲方评价'
+      }
+      else if(status===6){
+        return '已完成评价，巡检结束'
+      }
+    }
     render(){
       const { 
         match : { params : { projectId,id, } }
@@ -53,16 +76,20 @@ class SubDetail extends Component{
         return(
             <div className="bg">
             <Descriptions bordered className="descriptions">
-              <Descriptions.Item label="名称">{inspectionDetail.name}</Descriptions.Item>
-              <Descriptions.Item label="巡检任务ID">{inspectionDetail.inspectionTaskId}</Descriptions.Item>
-              <Descriptions.Item label="巡检任务名">{inspectionDetail.inspectionTaskName}</Descriptions.Item>
-              <Descriptions.Item label="事件名称" span={1.5}>{inspectionDetail.itemName}</Descriptions.Item>
+              <Descriptions.Item label="巡检详情ID" span={1.5}>{inspectionDetail.id}</Descriptions.Item>
+              <Descriptions.Item label="巡检详情名称" span={1.5}>{inspectionDetail.name}</Descriptions.Item>
+              <Descriptions.Item label="巡检任务ID" span={1.5}>{inspectionDetail.inspectionTaskId}</Descriptions.Item>
+              <Descriptions.Item label="巡检任务名称" span={1.5}>{inspectionDetail.inspectionTaskName}</Descriptions.Item>
+              <Descriptions.Item label="巡检网点" span={1.5}>{inspectionDetail.itemName}</Descriptions.Item>
               <Descriptions.Item label="维修人员姓名" span={1.5}>{inspectionDetail.maintainerName}</Descriptions.Item>
               <Descriptions.Item label="维修人员ID" span={1.5}>{inspectionDetail.maintainerId}</Descriptions.Item>
-              <Descriptions.Item label="评论" span={1.5}>{inspectionDetail.remark}</Descriptions.Item>
-              <Descriptions.Item label="结果" span={1.5}>{inspectionDetail.result}</Descriptions.Item>
-              <Descriptions.Item label="状态" span={1.5}>{inspectionDetail.status}</Descriptions.Item>
-              <Descriptions.Item label="描述" span={3}>{inspectionDetail.description}</Descriptions.Item>           
+              <Descriptions.Item label="备注" span={1.5}>{inspectionDetail.remark}</Descriptions.Item>
+              <Descriptions.Item label="巡检结果" span={1.5}>{inspectionDetail.result}</Descriptions.Item>
+              <Descriptions.Item label="巡检状态" span={1.5}>{
+                // inspectionDetail.status
+                inspectionDetail.status&&this.status(inspectionDetail.status)
+                }</Descriptions.Item>
+              <Descriptions.Item label="巡检内容描述" span={3}>{inspectionDetail.description}</Descriptions.Item>           
               <Descriptions.Item label="操作" span={3}><Link to={`/cbd/pro/sub/${projectId}/${id}`}>返回上级</Link></Descriptions.Item>
             </Descriptions>
           

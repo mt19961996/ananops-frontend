@@ -18,19 +18,10 @@ class Service extends Component{
     };
     return (
       <Switch>
+       
         <Route 
           exact   
-          path="/cbd/check"
-          component={Loadable({
-            loader: () => import(
-              /* webpackChunkName: "EntranceWork" */
-              './data/Index/index'),
-            loading: Loading
-          })}
-        />
-        <Route 
-          exact   
-          path="/cbd/check/new"
+          path="/cbd/service/new"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -40,7 +31,7 @@ class Service extends Component{
         />
         <Route 
           exact   
-          path="/cbd/check/edit/:id"
+          path="/cbd/service/edit/:id"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -50,7 +41,7 @@ class Service extends Component{
         />
         <Route 
           exact   
-          path="/cbd/check/log/:id"
+          path="/cbd/service/log/:id"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -60,7 +51,7 @@ class Service extends Component{
         />
         <Route 
           exact   
-          path="/cbd/check/progress/:id"
+          path="/cbd/service/progress/:id"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -70,7 +61,7 @@ class Service extends Component{
         />
         <Route 
           exact   
-          path="/cbd/check/sub/:id"
+          path="/cbd/service/sub/:id"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -80,7 +71,7 @@ class Service extends Component{
         />
         <Route 
           exact   
-          path="/cbd/check/sub/new/:id"
+          path="/cbd/service/sub/new/:id"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -90,7 +81,7 @@ class Service extends Component{
         />
         <Route 
           exact   
-          path="/cbd/check/spare/:id"
+          path="/cbd/service/spare/:id"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -98,9 +89,19 @@ class Service extends Component{
             loading: Loading
           })}
         />
+         <Route 
+          exact   
+          path="/cbd/service/detail/:id"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EntranceWork" */
+              './data/Detail/index'),
+            loading: Loading
+          })}
+        />
         <Route 
           exact   
-          path="/cbd/check/sublog/:id/:subId"
+          path="/cbd/service/sublog/:id/:subId"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -110,7 +111,7 @@ class Service extends Component{
         />
         <Route 
           exact   
-          path="/cbd/check/subplan/:id/:subId"
+          path="/cbd/service/subplan/:id/:subId"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -120,7 +121,7 @@ class Service extends Component{
         />
         <Route 
           exact   
-          path="/cbd/check/plan/new/:id"
+          path="/cbd/service/plan/new/:id"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -130,7 +131,7 @@ class Service extends Component{
         />
         <Route 
           exact   
-          path="/cbd/check/plan/new/:id/:subId"
+          path="/cbd/service/plan/new/:id/:subId"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */

@@ -3,6 +3,7 @@ import { Form,Input,Select,Button,message,DatePicker } from 'antd';
 import { Link } from 'react-router-dom'
 import moment from 'moment';
 import axios from 'axios';
+const { Option } = Select;
 class SubNew extends Component{
     constructor(props){
         super(props)
@@ -101,16 +102,16 @@ class SubNew extends Component{
                 >
                     <Form.Item
                     {...createFormItemLayout}
-                    label="名称"
+                    label="巡检详情名称"
                     >
                     {getFieldDecorator('name',{
                         initialValue: subId && inspectionDetail.name,
                         rules:[{
                         required:true,
-                        message:"请填写名称",
+                        message:"请填写巡检详情名称",
                         }]
                     })(
-                        <Input placeholder="请填写名称" />
+                        <Input placeholder="请填写巡检详情名称" />
                     )}  
                     </Form.Item>
                     <Form.Item
@@ -129,32 +130,32 @@ class SubNew extends Component{
                     </Form.Item>
                     <Form.Item
                     {...createFormItemLayout}
-                    label="巡检任务名"
+                    label="巡检任务名称"
                     >
                     {getFieldDecorator('inspectionTaskName',{
                         initialValue: subId && inspectionDetail.inspectionTaskName,
                         rules:[{
                         required:true,
-                        message:"请输入巡检任务名",
+                        message:"请输入巡检任务名称",
                         }]
                     })(
-                        <Input placeholder="请输入巡检任务名" />
+                        <Input placeholder="请输入巡检任务名称" />
                     )}  
                     </Form.Item>
                   
                    
                     <Form.Item
                     {...createFormItemLayout}
-                    label="事件名称"
+                    label="巡检网点"
                     >
                     {getFieldDecorator('itemName',{
                         initialValue: subId && inspectionDetail.itemName,
                         rules:[{
                         required:false,
-                        message:"请输入事件名称",
+                        message:"请输入巡检网点",
                         }]
                     })(
-                        <Input placeholder="请输入事件名称" />
+                        <Input placeholder="请输入巡检网点" />
                     )}  
                     </Form.Item>
                     <Form.Item
@@ -187,44 +188,53 @@ class SubNew extends Component{
                     </Form.Item>
                     <Form.Item
                     {...createFormItemLayout}
-                    label="评论"
+                    label="备注"
                     >
                     {getFieldDecorator('remark',{
                         initialValue: subId && inspectionDetail.remark,
                         rules:[{
                         required:false,
-                        message:"请输入评论",
+                        message:"请输入备注",
                         }]
                     })(
-                        <Input placeholder="请输入评论" />
+                        <Input.TextArea autoSize={{minRows: 2, maxRows: 6 }} placeholder="请输入备注" />
                     )}  
                     </Form.Item>
                     <Form.Item
                     {...createFormItemLayout}
-                    label="结果"
+                    label="巡检结果"
                     >
                     {getFieldDecorator('result',{
                         initialValue: subId && inspectionDetail.result,
                         rules:[{
                         required:false,
-                        message:"请输入结果",
+                        message:"请输入巡检结果",
                         }]
                     })(
-                        <Input placeholder="请输入结果" />
+                        <Input.TextArea autoSize={{minRows: 2, maxRows: 6 }} placeholder="请输入巡检结果" />
                     )}  
                     </Form.Item>
                     <Form.Item
                     {...createFormItemLayout}
-                    label="状态"
+                    label="巡检状态"
                     >
                     {getFieldDecorator('status',{
                         initialValue: subId && inspectionDetail.status,
                         rules:[{
                         required:false,
-                        message:"请输入状态",
+                        message:"请输入巡检状态",
                         }]
                     })(
-                        <Input placeholder="请输入状态" />
+                        // <Input placeholder="请输入巡检状态" />
+                        <Select>
+                            <Option value={-1}>不存在该状态</Option>
+                            <Option value={1}>待服务商接单</Option>
+                            <Option value={2}>巡检任务执行中</Option>
+                            <Option value={3}>巡检结果待确认</Option>
+                            <Option value={4}>巡检待付款</Option>
+                            <Option value={5}>巡检已付款，等待甲方评价</Option>
+                            <Option value={6}>已完成评价，巡检结束</Option>
+                        </Select>
                     )}  
                     </Form.Item>
                     <Form.Item
@@ -238,7 +248,7 @@ class SubNew extends Component{
                         message:"请输入描述",
                         }]
                     })(
-                        <Input placeholder="请输入描述" />
+                        <Input.TextArea autoSize={{minRows: 4, maxRows: 6 }} placeholder="请输入描述" />
                     )}  
                     </Form.Item>
                     <section className="operator-container">

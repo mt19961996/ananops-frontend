@@ -109,7 +109,7 @@ class Sub extends Component{
                     enterButton
                     onSearch={value => this.selectActivity(value)}
                 /> */}
-                <Link to={`/cbd/pro/inspection/${id}`}>
+                <Link to={`/cbd/pro/inspection/${projectId}`}>
                     <Icon type="arrow-left" ></Icon>返回巡检任务
                 </Link>
                 </Col>
@@ -136,7 +136,7 @@ class Sub extends Component{
             rowClassName={this.setRowClassName}
             dataSource={data}
             columns={[{
-                title: 'ID',
+                title: '巡检详情ID',
                 key: 'id',
                 render: (text, record) => {
                 return ((record.id && record.id) || '--')
@@ -155,19 +155,19 @@ class Sub extends Component{
                 }
             },
             {
-                title: '名称', 
+                title: '巡检详情名称', 
                 key: 'name',
                 render: (text, record) => {
                 return (record.name && record.name) || '--'
                 }
             },{
-                title: '描述',
+                title: '巡检内容描述',
                 key: 'description',
                 render: (text, record) => {
                 return (record.description && record.description) || '--'
                 }
             },{
-                title: '处理结果',
+                title: '巡检结果',
                 key: 'result',
                 render: (text, record) => {
                 return (record.result && record.result) || '--'

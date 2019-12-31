@@ -7,13 +7,11 @@ import Comment from './comment'
 import moment from 'moment';
 import axios from 'axios';
 import { platform } from 'os';
+import { copyFileSync } from 'fs';
 
 const FIRST_PAGE = 0;
 const PAGE_SIZE = 100;
 const Search = Input.Search;
-// const token=window.localStorage.getItem('token')
-// const id=window.localStorage.getItem('id')
-// const roleCode=window.localStorage.getItem('roleCode')
 class Test extends Component{
     constructor(props){
         super(props)
@@ -46,13 +44,13 @@ class Test extends Component{
   //根据不同的路由，加载不同的信息
   getInfo(page){
     var location=this.props.location.pathname
-   
     var status
  
     if(location=='/cbd/maintain/data'){
+    
       status=null
     }
-    else if(location==='/cbd/maintain/data/serviceWait'){
+    else if(location==='/cbd/maintain/data/serverWait'){
       status=3
     }
     else if(location==='/cbd/maintain/data/billApproval'){
@@ -89,7 +87,7 @@ class Test extends Component{
       status=12
     }
     // this.setState({status:status})
-    console.log('id'+this.state.id+' '+this.state.roleCode)
+    console.log(status)
     const { size, } = this.state;
     const values={orderBy: "string",pageSize:size,pageNum:page,id:this.state.id,roleCode:this.state.roleCode,status:status}
         axios({
@@ -118,7 +116,7 @@ class Test extends Component{
 }
   //返回不同的状态按钮
   getFunction(record,status,roleCode){
-    if(status==3){
+    if(status===3){
       return (
         <div>
             <Button 
@@ -495,7 +493,7 @@ class Test extends Component{
               />
             </Col> */}
              {(roleCode=="user_watcher"&&status==2)&&<Col push={21}>
-              <Link to={`/cbd/check/new`}>
+              <Link to={`/cbd/service/new`}>
                 <Button type="primary">
                             +创建工单
                 </Button>
@@ -574,18 +572,22 @@ class Test extends Component{
                 style={{ display: 'block' }}
               >
                 <Link
-                  to={`/cbd/check/sub/${record.id}`}
+                  to={`/cbd/service/sub/${record.id}`}
                   style={{marginRight:'12px'}}
                 >任务子项</Link>                
                 <Link
-                  to={`/cbd/check/log/${record.id}`}
+                  to={`/cbd/service/log/${record.id}`}
                   style={{marginRight:'12px'}}
                 >任务日志</Link>
                 <br/>
                 <Link
-                  to={`/cbd/check/spare/${record.id}`}
+                  to={`/cbd/service/spare/${record.id}`}
                   style={{marginRight:'12px'}}
                 >备品备件</Link>
+                 <Link
+                  to={`/cbd/service/detail/${record.id}`}
+                  style={{marginRight:'12px'}}
+                >详情</Link>
                 {this.getFunction(record,status,roleCode)}            
               </div>
             ),

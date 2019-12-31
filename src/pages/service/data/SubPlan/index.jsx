@@ -128,7 +128,7 @@ class SubPlan extends Component{
               >搜索</Button>
               </Col> */}
                 <Col push={18}>
-                  {this.state.roleCode=="engineer"&&<Link to={`/cbd/check/plan/new/${id}/${subId}`}>
+                  {this.state.roleCode=="engineer"&&<Link to={`/cbd/service/plan/new/${id}/${subId}`}>
                     <Button type="primary">
                                 +新建备品备件方案
                     </Button>

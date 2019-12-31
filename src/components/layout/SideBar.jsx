@@ -116,7 +116,7 @@ class SiderBar extends React.Component {
   render() {
     let name;
     if (!this.state.collapsed) {
-      name = <span className="name">React管理后台</span>;
+      name = <span className="name">安安运维系统</span>;
     }
     return (
       <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>

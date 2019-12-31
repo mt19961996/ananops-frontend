@@ -118,7 +118,7 @@ class Inspection extends Component{
             rowClassName={this.setRowClassName}
             dataSource={data}
             columns={[{
-                title: '巡检设备ID',
+                title: '巡检任务ID',
                 key: 'id',
                 render: (text, record) => {
                 return ((record.id && record.id) || '--')
@@ -137,10 +137,10 @@ class Inspection extends Component{
                 }
             },
             {
-                title: '设备名字', 
+                title: '任务名称', 
                 key: 'deviceName',
                 render: (text, record) => {
-                return (record.deviceName && record.deviceName) || '--'
+                return (record.taskName && record.taskName) || '--'
                 }
             }, {
                 title: '巡检内容',

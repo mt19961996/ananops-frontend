@@ -169,7 +169,7 @@ class SubNew extends Component{
                         message:"请输入描述",
                         }]
                     })(
-                        <Input placeholder="请输入描述" />
+                        <Input.TextArea auto={{minRows: 4, maxRows: 6}} placeholder="请输入描述" />
                     )}  
                     </Form.Item>
                     <section className="operator-container">

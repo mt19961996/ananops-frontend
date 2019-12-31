@@ -7,54 +7,85 @@ import axios from 'axios'
 const FIRST_PAGE = 0;
 const PAGE_SIZE = 10;
 const Search = Input.Search;
-const token=window.localStorage.getItem('token')
+
 class Management extends Component{
     constructor(props){
         super(props)
         this.state={
+          token:window.localStorage.getItem('token'),
+          loginAfter:window.localStorage.getItem('loginAfter'),
           current: FIRST_PAGE,
-          size: PAGE_SIZE,
+          // size: PAGE_SIZE,
           // total: 20, 
-          nowCurrent:FIRST_PAGE,
+          // nowCurrent:FIRST_PAGE,
           data:[],
+          partA:null,
+          partB:null,
+          roleCode:window.localStorage.getItem('roleCode')
         }
         this.getGroupList = this.getGroupList.bind(this);
     }
     componentDidMount(){
-      this.getGroupList(FIRST_PAGE);   
+      // this.getGroupList(FIRST_PAGE); 
+      this.getGroupList();   
     }
     //分页
     handlePageChange = (page) => {
       this.getGroupList(page-1)
     }
-    //获取列表信息
-    getGroupList = (page) => {
-      const { size,unit } = this.state;
-      const values={orderBy:'contractCode',pageSize:size,pageNum:page}
+    //获取列表信息+分页
+    // getGroupList = (page) => {
+    //   const { size,unit } = this.state;
+    //   const values={orderBy:'contractCode',pageSize:size,pageNum:page}
+    //   axios({
+    //       method: 'POST',
+    //       url: '/pmc/contract/getContractListWithPage',
+    //       headers: {
+    //         'deviceId': this.deviceId,
+    //         'Authorization':'Bearer '+this.state.token,
+    //       },
+    //       data:values
+    //     })
+    //   .then((res) => {
+    //       if(res && res.status === 200){
+    //       console.log(res.data.result)
+    //       this.setState({
+    //           data: res.data.result.list,
+    //           nowCurrent:res.data.result.pageNum-1,
+    //       }) ;
+    //       console.log(this.state.data)
+    //       }
+    //   })
+    //   .catch(function (error) {
+    //       console.log(error);
+    //   });
+        
+    // }
+     //获取信息列表 无分页
+     getGroupList = () => {
+      const id=JSON.parse(this.state.loginAfter).loginAuthDto.groupId
       axios({
           method: 'POST',
-          url: '/pmc/contract/getContractListWithPage',
+          url: '/pmc/contract/getContactListByGroupId/'+id,
           headers: {
-            'deviceId': this.deviceId,
-            'Authorization':'Bearer '+token,
+             'deviceId': this.deviceId,
+            'Authorization':'Bearer '+this.state.token,
           },
-          data:values
         })
       .then((res) => {
           if(res && res.status === 200){
-          console.log(res.data.result)
+          console.log(res)
           this.setState({
-              data: res.data.result.list,
-              nowCurrent:res.data.result.pageNum-1
+              data: res.data.result,
           }) ;
-          console.log(this.state.data)
+          // console.log(this.state.data)
           }
       })
       .catch(function (error) {
           console.log(error);
       });
-        
-    }
+      
+  }
     deleteGroup=(record)=>{
       console.log(record)
       axios({
@@ -62,64 +93,110 @@ class Management extends Component{
           url:'/pmc/contract/deleteContractById/'+record.id,
           headers:{
               'deviceId': this.deviceId,
-              'Authorization':'Bearer '+token,
+              'Authorization':'Bearer '+this.state.token,
           }           
       }) 
       .then((res) => {
           if(res && res.status === 200){
           console.log(res.data.result)
-          this.getGroupList(this.state.nowCurrent)
+          // this.getGroupList(this.state.nowCurrent)
+          this.getGroupList()
           }
       })
       .catch(function (error) {
           console.log(error);
       });
   }
-  selectActivity=(value)=>{
+
+  //甲方ID
+  partA=(e)=>{
+    this.setState({
+      partA:e.target.value
+    })
+  }
+  partB=(value)=>{
+    this.setState({
+      partB:value.target.value
+    })
+  }
+
+  //甲、乙方搜索
+  search(){
+    const{partA,partB}=this.state
     axios({
       method: 'POST',
-      url: '/pmc/contract/getContactListByGroupId/'+value,
+      url: '/pmc/contract/getContactByAB/'+partA+'/'+partB,
       headers: {
          'deviceId': this.deviceId,
-        'Authorization':'Bearer '+token,
+        'Authorization':'Bearer '+this.state.token,
       },
     })
   .then((res) => {
       if(res && res.status === 200){
       console.log(res.data.result)
       this.setState({
-          data: res.data.result.list,
-          // nowCurrent:res.data.result.pageNum-1
+          data: res.data.result,
+        //  nowCurrent:0
       }) ;
-      console.log(this.state.data)
+      console.log(this.res.data.result)
       }
   })
   .catch(function (error) {
       console.log(error);
   });
   }
+
+  //重置
+  blur=()=>{
+    this.setState({
+      partA:null,
+      partB:null
+    })
+  // this.getGroupList(0)
+   this.getGroupList()
+  }
+
     render(){
       const {
         data,
-        nowCurrent,
-        size,
+        // nowCurrent,
+        // size,
        } = this.state;
        // const total = allCount
-       const current = nowCurrent+1
-       const limit = size
+      //  const current = nowCurrent+1
+      //  const limit = size
         return(
             <div>
             <div className="searchPart">
               <Row>
-                {/* <Col span={2}>巡检人姓名：</Col> */}
-                {/* <Col span={5}>
-                  <Search
-                    placeholder="组织ID"
-                    enterButton
-                    onSearch={value => this.selectActivity(value)}
-                  />
-                </Col> */}
-                <Col push={16}>
+                <Col span={3}>
+                    <Input 
+                    placeholder="请输入甲方ID"
+                    value={this.state.partA}
+                    onChange={(e) => this.partA(e)}
+                   // onChange={this.partA.bind(this)}
+                    />
+                </Col>
+                <Col span={3}>
+                    <Input 
+                     placeholder="请输入乙方ID"
+                     value={this.state.partB}
+                     onChange={(e) => this.partB(e)}
+                   // onChange={value=>this.partB(value)}
+                    />
+                </Col>
+                <Col span={2}>
+                    <Button  type="primary" onClick={this.search.bind(this)}>
+                      搜索
+                    </Button>
+                </Col>
+                <Col span={2}>
+                    <Button   type="primary" onClick={this.blur.bind(this)}>
+                      重置
+                    </Button>
+    
+                </Col>
+                <Col push={11}>
                   <Link to={"/cbd/pro/contract/new"}>
                     <Button type="primary">
                                 +新建合同
@@ -127,17 +204,18 @@ class Management extends Component{
                   </Link>
                 </Col>
               </Row> 
+             
             </div>
             <Table
               className="group-list-module"
               bordered
               showHeader={true}
-              pagination={{
-                current,
-                pageSize: size,
-                onChange: this.handlePageChange,
-                // showTotal: () => `共${allCount} 条数据`
-              }}
+              // pagination={{
+              //   current,
+              //   pageSize: size,
+              //   onChange: this.handlePageChange,
+              //   // showTotal: () => `共${allCount} 条数据`
+              // }}
               rowClassName={this.setRowClassName}
               dataSource={data}
               columns={[{
@@ -177,7 +255,7 @@ class Management extends Component{
                     style={{ display: 'block' }}
                   >
                     <Link
-                      to={`/cbd/pro/contract/${record.id}`}
+                      to={`/cbd/pro/contract/detail/${record.id}`}
                       style={{marginRight:'12px'}}
                     >详情</Link>
                     <Link

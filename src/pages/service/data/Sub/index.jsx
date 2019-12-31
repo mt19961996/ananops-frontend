@@ -138,7 +138,7 @@ class Sub extends Component{
               >搜索</Button>
               </Col>
                 <Col push={12}>
-                  {roleCode=="user_watcher"&&<Link to={`/cbd/check/sub/new/${id}`}>
+                  {roleCode=="user_watcher"&&<Link to={`/cbd/service/sub/new/${id}`}>
                     <Button type="primary">
                                 +新建任务子项
                     </Button>
@@ -220,11 +220,11 @@ class Sub extends Component{
                     style={{ display: 'block' }}
                   >
                     <Link
-                      to={`/cbd/check/sublog/${id}/${record.id}`}
+                      to={`/cbd/service/sublog/${id}/${record.id}`}
                       style={{marginRight:'12px'}}
                     >子项日志</Link>
                     <Link
-                      to={`cbd/check/subplan/${id}/${record.id}`}
+                      to={`/cbd/service/subplan/${id}/${record.id}`}
                       style={{marginRight:'12px'}}
                     >备件方案</Link>
                      {(roleCode==='user_leader'&&this.state.status=='2')&&

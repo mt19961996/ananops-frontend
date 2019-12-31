@@ -93,6 +93,7 @@ class Login extends React.Component {
           console.log('resMenu',resMenu)
           window.localStorage.setItem('resMenu',JSON.stringify(resMenu))
           if(resMenu){
+            window.location.reload()
             this.props.history.push('/');
           }
           
@@ -100,7 +101,7 @@ class Login extends React.Component {
       }
     }).catch((err) => {
       console.log(err);
-      message.info('验证码错误')
+      // message.info('验证码错误')
     });
   }
 

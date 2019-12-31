@@ -3,6 +3,7 @@ import { Form,Input,Select,Button,message,DatePicker,Radio } from 'antd';
 import { Link } from 'react-router-dom'
 import moment from 'moment';
 import axios from 'axios';
+import locale from 'antd/es/date-picker/locale/zh_CN';
 const token = window.localStorage.getItem('token')
 class ProjectNew extends Component{
     constructor(props){
@@ -57,14 +58,20 @@ class ProjectNew extends Component{
       if(!getFieldValue('partyAId')){
         message.error('请输入甲方ID')
       }
+      if(!getFieldValue('alegalName')){
+        message.error('请输入甲方法人')
+      }
       if(!getFieldValue('partyAName')){
         message.error('请输入甲方名称')
-      }
+      }      
       if(!getFieldValue('partyBId')){
         message.error('请输入乙方ID')
       }
       if(!getFieldValue('partyBName')){
         message.error('请输入乙方名称')
+      }
+      if(!getFieldValue('blegalName')){
+        message.error('请输入乙方法人')
       }
       if(!getFieldValue('signTime')){
         message.error('请选择合同签订时间')
@@ -171,7 +178,7 @@ class ProjectNew extends Component{
                   message:"请填写合同名称",
                 }]
               })(
-                <Input placeholder="请输入合同名称" />
+                <Input.TextArea autoSize={{minRows:2,maxRows:6}} placeholder="请输入合同名称" />
               )}  
             </Form.Item>
             <Form.Item
@@ -218,6 +225,20 @@ class ProjectNew extends Component{
             </Form.Item>
             <Form.Item
               {...createFormItemLayout}
+              label="甲方法人"
+            >
+              {getFieldDecorator('alegalName',{
+                initialValue: id && contractDetail.alegalName,
+                rules:[{
+                  required:true,
+                  message:"请输入甲方法人",
+                }]
+              })(
+                <Input placeholder="请输入甲方法人" />
+              )}  
+            </Form.Item>
+            <Form.Item
+              {...createFormItemLayout}
               label="乙方ID"
             >
               {getFieldDecorator('partyBId',{
@@ -246,6 +267,20 @@ class ProjectNew extends Component{
             </Form.Item>
             <Form.Item
               {...createFormItemLayout}
+              label="乙方法人"
+            >
+              {getFieldDecorator('blegalName',{
+                initialValue: id && contractDetail.blegalName,
+                rules:[{
+                  required:true,
+                  message:"请输入乙方法人",
+                }]
+              })(
+                <Input placeholder="请输入乙方法人" />
+              )}  
+            </Form.Item>
+            <Form.Item
+              {...createFormItemLayout}
               label="合同签订时间"
             >
               {getFieldDecorator('signTime',{
@@ -256,6 +291,7 @@ class ProjectNew extends Component{
                 }]
               })(
                 <DatePicker
+                  locale={locale}
                   format="YYYY-MM-DD HH:mm:ss"
                   placeholder="请选择合同签订时间"
                   showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
@@ -274,6 +310,7 @@ class ProjectNew extends Component{
                 }]
               })(
                 <DatePicker
+                locale={locale}
                 format="YYYY-MM-DD HH:mm:ss"
                 placeholder="请选择合同开始时间"
                 showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
@@ -292,6 +329,7 @@ class ProjectNew extends Component{
                 }]
               })(
                 <DatePicker
+                  locale={locale}
                   format="YYYY-MM-DD HH:mm:ss"
                   placeholder="请选择合同结束时间"
                   showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
@@ -323,7 +361,7 @@ class ProjectNew extends Component{
                   message:"请输入乙方代理内容",
                 }]
               })(
-                <Input placeholder="请输入乙方代理内容" />
+                <Input.TextArea autoSize={{minRows:4,maxRows:6}} placeholder="请输入乙方代理内容" />
               )}  
             </Form.Item>
             <Form.Item
@@ -380,8 +418,8 @@ class ProjectNew extends Component{
                 }]
               })(
                 <Radio.Group defaultValue={1}>
-                <Radio value={1}>是</Radio>
-                <Radio value={0}>否</Radio>
+                <Radio value={1}>包括</Radio>
+                <Radio value={0}>不包括</Radio>
               </Radio.Group>
               )}  
             </Form.Item>
@@ -428,6 +466,7 @@ class ProjectNew extends Component{
                 }]
               })(
                 <DatePicker
+                locale={locale}
                 format="YYYY-MM-DD HH:mm:ss"
                 placeholder="请选择付款时间"
                 showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
@@ -445,9 +484,10 @@ class ProjectNew extends Component{
                   message:"请选择支付方式",
                 }]
               })(
-                <Radio.Group defaultValue={0}>
-                <Radio value={0}>微信</Radio>
-                <Radio value={1}>支付宝</Radio>
+                <Radio.Group defaultValue={1}>
+                <Radio value={1}>现结</Radio>
+                <Radio value={2}>账期</Radio>
+                <Radio value={3}>年结</Radio>
               </Radio.Group>
               )}  
             </Form.Item>
@@ -508,8 +548,8 @@ class ProjectNew extends Component{
                 }]
               })(
                 <Radio.Group defaultValue={1}>
-                <Radio value={1}>是</Radio>
-                <Radio value={0}>否</Radio>
+                <Radio value={1}>作废</Radio>
+                <Radio value={0}>有效</Radio>
               </Radio.Group>
               )}  
             </Form.Item>
@@ -524,7 +564,7 @@ class ProjectNew extends Component{
                   message:"请选择是否自动顺延",
                 }]
               })(
-                <Radio.Group defaultValue={1}>
+                <Radio.Group defaultValue={0}>
                 <Radio value={1}>是</Radio>
                 <Radio value={0}>否</Radio>
               </Radio.Group>
@@ -541,7 +581,7 @@ class ProjectNew extends Component{
                   message:"请输入维修工身份验证流程",
                 }]
               })(
-                <Input placeholder="请输入维修工身份验证流程" />
+                <Input.TextArea autoSize={{minRows:4,maxRows:6}} placeholder="请输入维修工身份验证流程" />
               )}  
             </Form.Item>
             <Form.Item
@@ -555,7 +595,7 @@ class ProjectNew extends Component{
                   message:"请输入描述",
                 }]
               })(
-                <Input placeholder="请输入描述" />
+                <Input.TextArea autoSize={{minRows:4,maxRows:6}} placeholder="请输入描述" />
               )}  
             </Form.Item>
             <section className="operator-container">
