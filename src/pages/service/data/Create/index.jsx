@@ -1,6 +1,7 @@
 import React, { Component, } from 'react';
 import { Form,Input,Select,Button,message,DatePicker } from 'antd';
 import { Link } from 'react-router-dom'
+import locale from 'antd/es/date-picker/locale/zh_CN';
 import axios from 'axios'
 import moment from 'moment';
 const token=window.localStorage.getItem('token')
@@ -14,6 +15,7 @@ class OrderNew extends Component{
             id:'',
             token:window.localStorage.getItem('token')
         }
+        this.createBill=this.createBill.bind(this)
     }
     componentDidMount(){
         this.setState({id:id})
@@ -55,16 +57,42 @@ class OrderNew extends Component{
             if(res && res.status === 200){  
             console.log(res.data.result.id)
             // var id=res.data.result.id
+        var values={}
+        values.workorderid=res.data.result.id
+        values.userid=res.data.result.userId
+        values.supplier=res.data.result.facilitatorId
+        values.state="创建中"
+        axios({
+            method: 'POST',
+            url: '/bill/bill/create',
+            headers: {
+                'Content-Type': 'application/json',
+                'deviceId': this.deviceId,
+                'Authorization':'Bearer '+this.state.token,
+            },
+            data:JSON.stringify(values)
+            })
+        .then((res) => {
+            if(res && res.status === 200){  
+            console.log(res.data)
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
             // this.changeStatus(id,2,'维修申请提交后，进入审核')   
             history.push('/cbd/maintain/data')
-            
+           
             }
         })
         .catch(function (error) {
             console.log(error);
         });
      }
-    
+    createBill=(result)=>{
+        console.log(result)
+        
+    }
     render(){
 
         const createFormItemLayout = {
@@ -122,6 +150,7 @@ class OrderNew extends Component{
                     }]
                 })(
                     <DatePicker
+                        locale={locale}
                         format="YYYY-MM-DD HH:mm:ss"
                         placeholder="请选择开始时间"
                         showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
@@ -211,7 +240,7 @@ class OrderNew extends Component{
                     message:"请输入维修建议",
                     }]
                 })(
-                    <Input placeholder="请输入维修建议" />
+                    <Input.TextArea auto={{minRows: 4, maxRows: 6}} placeholder="请输入维修建议" />
                 )}  
                 </Form.Item>
                 <Form.Item

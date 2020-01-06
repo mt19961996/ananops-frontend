@@ -9,7 +9,7 @@ const proxy = require('http-proxy-middleware');
 
 module.exports = function(app) {
   app.use(
-    proxy(['/uac','/pmc','/mdc','/mdmc'],{target})
+    proxy(['/uac','/pmc','/mdc','/mdmc','/bill','/imc'],{target})
     // proxy(['/default'],{target})
   );
 };
