@@ -4,14 +4,14 @@ import moment from 'moment';
 import './index.styl'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
-const token=window.localStorage.getItem('token')
 class ProjectDetail extends Component{
     constructor(props){
         super(props)
         this.state={
           projectDetail:{
 
-          }
+          },
+          token:window.localStorage.getItem('token')
         }
         this.getDetail = this.getDetail.bind(this);
     }
@@ -28,7 +28,7 @@ class ProjectDetail extends Component{
         url: '/pmc/project/getById/'+id,
         headers: {
           'deviceId': this.deviceId,
-          'Authorization':'Bearer '+token,
+          'Authorization':'Bearer '+this.state.token,
         },
       })
     .then((res) => {
