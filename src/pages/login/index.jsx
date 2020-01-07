@@ -74,6 +74,7 @@ class Login extends React.Component {
           console.log('resMenu',resMenu)
           window.localStorage.setItem('resMenu',JSON.stringify(resMenu))
           if(resMenu){
+            window.location.reload()
             this.props.history.push('/');
           }
           

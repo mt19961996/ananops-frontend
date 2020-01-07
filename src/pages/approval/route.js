@@ -20,7 +20,7 @@ class ApprovalRoute extends Component{
       <Switch>
         <Route 
           exact   
-          path="/approval"
+          path="/cbd/examine"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EntranceWork" */
@@ -30,7 +30,7 @@ class ApprovalRoute extends Component{
         />
         <Route
           exact
-          path="/approval/new/:id"
+          path="/cbd/examine/new/:id"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "Device" */

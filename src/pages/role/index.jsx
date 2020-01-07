@@ -223,15 +223,11 @@ export default class Role extends Component{
     const {searchCode,searchName,searchType} = this.state
     
     const dataPost = {
-      "id": 0,
-      "orderBy": "createdTime",
       "pageNum": `${pageNum}`,
       "pageSize": 10,
-      "remark": "",
       "roleCode": `${searchCode}`,
       "roleName": `${searchName}`,
-      "status": `${searchType===''?'':(searchType==='roleOn'?'ENABLE':'DISABLE')}`,
-      "version": 0
+      "status": `${searchType===''?'':(searchType==='roleOn'?'ENABLE':'DISABLE')}`
     }
     const result = await reqRoleList(dataPost)
     if(result.code===200){

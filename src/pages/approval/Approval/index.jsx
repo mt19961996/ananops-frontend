@@ -1,7 +1,10 @@
 import React, { Component, } from 'react';
 import { Table } from 'antd';
+import LinkButton from '../../../components/link-button'
 import axios from 'axios';
 import moment from 'moment';
+import {formatDate} from '../../../utils/dateUtils'
+import {reqTasked} from '../../../axios/index'
 const FIRST_PAGE = 1;
 const PAGE_SIZE = 10;
 //const user_id = window.sessionStorage.getItem("user_id");
@@ -9,81 +12,110 @@ class Approved extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      current: FIRST_PAGE,
-      size: PAGE_SIZE,
+      loading:false,
+      taskeds:[],
+      tasked:{},
       total: 0,     
-      data:[]
+      
     };
-    this.getGroupList = this.getGroupList.bind(this);
+   
   }
+
+  initColumns = () => {
+    this.columns = [
+      {
+        title:'任务ID',
+        dataIndex:'taskId'
+      },
+      {
+        title:'实例ID',
+        dataIndex:'processInstanceId'
+      },
+      {
+        title:'发起人ID',
+        dataIndex:'startUser'
+      },
+      {
+        title:'流程名称',
+        dataIndex:'processName'
+      },
+      {
+        title:'任务名称',
+        dataIndex:'taskName'
+      },
+      {
+        title:'创建时间',
+        dataIndex:'createTime',
+        render:formatDate
+      },
+      {
+        title:'结束时间',
+        dataIndex:'endTime',
+        render:formatDate
+      },
+      {
+        title:'工单ID',
+        dataIndex:'orderID'
+      },
+      {
+        title:'审核状态',
+        width:200,
+        fixed:'right',
+        dataIndex:'state'
+      }
+    ]
+  }
+
+  getTaskedList = async (pageNum) => {
+    this.pageNum = pageNum
+    this.setState({loading:true})
+    
+    const loginAfter = JSON.parse(window.localStorage.getItem('loginAfter'))
+ 
+    const userId = loginAfter.loginAuthDto.userId
+    
+    const dataPost = {
+      userid:userId,
+      pageNum:pageNum,
+      pageSize:10
+    }
+ 
+    const result = await reqTasked(dataPost)
+    if(result.code===200){
+      this.setState({loading:false})
+      
+      const taskeds = result.result.list
+      const total = result.result.total
+      this.setState({taskeds,total})
+    }
+  }
+
+  componentWillMount() {
+    this.initColumns()
+  }
+
   componentDidMount(){
-    this.getGroupList();
+    this.getTaskedList(1);
   }
-  getGroupList = () => {
-    // axios.get('/api/v1/user/alreadyReservePlan?user_id='+user_id)
-    //   .then((res)=>{
-    //     if(res&&res.status === 200){
-    //       console.log('====================================');
-    //       console.log(res);
-    //       console.log('====================================');
-    //       this.setState({
-    //         data:res.data
-    //       })
-    //     }
-    //   })
-    //   .catch(function(error){
-    //     console.log('====================================');
-    //     console.log(error);
-    //     console.log('====================================');
-    //   })
-  }
+
+
   render() {
-    const {
-      data,
-      // current,
-      // total,
-      // size,
-    } = this.state;
+    const {loading,taskeds,total} = this.state;
     return (
       <div>
         <Table
-          className="group-list-module"
           bordered
-          // pagination={{
-          //   current,
-          //   total,
-          //   pageSize: size,
-          //   onChange: this.handlePageChagne,
-          //   showTotal: () => `共 ${total} 条数据`,
-          // }}
-          dataSource={data}
-          columns={[{
-            title: '预案ID',
-            key: 'id',
-            render: (text, record) => (record.id && record.id) || '--',
-          }, {
-            title: '计划名',
-            key: 'planName',
-            render: (text, record) => (record.planName && record.planName) || '--',
-          }, {
-            title: '用户ID',
-            key: 'userId',
-            render: (text, record) => (record.userId && record.userId) || '--',
-          }, {
-            title: '用户名',
-            dataIndex: 'userName',
-            render: (text, record) => (record.userName && record.userName) || '--',
-          }, {
-            title: '创建日期',
-            dataIndex: 'addDate',
-            render: (text, record) => moment(parseInt(record.addDate)).format("YYYY-MM-DD HH:mm:ss") || '--',
-          }, {
-            title: '审批状态',
-            key: 'state',
-            render: (text, record) => 
-              `${record.state === 2 ? text = "未通过" : (record.state === 1 ? text = "通过" : text = "未审批")}`
-           
-          }]}
+          loading={loading}
+          rowKey="id"
+          dataSource={taskeds}
+          columns={this.columns}
+          pagination={{
+            current:this.pageNum,
+            defaultPageSize:10,
+            showQuickJumper:true,
+            total:total,
+            onChange:this.getTaskedList,
+          }}
         />
       </div>
 

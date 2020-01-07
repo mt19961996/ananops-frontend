@@ -1,125 +1,186 @@
 import React, { Component, } from 'react';
-import { Button,Table,Popconfirm } from 'antd';
-import { Link } from "react-router-dom";
-import moment from 'moment';
-import axios from 'axios';
-const FIRST_PAGE = 1;
-const PAGE_SIZE = 10;
-//const user_id = window.sessionStorage.getItem("user_id");
+import { Button,Table,Modal } from 'antd';
+import {reqExamines,reqOrderInfo,reqDisagree,reqAgree} from '../../../axios/index'
+import {formatDate} from '../../../utils/dateUtils'
+import OrderForm from './order-form'
+
 class NotApproved extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      current: FIRST_PAGE,
-      size: PAGE_SIZE,
-      total: 0,   
-      data:[]  
+      loading:false,
+      examines:[],
+      examine:{},
+      total: 0,     
+      orderInfo:{}, //工单信息
+      isShowExamine:false,
     };
-    this.getGroupList = this.getGroupList.bind(this);
+   
+  }
+
+  initColumns = () => {
+    this.columns = [
+      {
+        title:'任务ID',
+        dataIndex:'taskId'
+      },
+      {
+        title:'实例ID',
+        dataIndex:'processsInstanceId'
+      },
+      {
+        title:'发起人ID',
+        dataIndex:'startUser'
+      },
+      {
+        title:'流程名称',
+        dataIndex:'processName'
+      },
+      {
+        title:'任务名称',
+        dataIndex:'taskName'
+      },
+      {
+        title:'创建时间',
+        dataIndex:'createTime',
+        render:formatDate
+      },
+      {
+        title:'工单ID',
+        dataIndex:'orderID'
+      },
+      {
+        title:'操作',
+        width:200,
+        fixed:'right',
+        render: (examine) => {
+          return (
+            <span>
+              <Button type="primary" onClick={() => this.getInfo(examine)}>审批</Button>
+              <Button type="primary" onClick={() => this.getImage()}>查看流程图</Button>
+            </span>
+            
+          )
+        }
+      }
+    ]
+  }
+ 
+  getInfo = async (examine) => {
+    const orderId = examine.orderID
+    console.log(orderId)
+    const result = await reqOrderInfo(orderId)
+    if(result.code===200){
+      this.setState({orderInfo:result.result,examine:examine})
+      this.setState({isShowExamine:true})
+    }
   }
   
-  componentDidMount() {
-    this.getGroupList();
-  }
+ getExamineList = async (pageNum) => {
+   this.pageNum = pageNum
+   this.setState({loading:true})
+   
+   const loginAfter = JSON.parse(window.localStorage.getItem('loginAfter'))
+
+   const userId = loginAfter.loginAuthDto.userId
+   
+   const dataPost = {
+     userid:userId,
+     pageNum:pageNum,
+     pageSize:10
+   }
+
+   const result = await reqExamines(dataPost)
+   if(result.code===200){
+     this.setState({loading:false})
+     
+     const examines = result.result.list
+     const total = result.result.total
+     this.setState({examines,total})
+   }
+ }
+
+ refuse = async () => {
   
-  getGroupList = () =>{
-    // axios.get(`/api/v1/user/noReservePlan?user_id=${user_id}`)
-    //   .then((res)=>{
-    //     if(res&&res.status ===200){
-    //       console.log('====================================');
-    //       console.log(res);
-    //       console.log('====================================');
-    //       this.setState({
-    //         data:res.data
-    //       })
-    //     }
-    //   })
-    //   .catch(function(error){
-    //     console.log('====================================');
-    //     console.log(error);
-    //     console.log('====================================');
-    //   })
-  }
+   const info = this.form.getFieldsValue()
+   const dataPost = {
+     comment:info.comment,
+     taskId:this.state.examine.taskId
+   }
 
-  deleteGroup = (record) =>{
-    // axios.delete(`/api/v1/user/planAuditById?id=${record.id}&user_id=${user_id}`)
-    //   .then(()=>{
-    //     this.getGroupList(this.state.nowCurrent)
-    //   })
-    //   .catch((err)=>{
-    //     console.log(err)
-    //   })
-  }
+   const result = await reqDisagree(dataPost)
+   if(result.code==200){
+     this.form.resetFields()
+     this.setState({isShowExamine:false,examine:{}})
+     this.getExamineList(1)
+   }
 
-  render() {
-    const {
-      data,
-    } = this.state;
-    return (
-      <div>
-        <Table
-          className="group-list-module"
-          bordered
-          // pagination={{
-          //   current,
-          //   total,
-          //   pageSize: size,
-          //   onChange: this.handlePageChagne,
-          //   showTotal: () => `共 ${total} 条数据`,
-          // }}
-          dataSource={data}
-          columns={[{
-            title: '预案ID',
-            key: 'id',
-            render: (text, record) => (record.id && record.id) || '--',
-          }, {
-            title: '计划名',
-            key: 'planName',
-            render: (text, record) => (record.planName && record.planName) || '--',
-          }, {
-            title: '用户ID',
-            key: 'userId',
-            render: (text, record) => (record.userId && record.userId) || '--',
-          }, {
-            title: '用户名',
-            dataIndex: 'userName',
-            render: (text, record) => (record.userName) || '--'
-          }, {
-            title: '创建日期',
-            dataIndex: 'addDate',
-            render: (text, record) => moment(parseInt(record.addDate)).format("YYYY-MM-DD HH:mm:ss") || '--'
-          }, {
-            title: '状态',
-            key: 'state',
-            render: (text, record) => `${record.state === 2 ? text = "未通过" : (record.state === 1 ? text = "通过" : text = "未审批")}`,
-          }, {
-            title: '操作',
-            render: (text, record, index) => (
-              <div className="operate-btns"
-                style={{ display: 'block' }}
-              >
-                <Link 
-                  to={`/approval/new/${record.id}`}
-                  style={{marginRight:'5px'}}
-                >新建审批</Link>
-                
-                <Popconfirm 
-                  title="确定要删除吗" 
-                  onConfirm={()=>{this.deleteGroup(record)}}
-                >
-                  <Button 
-                    type="simple"
-                    style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
-                  >删除</Button>
-                </Popconfirm>
-              </div>
-            ),
-          }]}
-        />
-      </div>
+ }
 
-    );
-  }
+ accept = async () => {
+   const info = this.form.getFieldsValue()
+   const dataPost = {
+     comment:info.comment,
+     taskId:this.state.examine.taskId,
+     userid:782525013398923265
+   }
+
+   const result = await reqAgree(dataPost)
+   if(result.code==200){
+     this.form.resetFields()
+     this.setState({isShowExamine:false,examine:{}})
+     this.getExamineList(1)
+   }
+ }
+
+ componentWillMount() {
+   this.initColumns()
+ }
+
+ componentDidMount(){
+   this.getExamineList(1)
+ }
+
+ 
+ render() {
+   const {loading,examines,examine,total,isShowExamine,orderInfo} = this.state;
+   return (
+     <div>
+       <Table
+         bordered
+         loading={loading}
+         rowKey="processInstanceId"
+         dataSource={examines}
+         columns={this.columns}
+         pagination={{
+           current:this.pageNum,
+           defaultPageSize:10,
+           showQuickJumper:true,
+           total:total,
+           onChange:this.getExamineList,
+         }}
+       />
+       <Modal
+         title="审批"
+         visible={isShowExamine}
+         footer={
+           <span>
+             <Button type="default" onClick={() => {this.setState({isShowExamine:false,examine:{}});this.form.resetFields()}}>取消</Button>
+             <Button type="primary" onClick={this.refuse}>不通过</Button>
+             <Button type="primary" onClick={this.accept}>通过</Button>
+           </span>
+         }
+       >
+         <OrderForm
+           setForm={(form)=>{this.form = form}}
+           order={orderInfo}
+           examine={examine}
+         />
+       </Modal>
+     </div>
+
+   );
+ }
 }
 
 export default NotApproved;
