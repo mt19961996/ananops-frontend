@@ -1,36 +1,80 @@
 import React,{Component} from 'react'
 import {Form,Input,Select,Icon,Radio} from 'antd'
 import PropTypes from 'prop-types'
+import axios from 'axios'
 const Item = Form.Item
-
-class Confirm extends Component{
-  //接收父组件参数
-  static propTypes = {
-    setForm:PropTypes.func.isRequired,
-    detail:PropTypes.object
-  }
-
-  componentWillMount() {
-    this.props.setForm(this.props.form)
-  }
-
-  render(){
-
-    const detail = this.props.detail
-  
+let newArr = []
+class Plan extends Component{
+    constructor(props){
+        super(props)
+        this.state={
+          detail:{},
+          DeviceOrderItemInfoDto: [
+            {
+            status:null,//是否在维保期内
+            deviceID: '',// 异常设备
+            manufacuture: '',// 对异常设备的描述
+            deleteDisplay: false,//删除异常设备按钮是否出现
+            addDisplay: true,//添加异常项按钮是否出现
+            }
+        ],
+        devices:{},
+        token:window.localStorage.getItem('token')
+        }
+      //  this.getDevice=this.getDevice.bind(this)
+    }
+    componentDidMount(){
+     //   this.getDevice();
+    }
+    getDevice=()=>{
+        // axios({
+        //     method: 'GET',
+        //     url: '/rdc/deviceOrder/devices',
+        //     headers: {
+        //       'deviceId': this.deviceId,
+        //       'Authorization':'Bearer '+this.state.token,
+        //     },
+        //   })
+        //   .then((res) => {
+        //     console.log(res)
+        //     if(res && res.status === 200){     
+        //     this.setState({
+        //       devices:res.data.result
+        //     })
+        //    var device=res.data.result
+    
+        //   .catch(function (error) {
+        //       console.log(error);
+        //   });
+          
+    }
+    selectStatus=(value, index)=>{
+       
+        newArr = this.state.DeviceOrderItemInfoDto
+        newArr[index].status = value
+        this.setState({ DeviceOrderItemInfoDto: newArr })
+    }
+    selectdeviceID=(value,index)=>{
+        console.log(value)
+    }
+  render(){ 
     const formItemLayout = {
       labelCol:{span:5},
       wrapperCol:{span:15}
     }
-    console.log(detail)
-    const {getFieldDecorator} = this.props.form
+    const { 
+        form: { getFieldDecorator }, 
+        match : { params : { id } }
+      } = this.props
+    const { DeviceOrderItemInfoDto } = this.state
+
     return (
       <Form {...formItemLayout}>
 
         <Item label="工单编码：">
           {
             getFieldDecorator('objectId',{
-              initialValue:detail.objectId,
+              initialValue:id,
               rules:[{
                 required:true,
                 message:'请输入工单编码',
@@ -44,7 +88,7 @@ class Confirm extends Component{
         <Item label="备品备件订单申请人 ：">
           {
             getFieldDecorator('applicant',{
-              initialValue:detail.applicant,
+              initialValue:window.localStorage.getItem('roleName'),
               rules:[{
                 required:true,
                 message:'请输入备品备件订单申请人 ',
@@ -58,7 +102,7 @@ class Confirm extends Component{
         <Item label="备品备件订单申请人编号：">
           {
             getFieldDecorator('applicantId',{
-              initialValue:detail.applicantId,
+              initialValue:window.localStorage.getItem('id'),
               rules:[{
                 required:true,
                 message:'请输入备品备件订单申请人编号',
@@ -72,7 +116,6 @@ class Confirm extends Component{
         <Item label="备品备件订单审批人：">
           {
             getFieldDecorator('currentApprover',{
-              initialValue:detail.applicantId,
               rules:[{
                 required:true,
                 message:'请输入备品备件订单审批人',
@@ -86,7 +129,6 @@ class Confirm extends Component{
         <Item label="备品备件订单审批人编号：">
           {
             getFieldDecorator('currentApprover',{
-              initialValue:detail.applicantId,
               rules:[{
                 required:true,
                 message:'请输入备品备件订单审批人编号',
@@ -100,37 +142,34 @@ class Confirm extends Component{
         <Item label="备件添加：">
             {getFieldDecorator('DeviceOrderItemInfoDto')(
               <div>
-              {detail.DeviceOrderItemInfoDto &&
-                detail.DeviceOrderItemInfoDto.map((item, index) => (
+              {DeviceOrderItemInfoDto &&
+                DeviceOrderItemInfoDto.map((item, index) => (
                   <div className="inspection-log-abnormal" key={index}>
                     <div className="inspection-log-abnormal-flex">
-                    <Radio.Group onChange={(value) => {this.selectStatus(value, index) }} value={item.status}>
+                    <Radio.Group 
+                        onChange={(e) => {this.selectStatus(e.target.value, index) }} 
+                        value={item.status}>
                       <Radio value={1}>是</Radio>
                       <Radio value={2}>否</Radio>
                     </Radio.Group>
-                    {item.value===1?
+                    {item.status===1?
                     <div>
                       <Select
-                        placeholder="请选择备件编号"
+                        placeholder="请选择设备编号"
                         className="inspection-log-abnormal-select"
                         value={item.deviceID}
                         onChange={(value) => { this.selectdeviceID(value, index) }}
                         allowClear
                       >
-                        {/* {
-                          SELECT_INSPECTION_ABNORMA_ITEM &&
-                          SELECT_INSPECTION_ABNORMA_ITEM.map((cur, index) => (
-                            <Select.Option key={index}
-                              value={cur.id}
-                            >{cur.name}</Select.Option>
-                          ))
-                        } */}
-                          <Select.Option key='1'
-                            >{1}
+                          {/* <Select.Option key='1'
+                            value='1'
+                            >1
                             </Select.Option>
-                            <Select.Option key='1'
-                            >{1}
-                            </Select.Option>
+                            <Select.Option key='2'
+                            value='2'
+                            >2
+                            </Select.Option> */}
+                            {this.getDevice}
                       </Select>
                       <Input
                         value={item.manufacture}
@@ -252,4 +291,4 @@ class Confirm extends Component{
     )
   }
 }
-export default Form.create()(Confirm)
+export default Form.create()(Plan)

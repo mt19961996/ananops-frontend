@@ -22,12 +22,11 @@ class system extends Component{
     };
     return (
       <Switch>
-        <Route 
+        {/* <Route 
           exact   
           path="/cbd/inspection/data"
           component={Loadable({
             loader: () => import(
-              /* webpackChunkName: "EntranceWork" */
               './Test/index'),
             loading: Loading
           })}
@@ -37,7 +36,6 @@ class system extends Component{
           path="/cbd/inspection/data/billApproval"
           component={Loadable({
             loader: () => import(
-              /* webpackChunkName: "EntranceWork" */
               './Test/index'),
             loading: Loading
           })}
@@ -47,7 +45,6 @@ class system extends Component{
           path="/cbd/inspection/data/maintainWait"
           component={Loadable({
             loader: () => import(
-              /* webpackChunkName: "EntranceWork" */
               './Test/index'),
             loading: Loading
           })}
@@ -57,7 +54,6 @@ class system extends Component{
           path="/cbd/inspection/data/maintainerWait"
           component={Loadable({
             loader: () => import(
-              /* webpackChunkName: "EntranceWork" */
               './Test/index'),
             loading: Loading
           })}
@@ -67,7 +63,6 @@ class system extends Component{
           path="/cbd/inspection/data/planConfirm"
           component={Loadable({
             loader: () => import(
-              /* webpackChunkName: "EntranceWork" */
               './Test/index'),
             loading: Loading
           })}
@@ -77,7 +72,6 @@ class system extends Component{
           path="/cbd/inspection/data/resultSubmit"
           component={Loadable({
             loader: () => import(
-              /* webpackChunkName: "EntranceWork" */
               './Test/index'),
             loading: Loading
           })}
@@ -87,7 +81,6 @@ class system extends Component{
           path="/cbd/inspection/data/orderApproval"
           component={Loadable({
             loader: () => import(
-              /* webpackChunkName: "EntranceWork" */
               './Test/index'),
             loading: Loading
           })}
@@ -97,7 +90,6 @@ class system extends Component{
           path="/cbd/inspection/data/planApproval"
           component={Loadable({
             loader: () => import(
-              /* webpackChunkName: "EntranceWork" */
               './Test/index'),
             loading: Loading
           })}
@@ -107,7 +99,6 @@ class system extends Component{
           path="/cbd/inspection/data/maintainConfirm"
           component={Loadable({
             loader: () => import(
-              /* webpackChunkName: "EntranceWork" */
               './Test/index'),
             loading: Loading
           })}
@@ -117,7 +108,6 @@ class system extends Component{
           path="/cbd/inspection/data/orderSubmit"
           component={Loadable({
             loader: () => import(
-              /* webpackChunkName: "EntranceWork" */
               './Test/index'),
             loading: Loading
           })}
@@ -127,7 +117,6 @@ class system extends Component{
           path="/cbd/inspection/data/maintainFinish"
           component={Loadable({
             loader: () => import(
-              /* webpackChunkName: "EntranceWork" */
               './Test/index'),
             loading: Loading
           })}
@@ -137,7 +126,6 @@ class system extends Component{
           path="/cbd/inspection/data/pay"
           component={Loadable({
             loader: () => import(
-              /* webpackChunkName: "EntranceWork" */
               './Test/index'),
             loading: Loading
           })}
@@ -147,7 +135,6 @@ class system extends Component{
           path="/cbd/inspection/data/comment"
           component={Loadable({
             loader: () => import(
-              /* webpackChunkName: "EntranceWork" */
               './Test/index'),
             loading: Loading
           })}
@@ -157,11 +144,10 @@ class system extends Component{
           path="/cbd/inspection/data/resultSubmit"
           component={Loadable({
             loader: () => import(
-              /* webpackChunkName: "EntranceWork" */
               './Test/index'),
             loading: Loading
           })}
-        />     
+        />      */}
       </Switch>
     );
   }

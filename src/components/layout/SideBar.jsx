@@ -62,6 +62,7 @@ class SiderBar extends React.Component {
   // 处理菜单列表
   setMenu = (menu, pItem) => {
     return menu.map((item) => {
+     
       if (item.children) {
         return (
           <SubMenu key={item.key}
@@ -69,6 +70,7 @@ class SiderBar extends React.Component {
           >
             {this.setMenu(item.children, item)}
           </SubMenu>
+          
         )
       }
       return (

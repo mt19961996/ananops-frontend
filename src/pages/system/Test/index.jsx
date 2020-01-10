@@ -6,6 +6,7 @@ import Result from './result'
 import Comment from './comment'
 import moment from 'moment';
 import axios from 'axios';
+import items from '../../../config/status'
 import { platform } from 'os';
 import { copyFileSync } from 'fs';
 
@@ -29,11 +30,24 @@ class Test extends Component{
             data:[],
             visible: false,
             chooseid:'',
-            detail:{},
+            //detail:{},
             result:{},
             comment:{},
+            selectInfo:{},
+            detail:{
+            //   deviceItem: [
+            //   {
+            //     state: '',//是否在维保期内
+            //     deviceID: '',// 异常设备
+            //     manufacuture: '',// 对异常设备的描述
+            //     deleteDisplay: false,//删除异常设备按钮是否出现
+            //     addDisplay: true,//添加异常项按钮是否出现
+            //   }
+            // ],
+          },
             commentVisible:false,
             resultVisible:false,
+            selectVisible:false,
         }
         this.getInfo=this.getInfo.bind(this)
     }
@@ -43,6 +57,7 @@ class Test extends Component{
 
   //根据不同的路由，加载不同的信息
   getInfo(page){
+    console.log('here')
     var location=this.props.location.pathname
     var status
  
@@ -89,7 +104,7 @@ class Test extends Component{
     // this.setState({status:status})
     console.log(status)
     const { size, } = this.state;
-    const values={orderBy: "string",pageSize:size,pageNum:page,id:this.state.id,roleCode:this.state.roleCode,status:status}
+    const values={orderBy: "appointTime",pageSize:size,pageNum:page,id:this.state.id,roleCode:this.state.roleCode,status:status}
         axios({
             method: 'POST',
             url: '/mdmc/mdmcTask/getTaskList',
@@ -122,7 +137,8 @@ class Test extends Component{
             <Button 
               type="simple"
               style={{border:'none',padding:0,color:"#357aff",background:'transparent',marginRight:'12px'}}
-              onClick={()=>{this.changeStatus(record.id,4,'服务商业务员已接单，待维修工接单')}}
+            //  onClick={()=>{this.changeStatus(record.id,4,'服务商业务员已接单，待维修工接单')}}
+              onClick={()=>{this.select(record.id)}}
               >接单</Button>
               <Button 
               type="simple"
@@ -150,14 +166,18 @@ class Test extends Component{
     }
     else if(status===5){
       return (
-            <Button 
-              type="simple"
-              style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
-              onClick={()=>{this.confirm(record.id)}}
-              >方案确定</Button>
+            // <Button 
+            //   type="simple"
+            //   style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
+            //   onClick={()=>{this.confirm(record.id)}}
+            //   >方案确定</Button>
+            <Link
+              to={`/cbd/service/plan/${record.id}`}
+              style={{marginRight:'12px'}}
+            >方案确定</Link>
       )
     }
-    else if(status===6&&roleCode=='user_leader'){
+    else if(status===6&&roleCode=='user_manager'){
       return (
             <Button 
               type="simple"
@@ -191,7 +211,7 @@ class Test extends Component{
         </div>
       )
     }
-    else if(status===2&&roleCode=='user_leader'){
+    else if(status===2&&roleCode=='user_manager'){
       return (
         <div>
             <Button 
@@ -289,15 +309,20 @@ class Test extends Component{
     .then((res) => {
       if(res && res.status === 200){
         var plan={}
-        plan.id=null
-        plan.taskId=res.data.result.id
-        plan.taskItemId=null
-        plan.principalId=res.data.result.principalId
-        plan.maintainerId=res.data.result.maintainerId
-        plan.deviceId=null
-        plan.deviceType=''
-        plan.cost=res.data.result.totalCost
-        plan.count=null
+     //   plan.id=null
+        plan.objectId=res.data.result.id
+        plan.objectType=1
+        plan.currentApprover=null
+        plan.applicant=window.localStorage.getItem('roleName')
+        plan.currentApproverId=res.data.result.principalId
+        plan.applicantId=res.data.result.maintainerId
+        plan.DeviceOrderItemInfoDto=[{ 
+        state: '',//是否在维保期内
+        deviceID: '',// 异常设备
+        manufacuture: '',// 对异常设备的描述
+        deleteDisplay: false,//删除异常设备按钮是否出现
+        addDisplay: true,//添加异常项按钮是否出现
+      }]
        this.setState({detail:plan})
       }
   })
@@ -465,7 +490,31 @@ class Test extends Component{
       commentVisible:false
     })
   }
+  
+  //指定工程师模态框
+  selectOk=e=>{
+    this.setState({selectVisible:true})
+  }
+  //取消指定
+  selectCancle=e=>{
+    this.setState({
+      selectVisible:false
+    })
+  }
+  //获取状态数值
+  setStatus=(status)=>{
+    var msg=this.getStatusInfo(status)
+    let statusMsg=msg.name
+    return statusMsg
+  }
 
+  getStatusInfo=(status)=>{
+    var a=items.find(item => {    
+      return item.status === status;
+    })
+   return a
+  }
+ 
   render(){
     const {
       data,
@@ -476,6 +525,7 @@ class Test extends Component{
       detail,
       result,
       comment,
+      selectInfo,
       } = this.state;
       const current = nowCurrent+1
       const limit = size
@@ -528,48 +578,44 @@ class Test extends Component{
               return (record.title && record.title) || '--'
             }
           }, {
-            title: '审核人ID',
-            key: 'principalId',
+            title: '创建时间',
+            key: 'createdTime',
             render: (text, record) => {
-              return (record.principalId && record.principalId) || '--'
+              return (record.createdTime && record.createdTime)|| '--'
             }
-          },{
-            title: '项目ID', 
-            key: 'projectId',
-            render: (text, record) => {
-              return (record.projectId && record.projectId) || '--'
-            }
-          }, {
-            title: '服务商ID',
-            key: 'facilitatorId',
-            render: (text, record) => {
-              return (record.facilitatorId && record.facilitatorId) || '--'
-            }
-          },{
-            title: '报修人ID',
+          },
+          // {
+          //   title: '项目ID', 
+          //   key: 'projectId',
+          //   render: (text, record) => {
+          //     return (record.projectId && record.projectId) || '--'
+          //   }
+          // },
+           {
+            title: '报修人编号',
             key: 'userId',
             render: (text, record) => {
               return (record.userId && record.userId) || '--'
             }
           },{
-            title: '总花费',
-            key: 'totalCost',
+            title: '状态',
+            key: 'status',
             render: (text, record) => {
-              return (record.totalCost && record.totalCost) || '--'
+              return (record.status && this.setStatus(record.status))|| '--'
             }
           },
-          // {
-          //   title: '合同ID',
-          //   key: 'contractId',
-          //   render: (text, record) => {
-          //     return (record.contractId && record.contractId) || '--'
-          //   }
-          // },
+          {
+            title: '紧急程度',
+            key: 'level',
+            render: (text, record) => {
+              return (record.level && record.level===1?'一般':(record.level===2?'紧急':'非常紧急')) || '--'
+            }
+          },
           {
             title: '操作',
             render: (text, record, index) => (
               <div className="operate-btns"
-                style={{ display: 'block' }}
+                style={{ display: 'block',width:'140px' }}
               >
                 <Link
                   to={`/cbd/service/sub/${record.id}`}
@@ -593,6 +639,16 @@ class Test extends Component{
             ),
           }]}
         />
+         {/* <Modal
+          title="指定工程师"
+          visible={this.state.selectVisible}
+          onOk={this.selectOk}
+          onCancel={this.selectCancel}
+          okText="确定"
+          cancelText="取消"
+        >
+          <Comment setSelect={(form)=>{this.form = form}}  selectInfo={selectInfo}/>
+        </Modal> */}
          <Modal
           title="方案提交"
           visible={this.state.visible}

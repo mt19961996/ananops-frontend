@@ -32,18 +32,19 @@ class PlanApproval extends Component {
               <NotApproved />
             </ApprovalRoute>
           </TabPane>
-          <TabPane tab="已审批"
+          <TabPane 
+            tab="已审批"
             key="2"
           > 
             <PageTitle titles={['审批管理','已审批']} />
             <Approved />
           </TabPane>
-          <TabPane tab="审批结果"
+          {/* <TabPane tab="审批结果"
             key="3"
           >
             <PageTitle titles={['审批管理','审批结果']} />
             <Results />
-          </TabPane>
+          </TabPane> */}
         </Tabs>
         
       </div>

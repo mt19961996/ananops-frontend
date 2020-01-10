@@ -54,7 +54,7 @@ class SubLog extends Component{
             <div className="searchPart">
             <Row>
                 <Col span={5}>
-                <Link to={`/cbd/maintain/data`}>
+                <Link to={`/cbd/service/sub/${id}`}>
                     <Icon type="arrow-left" ></Icon>返回
                 </Link>
                 </Col>
