@@ -52,3 +52,18 @@ export const reqLogs = (dataPost) => ajax('/uac/log/queryListWithPage',dataPost)
 export const reqForceLogout = (accessToken) => ajax('/uac/user/logout?accessToken='+accessToken)
 //带搜索获取异常信息
 export const reqExceptions = (dataPost) => ajax('/mdc/exception/queryListWithPage',dataPost)
+
+
+
+//获取未审批列表
+export const reqExamines = (dataPost) => ajax('/activiti/approve/untask',dataPost)
+//审批根据工单ID获取工单信息
+export const reqOrderInfo = (taskId) => ajax('/mdmc/mdmcTask/getTaskByTaskId',{taskId},'GET')
+//获取已审批列表
+export const reqTasked = (dataPost) => ajax('/activiti/approve/tasked',dataPost)
+//审核不通过
+export const reqDisagree = (dataPost) => ajax('/activiti/approve/disagree',dataPost)
+//审核通过
+export const reqAgree = (dataPost) => ajax('/activiti/approve/agree',dataPost)
+//获取批注
+export const reqComment = (processInstanceId) => ajax('/activiti/base/getComment',{processInstanceId},'GET')

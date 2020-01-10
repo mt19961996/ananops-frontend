@@ -58,6 +58,12 @@ class Index extends React.Component {
               <Route path="/cbd/item" component={Item}/>
               <Route path="/cbd/examine" component={PlanApproval}/>
               <Route path="/cbd/bill" component={Bill}/>
+              <Route path="/cbd/alarm" component={Alarm}/>
+              <Route path="/cbd/check" component={Acceptance}/>
+              <Route path="/cbd/alliance" component={ServiceProvider}/>
+              <Route path="/report" component={Report}/>
+
+
               <Route exact path="/uas/user/list" component={User}/>
               <Route path="/uas/user/list/online" component={OnlineUsers}/>
               <Route path="/uas/user/list/detail" component={DetailUser}/>
@@ -65,10 +71,7 @@ class Index extends React.Component {
               <Route path="/uas/menu/list" component={Menu}/>
               <Route path="/uas/action/list" component={Authority}/>
               <Route path="/uas/group/list" component={Group}/>
-              <Route path="/cbd/alarm" component={Alarm}/>
-              <Route path="/cbd/check" component={Acceptance}/>
-              <Route path="/cbd/alliance" component={ServiceProvider}/>
-              <Route path="/report" component={Report}/>
+              
             
               <Route path="/uas/monitor/zipkin" component={Zipkin}/>
               <Route path="/uas/monitor/boot" component={Boot}/>
