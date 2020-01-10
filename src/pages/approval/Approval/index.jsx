@@ -1,10 +1,11 @@
 import React, { Component, } from 'react';
-import { Table } from 'antd';
+import { Table ,Button,Modal} from 'antd';
 import LinkButton from '../../../components/link-button'
 import axios from 'axios';
 import moment from 'moment';
 import {formatDate} from '../../../utils/dateUtils'
-import {reqTasked} from '../../../axios/index'
+import {reqTasked,reqOrderInfo} from '../../../axios/index'
+import OrderForm from './order-form'
 const FIRST_PAGE = 1;
 const PAGE_SIZE = 10;
 //const user_id = window.sessionStorage.getItem("user_id");
@@ -16,7 +17,8 @@ class Approved extends Component {
       taskeds:[],
       tasked:{},
       total: 0,     
-      
+      isShowComment:false,
+      orderInfo:{}
     };
    
   }
@@ -55,15 +57,44 @@ class Approved extends Component {
       },
       {
         title:'工单ID',
-        dataIndex:'orderID'
+        dataIndex:'orderId'
+      },
+      {
+        title:'流程定义ID',
+        dataIndex:'processDefinitionId',
+        width:180
       },
       {
         title:'审核状态',
         width:200,
         fixed:'right',
         dataIndex:'state'
+      },
+      {
+        title:'操作',
+        width:300,
+        fixed:'right',
+        render: (tasked) => {
+          return (
+            <span>
+              <Button type="primary" onClick={() => this.getInfo(tasked)} style={{marginRight:20}}>查看批注</Button>
+              {/* <Button type="primary" onClick={() => this.getImage()}>查看流程图</Button> */}
+            </span>
+            
+          )
+        }
       }
     ]
+  }
+
+  getInfo = async (tasked) => {
+    const orderId = tasked.orderId
+    console.log(orderId)
+    const result = await reqOrderInfo(orderId)
+    if(result.code===200){
+      this.setState({orderInfo:result.result,tasked:tasked})
+      this.setState({isShowComment:true})
+    }
   }
 
   getTaskedList = async (pageNum) => {
@@ -100,7 +131,7 @@ class Approved extends Component {
 
 
   render() {
-    const {loading,taskeds,total} = this.state;
+    const {loading,taskeds,total,isShowComment,tasked,orderInfo} = this.state;
     return (
       <div>
         <Table
@@ -117,6 +148,18 @@ class Approved extends Component {
             onChange:this.getTaskedList,
           }}
         />
+        <Modal
+          title="查看批注"
+          visible={isShowComment}
+          onCancel={() => {this.setState({isShowComment:false,tasked:{}});this.form.resetFields()}}
+          cancelText="关闭"
+        >
+          <OrderForm
+            setForm={(form)=>{this.form = form}}
+            tasked={tasked}
+            orderInfo={orderInfo}
+          />
+        </Modal>
       </div>
 
     );

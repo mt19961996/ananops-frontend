@@ -13,12 +13,12 @@ class OrderForm extends Component{
   //接收父组件参数
   static propTypes = {
     setForm:PropTypes.func.isRequired,
-    order:PropTypes.object.isRequired,
-    examine:PropTypes.object.isRequired
+    tasked:PropTypes.object.isRequired,
+    orderInfo:PropTypes.object.isRequired,
   }
 
   getComment = async () => {
-    const result = await reqComment(this.props.examine.processInstanceId)
+    const result = await reqComment(this.props.tasked.processInstanceId)
     if(result.code===200){
       this.setState({comments:result.result})
     }

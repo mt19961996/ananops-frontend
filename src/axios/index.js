@@ -66,4 +66,4 @@ export const reqDisagree = (dataPost) => ajax('/activiti/approve/disagree',dataP
 //审核通过
 export const reqAgree = (dataPost) => ajax('/activiti/approve/agree',dataPost)
 //获取批注
-export const reqComment = (processInstanceId) => ajax('/activiti/base/getComment/{processInstanceId}',{processInstanceId},'GET')
+export const reqComment = (processInstanceId) => ajax('/activiti/base/getComment',{processInstanceId},'GET')

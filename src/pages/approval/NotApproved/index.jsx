@@ -26,7 +26,7 @@ class NotApproved extends Component {
       },
       {
         title:'实例ID',
-        dataIndex:'processsInstanceId'
+        dataIndex:'processInstanceId'
       },
       {
         title:'发起人ID',
@@ -34,30 +34,39 @@ class NotApproved extends Component {
       },
       {
         title:'流程名称',
-        dataIndex:'processName'
+        dataIndex:'processName',
+        width:180
       },
       {
         title:'任务名称',
-        dataIndex:'taskName'
+        dataIndex:'taskName',
+        width:180
       },
       {
         title:'创建时间',
         dataIndex:'createTime',
-        render:formatDate
+        render:formatDate,
+        width:180
       },
       {
         title:'工单ID',
-        dataIndex:'orderID'
+        dataIndex:'orderId',
+        width:180
+      },
+      {
+        title:'流程定义ID',
+        dataIndex:'processDefinitionId',
+        width:180
       },
       {
         title:'操作',
-        width:200,
+        width:300,
         fixed:'right',
         render: (examine) => {
           return (
             <span>
-              <Button type="primary" onClick={() => this.getInfo(examine)}>审批</Button>
-              <Button type="primary" onClick={() => this.getImage()}>查看流程图</Button>
+              <Button type="primary" onClick={() => this.getInfo(examine)} style={{marginRight:20}}>审批</Button>
+              {/* <Button type="primary" onClick={() => this.getImage()}>查看流程图</Button> */}
             </span>
             
           )
@@ -67,7 +76,7 @@ class NotApproved extends Component {
   }
  
   getInfo = async (examine) => {
-    const orderId = examine.orderID
+    const orderId = examine.orderId
     console.log(orderId)
     const result = await reqOrderInfo(orderId)
     if(result.code===200){
