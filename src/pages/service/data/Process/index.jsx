@@ -3,6 +3,7 @@ import {Row,Col,Table,Icon } from 'antd';
 import { Link } from 'react-router-dom'
 import moment from 'moment';
 import axios from 'axios'
+import items from '../../../../config/status'
 class Process extends Component{
 
     constructor(props){
@@ -44,6 +45,19 @@ class Process extends Component{
         });
         
     }
+    //获取状态数值
+    setStatus=(status)=>{
+        var msg=this.getStatusInfo(status)
+        let statusMsg=msg.name
+        return statusMsg
+    }
+
+    getStatusInfo=(status)=>{
+        var a=items.find(item => {    
+        return item.status === status;
+        })
+    return a
+    }
     render(){
         const { 
             match : { params : { id } }
@@ -55,7 +69,7 @@ class Process extends Component{
             <Row>
                 <Col span={5}>
                 <Link to={`/cbd/maintain/data`}>
-                    <Icon type="arrow-left" ></Icon>返回项目
+                    <Icon type="arrow-left" ></Icon>返回工单
                 </Link>
                 </Col>
             </Row> 
@@ -73,76 +87,67 @@ class Process extends Component{
             // }}
             rowClassName={this.setRowClassName}
             dataSource={data}
-            columns={[{
-                title: 'ID',
-                key: 'id',
-                render: (text, record) => {
-                return ((record.id && record.id) || '--')
-                }   
-            }, {
-                title: '工单ID',
-                key: 'taskId',
-                render: (text, record) => {
-                return (record.taskId && record.taskId) || '--'
-                }
-            }, {
-                title: '状态',
+            columns={[
+            //     {
+            //     title: 'ID',
+            //     key: 'id',
+            //     render: (text, record) => {
+            //     return ((record.id && record.id) || '--')
+            //     }   
+            // }, {
+            //     title: '工单ID',
+            //     key: 'taskId',
+            //     render: (text, record) => {
+            //     return (record.taskId && record.taskId) || '--'
+            //     }
+            // }, 
+            {
+                title: '工单状态',
                 key: 'status',
                 render: (text, record) => {
-                return (record.status && record.status) || '--'
+                return (record.status && this.setStatus(record.status)) || '--'
                 }
             },
+            // {
+            //     title: '状态时间戳', 
+            //     key: 'statusTimestamp',
+            //     render: (text, record) => {
+            //     return (record.statusTimestamp && record.statusTimestamp) || '--'
+            //     }
+            // }, {
+            //     title: '创建时间',
+            //     key: 'createdTime',
+            //     render: (text, record) => {
+            //     return (record.createdTime && record.createdTime) || '--'
+            //     }
+            // },
             {
-                title: '状态时间戳', 
-                key: 'statusTimestamp',
-                render: (text, record) => {
-                return (record.statusTimestamp && record.statusTimestamp) || '--'
-                }
-            }, {
-                title: '创建时间',
-                key: 'createdTime',
-                render: (text, record) => {
-                return (record.createdTime && record.createdTime) || '--'
-                }
-            },{
-                title: '创建者',
+                title: '操作执行者',
                 key: 'creator',
                 render: (text, record) => {
                 return (record.creator && record.creator) || '--'
                 }
             },{
-                title: '创建者ID',
-                key: 'creatorId',
-                render: (text, record) => {
-                return (record.creatorId && record.creatorId) || '--'
-                }
-            },
-            {
-                title: '最终操作者',
-                key: 'lastOperator',
-                render: (text, record) => {
-                return (record.lastOperator && record.lastOperator) || '--'
-                }
-            },{
-                title: '最终操作者ID',
-                key: 'lastOperatorId',
-                render: (text, record) => {
-                return (record.lastOperatorId && record.lastOperatorId) || '--'
-                }
-            },{
-                title: '操作',
+                title: '执行操作',
                 key: 'movement',
                 render: (text, record) => {
                 return (record.movement && record.movement) || '--'
                 }
             },
             {
-                title: '更新时间',
+                title: '操作时间',
                 key: 'updateTime',
                 render: (text, record) => {
                 return (record.updateTime && record.updateTime) || '--'
                 }
             },
+            {
+                title: '备注',
+                key: 'updateTime',
+                render: (text, record) => {
+                return (record.updateTime && record.updateTime) || '--'
+                }
+            }
         ]}
             />
      </div>

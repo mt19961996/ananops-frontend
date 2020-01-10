@@ -112,7 +112,7 @@ class Sub extends Component{
                   <Link to='/cbd/maintain/data'>返回上级</Link>
                 </Col>
                 {/* <Col span={3}>任务子项状态：</Col> */}
-                <Col span={4}>
+                <Col span={3}>
                 <Select placeholder="请选择任务子项状态"
                 style={{ width: 180 }}
                 onChange={this.selectActivity}

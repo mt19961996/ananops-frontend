@@ -49,6 +49,16 @@ class Service extends Component{
             loading: Loading
           })}
         />
+         <Route 
+          exact   
+          path="/cbd/service/plan/:id"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EntranceWork" */
+              './data/Plan/index'),
+            loading: Loading
+          })}
+        />
         <Route 
           exact   
           path="/cbd/service/progress/:id"

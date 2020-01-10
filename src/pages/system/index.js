@@ -231,7 +231,7 @@ class Data extends Component {
 //         )
 //     }
 //   }
-if(role==='用户负责人'){
+if(role==='用户管理员'){
     return(
         <Tabs  
         activeKey={(this.props.location.state && this.props.location.state.tabKey) ? this.props.location.state.tabKey : ''}
@@ -368,7 +368,7 @@ else if(role=='用户值机员'){
     </Tabs>
     )
 }
-else if(role=='服务商管理员'){
+else if(role=='服务商业务员'){
     return(
         <Tabs
         activeKey={(this.props.location.state && this.props.location.state.tabKey) ? this.props.location.state.tabKey : ''}
