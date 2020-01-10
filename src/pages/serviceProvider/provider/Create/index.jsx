@@ -332,5 +332,4 @@ class ProviderNew extends Component{
         )
     }
 }
-
 export default Form.create(ProviderNew)
