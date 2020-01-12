@@ -22,12 +22,13 @@ class Management extends Component{
           data:[],
           partA:null,
           partB:null,
-          roleCode:window.localStorage.getItem('roleCode')
+          roleCode:window.localStorage.getItem('roleCode'),
         }
         this.getGroupList = this.getGroupList.bind(this);
     }
     componentDidMount(){
       // this.getGroupList(FIRST_PAGE); 
+      //保存当前页面的路由路径
       this.getGroupList();   
     }
     //分页
@@ -334,7 +335,10 @@ class Management extends Component{
                       style={{marginRight:'12px'}}
                     >修改</Link>
                     <Link
-                      to={`/cbd/pro/project/new/${record.id}`}
+                      to={{
+                        pathname:'/cbd/pro/project/new/',
+                        query:{contractId:record.id}
+                      }}
                       style={{marginRight:'12px'}}
                     >新建项目</Link>
                     <Popconfirm

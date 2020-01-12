@@ -9,9 +9,14 @@ class ProjectNew extends Component{
     constructor(props){
         super(props)
         this.state={
-            projectDetail:{               
-            }
+            contractDetail:{
+
+            },
+            projectDetail:{ 
+                            
+            },
         }
+        this.getDetail = this.getDetail.bind(this);
     }
     // disabledDate=(current)=> {
     //   // Can not select days before today and today
@@ -25,7 +30,11 @@ class ProjectNew extends Component{
   }
 
   componentDidMount(){
-    const {match : { params : { id } }} = this.props   
+    
+    const data = this.props.location.query;//this.props.history.location.query.id;
+    const {
+      match : { params : {id } },
+    } = this.props
     if(id){
       axios({
         method: 'POST',
@@ -46,8 +55,38 @@ class ProjectNew extends Component{
       .catch(function (error) {
           console.log(error);
       });
+    }else{//如果项目id为空，则说明不是修改项目，而是从合同创建的项目
+      const {contractId} = data;
+      if(contractId){
+        console.log("合同id为：" + contractId)
+        this.getDetail(contractId);
+      }
     }
   }
+  //获得该项目对应的合同的详情
+  getDetail=(id)=>{
+    axios({
+      method: 'POST',
+      url: '/pmc/contract/getContractById/'+id,
+      headers: {
+        'deviceId': this.deviceId,
+        'Authorization':'Bearer '+token,
+      },
+    })
+    .then((res) => {
+        //console.log(res);
+        if(res && res.status === 200){     
+        
+          this.setState({
+              contractDetail:res.data.result
+          }) ;
+        }
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+  }
+
   handleSubmit = (e) => {
     e.preventDefault()
     const {
@@ -106,30 +145,30 @@ class ProjectNew extends Component{
       },
       data:JSON.stringify(values)
     })
-  .then((res) => {
-      if(res && res.status === 200){     
-      // this.setState({
-      //    projectDetail:res.data.result
-      // });
-      history.push('/cbd/pro/project')
-      }
-  })
-  .catch(function (error) {
-      console.log(error);
-  });
- }
+    .then((res) => {
+        if(res && res.status === 200){     
+        // this.setState({
+        //    projectDetail:res.data.result
+        // });
+        history.push('/cbd/pro/project')
+        }
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+  }
 
     render(){
         const createFormItemLayout = {
             labelCol: {span:8},
             wrapperCol : {span:8},
           }
-          const { 
-            form: { getFieldDecorator }, 
-            match : { params : { id } }
-          } = this.props
-          const { projectDetail } = this.state
-          console.log(id)
+        const { 
+          form: { getFieldDecorator }, 
+          match : { params : { id } }
+        } = this.props
+        const { projectDetail,contractDetail} = this.state
+        // console.log("合同为：" + JSON.stringify(this.state.contractDetail))
         return(
             <div>
                 <div className="inpection-plan-create-page">
@@ -210,7 +249,7 @@ class ProjectNew extends Component{
               label="甲方ID"
             >
               {getFieldDecorator('partyAId',{
-                initialValue: id && projectDetail.partyAId,
+                initialValue: id && projectDetail.partyAId || contractDetail.partyAId,
                 rules:[{
                   required:false,
                   message:"请输入甲方ID",
@@ -224,7 +263,7 @@ class ProjectNew extends Component{
               label="甲方名称"
             >
               {getFieldDecorator('partyAName',{
-                initialValue: id && projectDetail.partyAName,
+                initialValue: id && projectDetail.partyAName || contractDetail.partyAName,
                 rules:[{
                   required:false,
                   message:"请输入甲方名称",
@@ -364,7 +403,7 @@ class ProjectNew extends Component{
               label="乙方ID"
             >
               {getFieldDecorator('partyBId',{
-                initialValue: id && projectDetail.partyBId,
+                initialValue: id && projectDetail.partyBId || contractDetail.partyBId,
                 rules:[{
                   required:true,
                   message:"请输入乙方ID",
@@ -378,7 +417,7 @@ class ProjectNew extends Component{
               label="乙方名称"
             >
               {getFieldDecorator('partyBName',{
-                initialValue: id && projectDetail.partyBName,
+                initialValue: id && projectDetail.partyBName || contractDetail.partyBName,
                 rules:[{
                   required:true,
                   message:"请输入乙方名称",
@@ -476,7 +515,7 @@ class ProjectNew extends Component{
               label="是否签署合同"
             >
               {getFieldDecorator('isContract',{
-                initialValue: id && projectDetail.isContract,
+                initialValue: id && projectDetail.isContract || contractDetail != null,
                 rules:[{
                   required:true,
                   message:"请选择是否签署合同",
@@ -494,7 +533,7 @@ class ProjectNew extends Component{
               label="合同ID"
             >
               {getFieldDecorator('contractId',{
-                initialValue: id && projectDetail.contractId,
+                initialValue: id && projectDetail.contractId || contractDetail.contractCode,
                 rules:[{
                   required:false,
                   message:"请输入合同ID",
@@ -508,7 +547,7 @@ class ProjectNew extends Component{
               label="合同名称"
             >
               {getFieldDecorator('contractName',{
-                initialValue: id && projectDetail.contractName,
+                initialValue: id && projectDetail.contractName || contractDetail.contractName,
                 rules:[{
                   required:false,
                   message:"请输入合同名称",
@@ -522,7 +561,7 @@ class ProjectNew extends Component{
               label="项目是否作废"
             >
               {getFieldDecorator('isDestroy',{
-                initialValue: id && projectDetail.isDestroy,
+                initialValue: id && projectDetail.isDestroy || contractDetail == null,
                 rules:[{
                   required:true,
                   message:"请选择项目是否作废",

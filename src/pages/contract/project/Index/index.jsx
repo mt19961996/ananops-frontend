@@ -24,11 +24,13 @@ class Project extends Component{
             data:[],
             add:{},
             projectId:null,
+            lastPathName:null,
         }
         this.getGroupList = this.getGroupList.bind(this);
     }
     componentDidMount(){
-        // this.getGroupList(FIRST_PAGE);   
+        // this.getGroupList(FIRST_PAGE);
+        this.state.lastPathName=this.props.location.pathname;
         this.getGroupList();   
     }
 
@@ -278,13 +280,13 @@ class Project extends Component{
                         onSearch={value => this.selectActivity(value)}
                     />
                     </Col> */}
-                    <Col push={20}>
+                    {/* <Col push={20}>
                     <Link to={"/cbd/pro/project/new"}>
-                        <Button type="primary">
+                        <Button type="primary" lastPathName = {this.state.lastPathName}>
                                     +新建项目
                         </Button>
                     </Link>
-                    </Col>
+                    </Col> */}
                 </Row> 
                 </div>
                 <Table
