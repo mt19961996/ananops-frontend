@@ -13,6 +13,7 @@ class Project extends Component{
         super(props);
         this.state={
             token:window.localStorage.getItem('token'),
+            role:window.localStorage.getItem('role'),
             current: FIRST_PAGE,
             // size: PAGE_SIZE,
             // total: 20, 
@@ -66,26 +67,56 @@ class Project extends Component{
     //获取信息列表 无分页
     getGroupList = () => {
         const id=JSON.parse(this.state.loginAfter).loginAuthDto.groupId
-        axios({
-            method: 'POST',
-            url: '/pmc/project/getProjectListByGroupId/'+id,
-            headers: {
-               'deviceId': this.deviceId,
-              'Authorization':'Bearer '+this.state.token,
-            },
-          })
-        .then((res) => {
-            if(res && res.status === 200){
-            console.log(res)
-            this.setState({
-                data: res.data.result,
-            }) ;
-            // console.log(this.state.data)
-            }
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+        const role = this.state.role
+        if(role.includes("平台"))
+        {
+            axios({
+                method: 'POST',
+                url: '/pmc/project/getProjectListWithPage',
+                headers: {
+                  'Content-Type':'application/json',
+                  'deviceId': this.deviceId,
+                  'Authorization':'Bearer '+this.state.token,
+                },
+                data:JSON.stringify({
+                  'baseQuery':null
+                })
+              })
+            .then((res) => {
+                if(res && res.status === 200){
+                console.log(res)
+                this.setState({
+                    data: res.data.result.list,
+                }) ;
+                // console.log(this.state.data)
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        }else{
+            axios({
+                method: 'POST',
+                url: '/pmc/project/getProjectListByGroupId/'+id,
+                headers: {
+                   'deviceId': this.deviceId,
+                  'Authorization':'Bearer '+this.state.token,
+                },
+              })
+            .then((res) => {
+                if(res && res.status === 200){
+                console.log(res)
+                this.setState({
+                    data: res.data.result,
+                }) ;
+                // console.log(this.state.data)
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        }
+        
         
     }
     //删除该项目

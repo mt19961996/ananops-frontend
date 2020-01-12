@@ -5,6 +5,7 @@ import './index.styl'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 const token=window.localStorage.getItem('token')
+const role = window.localStorage.getItem('role')
 class ManagementDetail extends Component{
     constructor(props){
         super(props)
@@ -20,7 +21,6 @@ class ManagementDetail extends Component{
     const { 
       match : { params : { id } }
     } = this.props
-    console.log(id)
     this.getDetail(id);   
   }
   getDetail=(id)=>{
@@ -33,7 +33,9 @@ class ManagementDetail extends Component{
       },
     })
     .then((res) => {
+        console.log(res);
         if(res && res.status === 200){     
+        
         this.setState({
             contractDetail:res.data.result
         }) ;

@@ -71,12 +71,12 @@ class Inspection extends Component{
           })
         .then((res) => {
             if(res && res.status === 200){
-            // this.setState({
-            //     data: res.data.result.taskList,
-            //     nowCurrent:res.data.result.pageNum,
-            //     status:status,
-            //    // roleCode:roleCode,
-            // });
+            this.setState({
+                data: res.data.result.taskList,
+                nowCurrent:res.data.result.pageNum,
+                status:status,
+               // roleCode:roleCode,
+            });
             console.log(res.data)
             }
         })

@@ -14,6 +14,7 @@ class Management extends Component{
         this.state={
           token:window.localStorage.getItem('token'),
           loginAfter:window.localStorage.getItem('loginAfter'),
+          role:window.localStorage.getItem('role'),
           current: FIRST_PAGE,
           // size: PAGE_SIZE,
           // total: 20, 
@@ -63,27 +64,56 @@ class Management extends Component{
     // }
      //获取信息列表 无分页
      getGroupList = () => {
+      //从父组件获取用户的登录组织信息
       const id=JSON.parse(this.state.loginAfter).loginAuthDto.groupId
-      axios({
+      const role = this.state.role
+      if(role.includes("平台"))
+      {
+        axios({
           method: 'POST',
-          url: '/pmc/contract/getContactListByGroupId/'+id,
+          url: '/pmc/contract/getContractListWithPage',
           headers: {
-             'deviceId': this.deviceId,
+            'Content-Type':'application/json',
+            'deviceId': this.deviceId,
+            'Authorization':'Bearer '+this.state.token,
+          },
+          data:JSON.stringify({
+            'baseQuery':null
+          })
+        })
+        .then((res) => {
+          if(res && res.status === 200){
+          this.setState({
+              data: res.data.result.list,
+          }) ;
+          console.log(this.state.data)
+          }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+      }else{
+        axios({
+          method: 'POST',
+          url: '/pmc/contract/getContractListByGroupId/'+id,
+          headers: {
+            'deviceId': this.deviceId,
             'Authorization':'Bearer '+this.state.token,
           },
         })
-      .then((res) => {
-          if(res && res.status === 200){
-          console.log(res)
-          this.setState({
-              data: res.data.result,
-          }) ;
-          // console.log(this.state.data)
-          }
-      })
-      .catch(function (error) {
-          console.log(error);
-      });
+        .then((res) => {
+            if(res && res.status === 200){
+            console.log(res)
+            this.setState({
+                data: res.data.result,
+            }) ;
+            // console.log(this.state.data)
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+      }
       
   }
     deleteGroup=(record)=>{
@@ -121,29 +151,62 @@ class Management extends Component{
   }
 
   //甲、乙方搜索
-  search(){
-    const{partA,partB}=this.state
-    axios({
-      method: 'POST',
-      url: '/pmc/contract/getContactByAB/'+partA+'/'+partB,
-      headers: {
-         'deviceId': this.deviceId,
-        'Authorization':'Bearer '+this.state.token,
-      },
-    })
-  .then((res) => {
-      if(res && res.status === 200){
-      console.log(res.data.result)
-      this.setState({
-          data: res.data.result,
-        //  nowCurrent:0
-      }) ;
-      console.log(this.res.data.result)
+  search(partyName,who){
+    // const{partA,partB}=this.state
+    var baseQueryUrl;
+    if(partyName === "" && this.state.role.includes("平台")){
+      axios({
+        method: 'POST',
+        url: '/pmc/contract/getContractListWithPage',
+        headers: {
+          'Content-Type':'application/json',
+          'deviceId': this.deviceId,
+          'Authorization':'Bearer '+this.state.token,
+        },
+        data:JSON.stringify({
+          'baseQuery':null
+        })
+      })
+      .then((res) => {
+        if(res && res.status === 200){
+        this.setState({
+            data: res.data.result.list,
+        }) ;
+        console.log(this.state.data)
+        }
+      })
+      .catch(function (error) {
+          console.log(error);
+      });
+    }else{
+      if(who === 'A'){
+        baseQueryUrl = '/pmc/contract/getContractListByLikePartyAName/'
+      }else if(who === 'B'){
+        baseQueryUrl = '/pmc/contract/getContractListByLikePartyBName/'
       }
-  })
-  .catch(function (error) {
-      console.log(error);
-  });
+      axios({
+        method: 'POST',
+        url: baseQueryUrl+partyName,
+        headers: {
+          'deviceId': this.deviceId,
+          'Authorization':'Bearer '+this.state.token,
+        },
+      })
+      .then((res) => {
+          if(res && res.status === 200){
+          console.log(res.data.result)
+          this.setState({
+              data: res.data.result,
+            //  nowCurrent:0
+          }) ;
+          console.log(this.res.data.result)
+          }
+      })
+      .catch(function (error) {
+          console.log(error);
+      });
+    }
+    
   }
 
   //重置
@@ -171,21 +234,29 @@ class Management extends Component{
               <Row>
                 <Col span={3}>
                     <Input 
-                    placeholder="请输入甲方ID"
+                    placeholder="请输入甲方姓名"
                     value={this.state.partA}
-                    onChange={(e) => this.partA(e)}
+                    onChange={(e) => {
+                      this.partA(e);
+                      console.log(e.target.value);
+                      this.search(e.target.value,'A');
+                    }}
                    // onChange={this.partA.bind(this)}
                     />
                 </Col>
                 <Col span={3}>
                     <Input 
-                     placeholder="请输入乙方ID"
+                     placeholder="请输入乙方姓名"
                      value={this.state.partB}
-                     onChange={(e) => this.partB(e)}
+                     onChange={(e) => {
+                      this.partB(e);
+                      console.log(e.target.value);
+                      this.search(e.target.value,'B');
+                    }}
                    // onChange={value=>this.partB(value)}
                     />
                 </Col>
-                <Col span={2}>
+                {/* <Col span={2}>
                     <Button  type="primary" onClick={this.search.bind(this)}>
                       搜索
                     </Button>
@@ -195,7 +266,7 @@ class Management extends Component{
                       重置
                     </Button>
     
-                </Col>
+                </Col> */}
                 <Col push={11}>
                   <Link to={"/cbd/pro/contract/new"}>
                     <Button type="primary">
@@ -262,15 +333,20 @@ class Management extends Component{
                       to={`/cbd/pro/contract/edit/${record.id}`}
                       style={{marginRight:'12px'}}
                     >修改</Link>
+                    <Link
+                      to={`/cbd/pro/project/new/${record.id}`}
+                      style={{marginRight:'12px'}}
+                    >新建项目</Link>
                     <Popconfirm
                         title="确定要删除吗？"
                         onConfirm={()=> {this.deleteGroup(record)}}
                     >
-                        <Button 
-                        type="simple"
-                        style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
-                        >删除</Button>
-                        </Popconfirm>
+                    <Button 
+                    type="simple"
+                    style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
+                    >删除</Button>
+                    </Popconfirm>
+                  
                   </div>
                 ),
               }]}
