@@ -5,6 +5,7 @@ import moment from 'moment';
 import axios from 'axios';
 import locale from 'antd/es/date-picker/locale/zh_CN';
 const token = window.localStorage.getItem('token')
+const { Option } = Select;
 class ProjectNew extends Component{
     constructor(props){
         super(props)
@@ -15,8 +16,18 @@ class ProjectNew extends Component{
             projectDetail:{ 
                             
             },
+            partyAUserList:{
+
+            },
+            partyBUserList:{
+
+            },
+            AList:[],
+            BList:[],
+            AUserLength:0,
+            BUserLength:0,
         }
-        this.getDetail = this.getDetail.bind(this);
+        this.getAllPreparedData = this.getAllPreparedData.bind(this);
     }
     // disabledDate=(current)=> {
     //   // Can not select days before today and today
@@ -58,33 +69,230 @@ class ProjectNew extends Component{
     }else{//如果项目id为空，则说明不是修改项目，而是从合同创建的项目
       const {contractId} = data;
       if(contractId){
-        console.log("合同id为：" + contractId)
-        this.getDetail(contractId);
+        console.log("合同id为：" + contractId);
+        this.getAllPreparedData(contractId);
       }
     }
   }
-  //获得该项目对应的合同的详情
-  getDetail=(id)=>{
-    axios({
+  //获得所有接下来需要的数据
+  getAllPreparedData = async (contractId) => {
+    //首先获取项目对应的合同详情
+    const res1 = await axios({
       method: 'POST',
-      url: '/pmc/contract/getContractById/'+id,
+      url: '/pmc/contract/getContractById/'+contractId,
       headers: {
         'deviceId': this.deviceId,
         'Authorization':'Bearer '+token,
       },
     })
-    .then((res) => {
-        //console.log(res);
-        if(res && res.status === 200){     
-        
-          this.setState({
-              contractDetail:res.data.result
-          }) ;
-        }
+    if(res1 && res1.status === 200){     
+      this.setState({
+          contractDetail:res1.data.result
+      });
+      // console.log("合同：" + JSON.stringify(this.state.contractDetail))
+    }
+    //然后获得项目对应的合同对应的甲方用户列表
+    const res2 = await axios({
+      method: 'POST',
+      url: '/uac/group/getBindUser/'+this.state.contractDetail.partyAId,
+      headers: {
+        'deviceId': this.deviceId,
+        'Authorization':'Bearer '+token,
+      },
     })
-    .catch(function (error) {
-        console.log(error);
-    });
+    if(res2 && res2.status === 200){    
+      this.setState({
+        partyAUserList:res2.data.result
+      }) ;
+      this.state.AList = this.state.partyAUserList.allUserSet
+      let i = 0;
+      for(let A in this.state.AList){
+        i++;
+      }
+      this.state.AUserLength = i;
+      console.log("A长度：" + this.state.AUserLength)
+      // console.log("甲方："+JSON.stringify(this.state.partyAUserList))
+    }
+    //然后获得项目对应的合同对应的乙方用户列表
+    const res3 = await axios({
+      method: 'POST',
+      url: '/uac/group/getBindUser/'+this.state.contractDetail.partyBId,
+      headers: {
+        'deviceId': this.deviceId,
+        'Authorization':'Bearer '+token,
+      },
+    })
+    if(res3 && res3.status === 200){    
+      this.setState({
+        partyBUserList:res3.data.result
+      }) ;
+      this.state.BList = this.state.partyBUserList.allUserSet
+      let i = 0;
+      for(let B in this.state.BList){
+        i++;
+      }
+      this.state.BUserLength = i;
+      console.log("B长度：" + this.state.BUserLength)
+      // console.log("乙方："+JSON.stringify(this.state.partyBUserList))
+    }
+
+  }
+  
+  //根据甲方用户的id获取甲方用户的信息
+  getAUserInfo = (userId) =>{
+    for(let i=0;i<this.state.AUserLength;i++){
+      if(userId == this.state.AList[i].userId){
+        return this.state.AList[i]
+      }
+    }
+  }
+  //根据乙方用户的id获取乙方用户的id
+  getBUserInfo = (userId) =>{
+    for(let i=0;i<this.state.BUserLength;i++){
+      if(userId == this.state.BList[i].userId){
+        return this.state.BList[i]
+      }
+    }
+  }
+
+  handlePartyAMSelect = (e) =>{
+    const {
+      form,
+      history,
+      match : { params : {id } },
+    } = this.props
+    const { setFieldsValue } = form;
+    const userInfo = this.getAUserInfo(e);
+    form.setFieldsValue({
+      aleaderId:e,
+      aleaderTel:userInfo.mobileNo,
+      aleaderName:userInfo.userName,
+    })
+  }
+
+  handlePartyAMDelete = (e) =>{
+    const {
+      form,
+      history,
+      match : { params : {id } },
+    } = this.props
+    const { setFieldsValue } = form;
+    form.setFieldsValue({
+      aleaderId:null,
+      aleaderTel:null,
+      aleaderName:null,
+    })
+  }
+  
+  handlePartyA1Select = (e) =>{
+    const {
+      form,
+      history,
+      match : { params : {id } },
+    } = this.props
+    const { setFieldsValue } = form;
+    const userInfo = this.getAUserInfo(e);
+    form.setFieldsValue({
+      partyAOne:userInfo.mobileNo,
+      aoneName:userInfo.userName,
+    })
+  }
+
+  handlePartyA1Delete = (e) =>{
+    const {
+      form,
+      history,
+      match : { params : {id } },
+    } = this.props
+    const { setFieldsValue } = form;
+    form.setFieldsValue({
+      partyAOne:null,
+      aoneName:null,
+    })
+  }
+
+  handlePartyA2Select = (e) =>{
+    const {
+      form,
+      history,
+      match : { params : {id } },
+    } = this.props
+    const { setFieldsValue } = form;
+    const userInfo = this.getAUserInfo(e);
+    form.setFieldsValue({
+      partyATwo:userInfo.mobileNo,
+      atwoName:userInfo.userName,
+    })
+  }
+
+  handlePartyA2Delete = (e) =>{
+    const {
+      form,
+      history,
+      match : { params : {id } },
+    } = this.props
+    const { setFieldsValue } = form;
+    form.setFieldsValue({
+      partyATwo:null,
+      atwoName:null,
+    })
+  }
+  
+  handlePartyA3Select = (e) =>{
+    const {
+      form,
+      history,
+      match : { params : {id } },
+    } = this.props
+    const { setFieldsValue } = form;
+    const userInfo = this.getAUserInfo(e);
+    form.setFieldsValue({
+      partyAThree:userInfo.mobileNo,
+      athreeName:userInfo.userName,
+    })
+  }
+
+  handlePartyA3Delete = (e) =>{
+    const {
+      form,
+      history,
+      match : { params : {id } },
+    } = this.props
+    const { setFieldsValue } = form;
+    form.setFieldsValue({
+      partyAThree:null,
+      athreeName:null,
+    })
+  }
+
+
+  handlePartyBSelect = (e) =>{
+    const {
+      form,
+      history,
+      match : { params : {id } },
+    } = this.props
+    const { setFieldsValue } = form;
+    const userInfo = this.getBUserInfo(e);
+    form.setFieldsValue({
+      bleaderId:e,
+      bleaderTel:userInfo.mobileNo,
+      bleaderName:userInfo.userName,
+    })
+  }
+
+  handlePartyBDelete = (e) =>{
+    const {
+      form,
+      history,
+      match : { params : {id } },
+    } = this.props
+    const { setFieldsValue } = form;
+    form.setFieldsValue({
+      bleaderId:null,
+      bleaderTel:null,
+      bleaderName:null,
+    })
   }
 
   handleSubmit = (e) => {
@@ -167,8 +375,28 @@ class ProjectNew extends Component{
           form: { getFieldDecorator }, 
           match : { params : { id } }
         } = this.props
-        const { projectDetail,contractDetail} = this.state
-        // console.log("合同为：" + JSON.stringify(this.state.contractDetail))
+      
+        const { projectDetail,contractDetail,partyAUserList,partyBUserList} = this.state
+        const partyANameList = [];
+        const partyBNameList = [];
+        for(let i=0;i<this.state.AUserLength;i++){
+          if(!this.state.AList[i].disabled){
+            partyANameList.push(<Option key={this.state.AList[i].userId}>{this.state.AList[i].userName}</Option>)
+          }
+        }
+        for(let j=0;j<this.state.BUserLength;j++){
+          if(!this.state.BList[j].disabled){
+            partyBNameList.push(<Option key={this.state.BList[j].userId}>{this.state.BList[j].userName}</Option>)
+          }
+        }
+        // const AList = JSON.parse(partyAUserList)
+        // for(let partyA in AList){
+        //   console.log(partyA)
+        //   //partyANameList.push(<Option key={partyA.userId}>{partyA.userName}</Option>)
+        // }
+        for(let partyB in partyBUserList.allUserSet){
+          //partyBNameList.push(<Option key={partyB.userId}>{partyB.userName}</Option>)
+        }
         return(
             <div>
                 <div className="inpection-plan-create-page">
@@ -274,6 +502,22 @@ class ProjectNew extends Component{
             </Form.Item>
             <Form.Item
               {...createFormItemLayout}
+              label="甲方项目负责人"
+            >
+              {getFieldDecorator('aleaderName',{
+                initialValue: id && projectDetail.aleaderName,
+                rules:[{
+                  required:false,
+                  message:"请选择甲方负责人",
+                }]
+              })(
+                <Select mode="tags" style={{ width: '100%' }} placeholder="请选择甲方负责人" onSelect={this.handlePartyAMSelect} onDeselect={this.handlePartyAMDelete}>
+                  {partyANameList}
+                </Select>
+              )}  
+            </Form.Item>
+            <Form.Item
+              {...createFormItemLayout}
               label="甲方项目负责人id"
             >
               {getFieldDecorator('aleaderId',{
@@ -284,20 +528,6 @@ class ProjectNew extends Component{
                 }]
               })(
                 <Input placeholder="请输入甲方项目负责人id" />
-              )}  
-            </Form.Item>
-            <Form.Item
-              {...createFormItemLayout}
-              label="甲方项目负责人姓名"
-            >
-              {getFieldDecorator('aleaderName',{
-                initialValue: id && projectDetail.aleaderName,
-                rules:[{
-                  required:false,
-                  message:"请输入甲方项目负责人姓名",
-                }]
-              })(
-                <Input placeholder="请输入甲方项目负责人姓名" />
               )}  
             </Form.Item>
             <Form.Item
@@ -316,86 +546,92 @@ class ProjectNew extends Component{
             </Form.Item>
             <Form.Item
               {...createFormItemLayout}
-              label="甲方联系人1姓名"
+              label="甲方联系人1"
             >
               {getFieldDecorator('aoneName',{
                 initialValue: id && projectDetail.aoneName,
                 rules:[{
                   required:false,
-                  message:"请输入甲方联系人1姓名",
+                  message:"请选择甲方联系人1",
                 }]
               })(
-                <Input placeholder="请输入甲方联系人1姓名" />
+                <Select mode="tags" style={{ width: '100%' }} placeholder="请选择甲方联系人1" onSelect={this.handlePartyA1Select} onDeselect={this.handlePartyA1Delete}>
+                  {partyANameList}
+                </Select>
               )}  
             </Form.Item>
             <Form.Item
               {...createFormItemLayout}
-              label="甲方项目负责人联系方式1"
+              label="甲方联系人1联系方式"
             >
               {getFieldDecorator('partyAOne',{
                 initialValue: id && projectDetail.partyAOne,
                 rules:[{
                   required:false,
-                  message:"请输入甲方项目负责人联系方式1",
+                  message:"请输入甲方联系人1联系方式",
                 }]
               })(
-                <Input placeholder="请输入甲方项目负责人联系方式1" />
+                <Input placeholder="请输入甲方联系人1联系方式" />
               )}  
             </Form.Item>
             <Form.Item
               {...createFormItemLayout}
-              label="甲方联系人2姓名"
+              label="甲方联系人2"
             >
               {getFieldDecorator('atwoName',{
                 initialValue: id && projectDetail.atwoName,
                 rules:[{
                   required:false,
-                  message:"请输入甲方联系人2姓名",
+                  message:"请选择甲方联系人2",
                 }]
               })(
-                <Input placeholder="请输入甲方联系人2姓名" />
+                <Select mode="tags" style={{ width: '100%' }} placeholder="请选择甲方联系人2" onSelect={this.handlePartyA2Select} onDeselect={this.handlePartyA2Delete}>
+                  {partyANameList}
+                </Select>
               )}  
             </Form.Item>
             <Form.Item
               {...createFormItemLayout}
-              label="甲方项目负责人联系方式2"
+              label="甲方联系人2联系方式"
             >
               {getFieldDecorator('partyATwo',{
                 initialValue: id && projectDetail.partyATwo,
                 rules:[{
                   required:false,
-                  message:"请输入甲方项目负责人联系方式2",
+                  message:"请输入甲方联系人2联系方式",
                 }]
               })(
-                <Input placeholder="请输入甲方项目负责人联系方式2" />
+                <Input placeholder="请输入甲方联系人2联系方式" />
               )}  
             </Form.Item>
             <Form.Item
               {...createFormItemLayout}
-              label="甲方联系人3姓名"
+              label="甲方联系人3"
             >
               {getFieldDecorator('athreeName',{
                 initialValue: id && projectDetail.athreeName,
                 rules:[{
                   required:false,
-                  message:"请输入甲方联系人3姓名",
+                  message:"请选择甲方联系人3",
                 }]
               })(
-                <Input placeholder="请输入甲方联系人3姓名" />
+                <Select mode="tags" style={{ width: '100%' }} placeholder="请选择甲方联系人3" onSelect={this.handlePartyA3Select} onDeselect={this.handlePartyA3Delete}>
+                  {partyANameList}
+                </Select>
               )}  
             </Form.Item>
             <Form.Item
               {...createFormItemLayout}
-              label="甲方项目负责人联系方式3"
+              label="甲方联系人3联系方式"
             >
               {getFieldDecorator('partyAThree',{
                 initialValue: id && projectDetail.partyAThree,
                 rules:[{
                   required:false,
-                  message:"请输入甲方项目负责人联系方式3",
+                  message:"请输入甲方联系人3联系方式",
                 }]
               })(
-                <Input placeholder="请输入甲方项目负责人联系方式3" />
+                <Input placeholder="请输入甲方联系人3联系方式" />
               )}  
             </Form.Item>
             <Form.Item
@@ -428,6 +664,22 @@ class ProjectNew extends Component{
             </Form.Item>
             <Form.Item
               {...createFormItemLayout}
+              label="乙方项目负责人"
+            >
+              {getFieldDecorator('bleaderName',{
+                initialValue: id && projectDetail.bleaderName,
+                rules:[{
+                  required:true,
+                  message:"请选择乙方项目负责人",
+                }]
+              })(
+                <Select mode="tags" style={{ width: '100%' }} placeholder="请选择乙方项目负责人" onSelect={this.handlePartyBSelect} onDeselect={this.handlePartyBDelete}>
+                  {partyBNameList}
+                </Select>
+              )}  
+            </Form.Item>
+            <Form.Item
+              {...createFormItemLayout}
               label="乙方项目负责人ID"
             >
               {getFieldDecorator('bleaderId',{
@@ -438,20 +690,6 @@ class ProjectNew extends Component{
                 }]
               })(
                 <Input placeholder="请输入乙方项目负责人ID" />
-              )}  
-            </Form.Item>
-            <Form.Item
-              {...createFormItemLayout}
-              label="乙方项目负责人姓名"
-            >
-              {getFieldDecorator('bleaderName',{
-                initialValue: id && projectDetail.bleaderName,
-                rules:[{
-                  required:true,
-                  message:"请输入乙方项目负责人姓名",
-                }]
-              })(
-                <Input placeholder="请输入乙方项目负责人姓名" />
               )}  
             </Form.Item>
             <Form.Item
