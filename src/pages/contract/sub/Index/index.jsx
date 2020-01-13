@@ -81,28 +81,28 @@ class Sub extends Component{
             console.log(error);
         });
     }
-    deleteGroup=(record)=>{
-        const { 
-            match : { params : { id } }
-          } = this.props
-        axios({
-            method:'POST',
-            url:'/pmc/inspectDetail/deleteDetailByTaskId/'+record.id,
-            headers:{
-                'deviceId': this.deviceId,
-                'Authorization':'Bearer '+this.state.token,
-            }           
-        }) 
-        .then((res) => {
-            if(res && res.status === 200){
-            console.log(res.data.result)
-            this.getGroupList(id)
-            }
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-    }
+    // deleteGroup=(record)=>{
+    //     const { 
+    //         match : { params : { id } }
+    //       } = this.props
+    //     axios({
+    //         method:'POST',
+    //         url:'/pmc/inspectDetail/deleteDetailByTaskId/'+record.id,
+    //         headers:{
+    //             'deviceId': this.deviceId,
+    //             'Authorization':'Bearer '+this.state.token,
+    //         }           
+    //     }) 
+    //     .then((res) => {
+    //         if(res && res.status === 200){
+    //         console.log(res.data.result)
+    //         this.getGroupList(id)
+    //         }
+    //     })
+    //     .catch(function (error) {
+    //         console.log(error);
+    //     });
+    // }
 
     //发起巡检任务
     createImcTaskAndItem= async (imcItemId) =>{

@@ -65,8 +65,9 @@ class SubNew extends Component{
         const {
           form,
           history,
-          match : { params : {projectId,id,subId } },
+          match : { params : {projectId,imcTaskId,subId } },
         } = this.props
+        console.log("提交后的任务id为：" + imcTaskId)
         const { getFieldValue } = form;
         const values = form.getFieldsValue()
         if(!getFieldValue('name')){
@@ -97,7 +98,7 @@ class SubNew extends Component{
           // this.setState({
           //    projectDetail:res.data.result
           // });
-          history.push('/cbd/pro/sub/'+projectId+'/'+id)
+          history.push('/cbd/pro/sub/'+projectId+'/'+imcTaskId)
           }
       })
       .catch(function (error) {
@@ -280,7 +281,7 @@ class SubNew extends Component{
                         htmlType="submit"
                         type="primary"
                         size="default"
-                        >{imcTaskId ? '编辑' : '新建'}
+                        >{subId ? '编辑' : '新建'}
                         </Button>
                         <Button
                         style={{marginLeft:"28px"}}
@@ -289,7 +290,7 @@ class SubNew extends Component{
                             const {
                             history,
                             } = this.props
-                            history.push('/cbd/pro/inspection/'+projectId)
+                            history.push('/cbd/pro/sub/'+projectId + '/' + imcTaskId)
                         }}
                         >取消
                         </Button>
