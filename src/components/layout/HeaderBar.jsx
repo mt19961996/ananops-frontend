@@ -7,8 +7,10 @@ const { Header } = Layout;
 class UserInfo extends React.Component {
   state = {
     visible: false,   // 菜单是否显示
-    isShowChangePwd:false
+    isShowChangePwd:false,
+    username:window.localStorage.getItem('username')
   };
+
 
   handleLogout = e => {
     if (e.key === 'outLogin') {
@@ -61,7 +63,7 @@ class UserInfo extends React.Component {
     return (
       <Dropdown overlay={menu} onVisibleChange={this.handleVisibleChange} visible={this.state.visible}>
         <div className="ant-dropdown-link">
-          用户
+          {this.state.username}
           <Icon type="caret-down" />
         </div>
       </Dropdown>

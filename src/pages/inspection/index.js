@@ -35,7 +35,7 @@ class InspectionData extends Component {
         activeKey={(this.props.location.state && this.props.location.state.tabKey) ? this.props.location.state.tabKey : ''}
         onChange={this.onTabChange}>
             <TabPane 
-            tab="待接单"
+            tab="服务商待接单"
             key=""
             >
             <Route exact 
@@ -44,7 +44,7 @@ class InspectionData extends Component {
                 />
             </TabPane>
             <TabPane 
-            tab="待执行"
+            tab="巡检正在执行"
             key="execute"
             >
             <Route exact 
@@ -53,7 +53,7 @@ class InspectionData extends Component {
                 />
             </TabPane>
             <TabPane 
-            tab="待确认"
+            tab="巡检等待确认"
             key="confirm"
             >  
                <Route exact 
@@ -61,7 +61,7 @@ class InspectionData extends Component {
                 component={Inpection} 
                 />                         
             </TabPane>
-            <TabPane tab="待付款"
+            <TabPane tab="巡检等待付款"
             key="pay"
             >  
                <Route exact 
@@ -69,7 +69,7 @@ class InspectionData extends Component {
                 component={Inpection} 
                 />                         
             </TabPane>
-            <TabPane tab="待评论"
+            <TabPane tab="巡检等待评论"
             key="comment"
             >  
                <Route exact 
@@ -77,7 +77,7 @@ class InspectionData extends Component {
                 component={Inpection} 
                 />                         
             </TabPane>
-            <TabPane tab="已结束"
+            <TabPane tab="本次巡检结束"
             key="finish"
             >  
                <Route exact 

@@ -23,7 +23,8 @@ class Sub extends Component{
             },
             imcItemDetail:{
 
-            }
+            },
+            id:window.localStorage.getItem('id'),
         }
         this.getGroupList = this.getGroupList.bind(this);
     }
@@ -194,7 +195,6 @@ class Sub extends Component{
                 imcAddInspectionItemDtoList:[{
                     description:imcItemDetail.description,
                     itemName:imcItemDetail.itemName,
-                    userId:projectDetail.aleaderId,
                 }]
                 // imcAddInspectionTaskDto:{
                     

@@ -35,22 +35,22 @@ class Inspection extends Component{
     var status
  
     if(location=='/cbd/inspection'){  
-      status=1
-    }
-    else if(location==='/cbd/inspection/execute'){
       status=2
     }
-    else if(location==='/cbd/inspection/confirm'){
+    else if(location==='/cbd/inspection/execute'){
       status=3
     }
-    else if(location==='/cbd/inspection/pay'){
+    else if(location==='/cbd/inspection/confirm'){
       status=4
     }
-    else if(location==='/cbd/inspection/comment'){
+    else if(location==='/cbd/inspection/pay'){
       status=5
     }
-    else if(location==='/cbd/inspection/finish'){
+    else if(location==='/cbd/inspection/comment'){
       status=6
+    }
+    else if(location==='/cbd/inspection/finish'){
+      status=7
     }
     const { size, } = this.state;
     var whichRole=null

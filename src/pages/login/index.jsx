@@ -60,6 +60,7 @@ class Login extends React.Component {
         window.localStorage.setItem('access_token',res.data.result.access_token)
         window.localStorage.setItem('refresh_token',res.data.result.refresh_token)
         window.localStorage.setItem('token',res.data.result.access_token)
+        window.localStorage.setItem('username',res.data.result.loginName)
         var username=res.data.result.loginName
         axios({
           method: 'POST',
