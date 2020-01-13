@@ -28,7 +28,7 @@ class Inspection extends Component{
           console.log(id)
         this.getGroupList(id);   
     }
-    //获取列表信息
+    //获取项目下的全部巡检列表信息
     getGroupList = (id) => {
         axios({
             method: 'POST',

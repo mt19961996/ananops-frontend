@@ -11,11 +11,16 @@ class InspectionNew extends Component{
         this.state={
             inspectionDetail:{
                 
+            },
+            projectDetail:{
+              
             }
         }
     }
     componentDidMount(){
-        const {match : { params : { id } }} = this.props   
+        const {match : { params : { projectId,id } }} = this.props   
+        console.log("项目id：" + projectId)
+        console.log("巡检任务id：" + id)
         if(id){
           axios({
             method: 'POST',
@@ -36,8 +41,33 @@ class InspectionNew extends Component{
           .catch(function (error) {
               console.log(error);
           });
+        }else if(projectId){
+          //如果是新建一个巡检任务
+          axios({
+            method: 'POST',
+            url: '/pmc/project/getById/'+projectId,
+            headers: {
+              'deviceId': this.deviceId,
+              'Authorization':'Bearer '+token,
+            },
+          })
+          .then((res) => {
+            console.log(res)
+            if(res && res.status === 200){     
+            this.setState({
+              projectDetail:res.data.result
+            })
+            }
+          })
+          .catch(function (error) {
+              console.log(error);
+          });
         }
       }
+
+    getProjectDetail = () =>{
+
+    }
 
     handleSubmit = (e) => {
         e.preventDefault()
@@ -54,6 +84,21 @@ class InspectionNew extends Component{
         }
         if(!getFieldValue('projectName')){
           message.error('请输入项目名称')
+        }
+        if(!getFieldValue('partyBName')){
+          message.error('请输入乙方名称')
+        }
+        if(!getFieldValue('partyBId')){
+          message.error('请输入乙方Id')
+        }
+        if(!getFieldValue('aleaderName')){
+          message.error('请输入甲方负责人')
+        }
+        if(!getFieldValue('aleaderId')){
+          message.error('请输入甲方负责人Id')
+        }
+        if(!getFieldValue('aleaderTel')){
+          message.error('请输入甲方负责人电话')
         }
         if(!getFieldValue('scheduledStartTime')){
           message.error('请选择预计开始时间')
@@ -118,7 +163,7 @@ class InspectionNew extends Component{
             form: { getFieldDecorator }, 
             match : { params : { id,projectId} }
           } = this.props
-          const { inspectionDetail } = this.state
+          const { inspectionDetail,projectDetail } = this.state
           console.log(id+'ppppp'+projectId)
         return(
             <div>
@@ -132,7 +177,7 @@ class InspectionNew extends Component{
                     label="项目ID"
                     >
                     {getFieldDecorator('projectId',{
-                        initialValue: id && inspectionDetail.projectId,
+                        initialValue: id && inspectionDetail.projectId || projectDetail.id,
                         rules:[{
                         required:true,
                         message:"请填写项目ID",
@@ -146,13 +191,83 @@ class InspectionNew extends Component{
                     label="项目名称"
                     >
                     {getFieldDecorator('projectName',{
-                        initialValue: id && inspectionDetail.projectName,
+                        initialValue: id && inspectionDetail.projectName || projectDetail.projectName,
                         rules:[{
                         required:true,
                         message:"请输入项目名称",
                         }]
                     })(
                         <Input placeholder="请输入项目名称" />
+                    )}  
+                    </Form.Item>
+                    <Form.Item
+                    {...createFormItemLayout}
+                    label="乙方名称"
+                    >
+                    {getFieldDecorator('partyBName',{
+                        initialValue: id || projectDetail.partyBName,
+                        rules:[{
+                        required:true,
+                        message:"请输入乙方名称",
+                        }]
+                    })(
+                        <Input placeholder="请输入乙方名称" />
+                    )}  
+                    </Form.Item>
+                    <Form.Item
+                    {...createFormItemLayout}
+                    label="乙方id"
+                    >
+                    {getFieldDecorator('partyBId',{
+                        initialValue: id || projectDetail.partyBId,
+                        rules:[{
+                        required:true,
+                        message:"请输入乙方Id",
+                        }]
+                    })(
+                        <Input placeholder="请输入乙方Id" />
+                    )}  
+                    </Form.Item>
+                    <Form.Item
+                    {...createFormItemLayout}
+                    label="甲方负责人"
+                    >
+                    {getFieldDecorator('aleaderName',{
+                        initialValue: id || projectDetail.aleaderName,
+                        rules:[{
+                        required:true,
+                        message:"请输入甲方负责人",
+                        }]
+                    })(
+                        <Input placeholder="请输入甲方负责人" />
+                    )}  
+                    </Form.Item>
+                    <Form.Item
+                    {...createFormItemLayout}
+                    label="甲方负责人id"
+                    >
+                    {getFieldDecorator('aleaderId',{
+                        initialValue: id || projectDetail.aleaderId,
+                        rules:[{
+                        required:true,
+                        message:"请输入甲方负责人Id",
+                        }]
+                    })(
+                        <Input placeholder="请输入甲方负责人Id" />
+                    )}  
+                    </Form.Item>
+                    <Form.Item
+                    {...createFormItemLayout}
+                    label="甲方负责人电话"
+                    >
+                    {getFieldDecorator('aleaderTel',{
+                        initialValue: id || projectDetail.aleaderTel,
+                        rules:[{
+                        required:true,
+                        message:"请输入甲方负责人电话",
+                        }]
+                    })(
+                        <Input placeholder="请输入甲方负责人电话" />
                     )}  
                     </Form.Item>
                     <Form.Item

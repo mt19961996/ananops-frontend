@@ -151,7 +151,7 @@ class ManageRoute extends Component{
         />
          <Route
           exact
-          path="/cbd/pro/sub/new/:projectId/:id"
+          path="/cbd/pro/sub/new/:projectId/:imcTaskId"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EmergencyPlanDetail" */
@@ -161,7 +161,7 @@ class ManageRoute extends Component{
         />
          <Route
           exact
-          path="/cbd/pro/sub/edit/:projectId/:id/:subId"
+          path="/cbd/pro/sub/edit/:projectId/:imcTaskId/:subId"
           component={Loadable({
             loader: () => import(
               /* webpackChunkName: "EmergencyPlanDetail" */

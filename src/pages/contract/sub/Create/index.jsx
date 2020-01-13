@@ -9,11 +9,12 @@ class SubNew extends Component{
         super(props)
         this.state={
             inspectionDetail:{},
-            token:window.localStorage.getItem('token')
+            token:window.localStorage.getItem('token'),
+            imcTaskDetail:{}
         }
     }
     componentDidMount(){
-        const {match : { params : { subId } }} = this.props   
+        const {match : { params : { subId,imcTaskId } }} = this.props   
         if(subId){
           axios({
             method: 'POST',
@@ -34,6 +35,28 @@ class SubNew extends Component{
           .catch(function (error) {
               console.log(error);
           });
+        }else if(imcTaskId){
+            //如果是新建一条巡检任务子项
+            console.log(imcTaskId)
+            axios({
+                method: 'POST',
+                url: '/pmc/InspectDevice/getTaskById/'+imcTaskId,
+                headers: {
+                    'deviceId': this.deviceId,
+                    'Authorization':'Bearer '+this.state.token,
+                },
+            })
+            .then((res) => {
+                console.log(res)
+                if(res && res.status === 200){     
+                this.setState({
+                    imcTaskDetail:res.data.result
+                })
+            }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
         }
       }
 
@@ -89,10 +112,10 @@ class SubNew extends Component{
           }
           const { 
             form: { getFieldDecorator }, 
-            match : { params : { id,projectId,subId} }
+            match : { params : { imcTaskId,projectId,subId} }
           } = this.props
-          const { inspectionDetail } = this.state
-          console.log(subId)
+          const { inspectionDetail,imcTaskDetail } = this.state
+          console.log(imcTaskId)
         return(
             <div>
                 <div className="inpection-plan-create-page">
@@ -102,16 +125,16 @@ class SubNew extends Component{
                 >
                     <Form.Item
                     {...createFormItemLayout}
-                    label="巡检详情名称"
+                    label="巡检任务子项名称"
                     >
                     {getFieldDecorator('name',{
                         initialValue: subId && inspectionDetail.name,
                         rules:[{
                         required:true,
-                        message:"请填写巡检详情名称",
+                        message:"请填写巡检任务子项名称",
                         }]
                     })(
-                        <Input placeholder="请填写巡检详情名称" />
+                        <Input placeholder="请填写巡检任务子项名称" />
                     )}  
                     </Form.Item>
                     <Form.Item
@@ -119,7 +142,7 @@ class SubNew extends Component{
                     label="巡检任务ID"
                     >
                     {getFieldDecorator('inspectionTaskId',{
-                        initialValue: subId && inspectionDetail.inspectionTaskId,
+                        initialValue: subId && inspectionDetail.inspectionTaskId || imcTaskDetail.id,
                         rules:[{
                         required:true,
                         message:"请输入巡检任务ID",
@@ -133,7 +156,7 @@ class SubNew extends Component{
                     label="巡检任务名称"
                     >
                     {getFieldDecorator('inspectionTaskName',{
-                        initialValue: subId && inspectionDetail.inspectionTaskName,
+                        initialValue: subId && inspectionDetail.inspectionTaskName || imcTaskDetail.taskName,
                         rules:[{
                         required:true,
                         message:"请输入巡检任务名称",
@@ -257,7 +280,7 @@ class SubNew extends Component{
                         htmlType="submit"
                         type="primary"
                         size="default"
-                        >{id ? '编辑' : '新建'}
+                        >{imcTaskId ? '编辑' : '新建'}
                         </Button>
                         <Button
                         style={{marginLeft:"28px"}}

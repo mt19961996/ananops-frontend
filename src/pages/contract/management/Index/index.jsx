@@ -68,7 +68,7 @@ class Management extends Component{
       //从父组件获取用户的登录组织信息
       const id=JSON.parse(this.state.loginAfter).loginAuthDto.groupId
       const role = this.state.role
-      if(role.includes("平台"))
+      if(role!=null && role.includes("平台"))
       {
         axios({
           method: 'POST',
@@ -155,7 +155,7 @@ class Management extends Component{
   search(partyName,who){
     // const{partA,partB}=this.state
     var baseQueryUrl;
-    if(partyName === "" && this.state.role.includes("平台")){
+    if(partyName === "" && this.state.role != null && this.state.role.includes("平台")){
       axios({
         method: 'POST',
         url: '/pmc/contract/getContractListWithPage',

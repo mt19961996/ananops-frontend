@@ -98,7 +98,9 @@ class Inspection extends Component{
       const limit = size
 
     return(
+      
         <div>
+          
         <div className="searchPart">
           <Row>
             {/* <Col span={2}>巡检人姓名：</Col> */}

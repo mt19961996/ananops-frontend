@@ -70,7 +70,7 @@ class Project extends Component{
     getGroupList = () => {
         const id=JSON.parse(this.state.loginAfter).loginAuthDto.groupId
         const role = this.state.role
-        if(role.includes("平台"))
+        if(role!=null && role.includes("平台"))
         {
             axios({
                 method: 'POST',
