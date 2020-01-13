@@ -15,14 +15,15 @@ class Log extends Component{
     }
     componentDidMount(){
         const { 
-            match : { params : { subId } }
+            match : { params : { id } }
           } = this.props
-          console.log(subId)
-        this.getGroupList(subId);   
+          console.log(id)
+        this.getGroupList(id);   
     }
      //获取列表信息
      getGroupList = (id) => {
-        var values={"orderBy": "string","pageNum": 0,"pageSize": 100,"taskId": id}
+        var values={orderBy: "string",pageNum: 0,pageSize: 100,taskId:id}
+        console.log("巡检日志请求信息：" + JSON.stringify(values))
         axios({
             method: 'POST',
             url: '/imc/inspectionTask/getTaskLogs',
@@ -30,6 +31,7 @@ class Log extends Component{
                'deviceId': this.deviceId,
               'Authorization':'Bearer '+this.state.token,
             },
+            data:values
           })
         .then((res) => {
             if(res && res.status === 200){

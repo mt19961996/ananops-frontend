@@ -9,7 +9,7 @@ class ItemDetail extends Component{
     constructor(props){
         super(props)
         this.state={
-          itemDetail:{
+          imcTaskDetail:{
 
           },
           token:window.localStorage.getItem('token')
@@ -26,7 +26,7 @@ class ItemDetail extends Component{
     getDetail=(id)=>{
       axios({
         method: 'GET',
-        url: '/mdmc/mdmcTask/getTaskByTaskId/'+id,
+        url: '/imc/inspectionTask/getTaskByTaskId/'+id,
         headers: {
           'deviceId': this.deviceId,
           'Authorization':'Bearer '+this.state.token,
@@ -36,7 +36,7 @@ class ItemDetail extends Component{
         if(res && res.status === 200){   
             console.log(res.data.result)  
         this.setState({
-           itemDetail:res.data.result
+           imcTaskDetail:res.data.result
         }) ;
         }
     })
@@ -47,26 +47,26 @@ class ItemDetail extends Component{
 
     }
     render(){
-      const {itemDetail}=this.state
+      const {imcTaskDetail}=this.state
       const {match : { params : { id } }} = this.props   
-      console.log(itemDetail)
+      console.log(imcTaskDetail)
         return(
                 <div className="bg">
                   <Descriptions bordered className="descriptions">
-                    <Descriptions.Item label="巡检任务ID " span={3}>{itemDetail.id}</Descriptions.Item>
-                    <Descriptions.Item label="巡检任务名称" span={1.5}>{itemDetail.taskName}</Descriptions.Item>
-                    <Descriptions.Item label="巡检任务对应的甲方用户id" span={1.5}>{itemDetail.userId}</Descriptions.Item>   
-                    <Descriptions.Item label="计划起始时间" span={1.5}>{itemDetail.scheduledStartTime}</Descriptions.Item>
-                    <Descriptions.Item label="实际完成时间" span={1.5}>{itemDetail.actualFinishTime}</Descriptions.Item>
-                    <Descriptions.Item label="项目ID " span={1.5}>{itemDetail.projectId}</Descriptions.Item>
-                    <Descriptions.Item label="项目负责人ID" span={1.5}>{itemDetail.principalId}</Descriptions.Item>
-                    <Descriptions.Item label="服务商ID" span={1.5}>{itemDetail.facilitatorId}</Descriptions.Item>
-                    <Descriptions.Item label="巡检任务对应的服务商组织的Id " span={1.5}>{itemDetail.facilitatorGroupId}</Descriptions.Item>
-                    <Descriptions.Item label="计划完成天数" span={1.5}>{itemDetail.days}</Descriptions.Item>
-                    <Descriptions.Item label="巡检类型" span={1.5}>{itemDetail.inspectionType}</Descriptions.Item>
-                    <Descriptions.Item label="巡检位置信息" span={3}>{itemDetail.location}</Descriptions.Item>
-                    <Descriptions.Item label="巡检产生的维修维护费用" span={1.5}>{itemDetail.maintenanceCost}</Descriptions.Item>
-                    <Descriptions.Item label="备注" span={1.5}>{itemDetail.remark}</Descriptions.Item>
+                    <Descriptions.Item label="巡检任务ID " span={3}>{imcTaskDetail.id}</Descriptions.Item>
+                    <Descriptions.Item label="巡检任务名称" span={1.5}>{imcTaskDetail.taskName}</Descriptions.Item>
+                    {/* <Descriptions.Item label="巡检任务对应的甲方用户id" span={1.5}>{imcTaskDetail.userId}</Descriptions.Item>    */}
+                    <Descriptions.Item label="计划起始时间" span={1.5}>{imcTaskDetail.scheduledStartTime}</Descriptions.Item>
+                    <Descriptions.Item label="实际完成时间" span={1.5}>{imcTaskDetail.actualFinishTime}</Descriptions.Item>
+                    <Descriptions.Item label="项目ID " span={1.5}>{imcTaskDetail.projectId}</Descriptions.Item>
+                    <Descriptions.Item label="项目负责人ID" span={1.5}>{imcTaskDetail.principalId}</Descriptions.Item>
+                    <Descriptions.Item label="服务商ID" span={1.5}>{imcTaskDetail.facilitatorId}</Descriptions.Item>
+                    <Descriptions.Item label="巡检任务对应的服务商组织的Id " span={1.5}>{imcTaskDetail.facilitatorGroupId}</Descriptions.Item>
+                    <Descriptions.Item label="计划完成天数" span={1.5}>{imcTaskDetail.days}</Descriptions.Item>
+                    <Descriptions.Item label="巡检类型" span={1.5}>{imcTaskDetail.inspectionType}</Descriptions.Item>
+                    <Descriptions.Item label="巡检位置信息" span={3}>{imcTaskDetail.location}</Descriptions.Item>
+                    <Descriptions.Item label="巡检产生的维修维护费用" span={1.5}>{imcTaskDetail.maintenanceCost}</Descriptions.Item>
+                    <Descriptions.Item label="备注" span={1.5}>{imcTaskDetail.remark}</Descriptions.Item>
                     <Descriptions.Item label="操作" span={3}>
                       <Link to={`/cbd/inspection`}>返回上一级</Link>
                     </Descriptions.Item>
