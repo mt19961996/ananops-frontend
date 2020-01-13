@@ -181,9 +181,9 @@ class Sub extends Component{
             const imcTaskDetail = res2.data.result;
             const imcItemDetail = res3.data.result;
             let createImcInfo = {
-                facilitatorId:projectDetail.partyBId,
-                facilitatorGroupId:projectDetail.partyBId,
-                facilitatorManagerId:projectDetail.partyBId,
+                facilitatorId:projectDetail.bleaderId,
+                facilitatorGroupId:projectDetail.bleaderId,
+                facilitatorManagerId:projectDetail.bleaderId,
                 frequency:imcTaskDetail.cycleTime,
                 inspectionType:1,
                 days:imcTaskDetail.scheduledFinishTime,
