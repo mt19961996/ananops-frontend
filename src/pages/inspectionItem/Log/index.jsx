@@ -52,6 +52,7 @@ class Log extends Component{
             match : { params : { id } }
           } = this.props
         const {data}=this.state
+        console.log("日志+++：" + JSON.stringify(data))
         return(
             <div>
             <div className="searchPart">
@@ -77,7 +78,7 @@ class Log extends Component{
             rowClassName={this.setRowClassName}
             dataSource={data}
             columns={[{
-                title: 'ID',
+                title: '巡检任务日志ID',
                 key: 'id',
                 render: (text, record) => {
                 return ((record.id && record.id) || '--')
@@ -89,19 +90,32 @@ class Log extends Component{
                 return (record.taskName && record.taskName) || '--'
                 }
             }, {
-                title: 'IP地址',
+                title: '操作者IP地址',
                 key: 'ipAddress',
                 render: (text, record) => {
                 return (record.ipAddress && record.ipAddress) || '--'
                 }
-            },
-            {
-                title: '状态时间戳', 
-                key: 'statusTimestamp',
+            },{
+                title: '操作者浏览器',
+                key: 'browser',
                 render: (text, record) => {
-                return (record.statusTimestamp && record.statusTimestamp) || '--'
+                return (record.browser && record.browser) || '--'
                 }
-            }, {
+            },{
+                title: '操作者OS',
+                key: 'os',
+                render: (text, record) => {
+                return (record.os && record.os) || '--'
+                }
+            },
+            // {
+            //     title: '状态时间戳', 
+            //     key: 'statusTimestamp',
+            //     render: (text, record) => {
+            //     return (record.statusTimestamp && record.statusTimestamp) || '--'
+            //     }
+            // }
+            , {
                 title: '创建时间',
                 key: 'createdTime',
                 render: (text, record) => {
@@ -121,18 +135,26 @@ class Log extends Component{
                 }
             },
             {
-                title: '最终操作者',
-                key: 'lastOperator',
+                title: '任务所处状态',
+                key: 'statusMsg',
                 render: (text, record) => {
-                return (record.lastOperator && record.lastOperator) || '--'
+                return (record.statusMsg && record.statusMsg) || '--'
                 }
-            },{
-                title: '最终操作者ID',
-                key: 'lastOperatorId',
-                render: (text, record) => {
-                return (record.lastOperatorId && record.lastOperatorId) || '--'
-                }
-            },{
+            },
+            // {
+            //     title: '最终操作者',
+            //     key: 'lastOperator',
+            //     render: (text, record) => {
+            //     return (record.lastOperator && record.lastOperator) || '--'
+            //     }
+            // },{
+            //     title: '最终操作者ID',
+            //     key: 'lastOperatorId',
+            //     render: (text, record) => {
+            //     return (record.lastOperatorId && record.lastOperatorId) || '--'
+            //     }
+            // }
+            ,{
                 title: '操作',
                 key: 'movement',
                 render: (text, record) => {
