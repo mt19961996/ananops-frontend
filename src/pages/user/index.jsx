@@ -124,7 +124,7 @@ export default class User extends Component{
               <LinkButton onClick={() => this.updateStatus(id,status==='ENABLE'?'DISABLE':'ENABLE')}>{status==='DISABLE'?'启用':'禁用'}</LinkButton>|
               <LinkButton onClick={() => this.showUpdate(user)}>修改</LinkButton>|
               <LinkButton onClick={() => {this.props.history.push({pathname:'/uas/user/list/detail',state:user});console.log(user)}}>详情</LinkButton>|
-              <LinkButton onClick={() => this.setState({isShowBindRole:true})}>角色绑定</LinkButton>|
+              <LinkButton onClick={() => this.bindRole(id)}>角色绑定</LinkButton>|
               <LinkButton onClick={() => this.resetPwd(id)}>重置密码</LinkButton>|
               <LinkButton onClick={() => this.deleteUser(user)}>删除</LinkButton>
             </span>
@@ -133,6 +133,10 @@ export default class User extends Component{
         }
       }
     ]
+  }
+
+  bindRole = (id) => {
+    
   }
 
   resetPwd = (userId) => {
@@ -224,7 +228,7 @@ export default class User extends Component{
   getGroupList = async () => {
     const group = await reqGroupList()
     if(group.code===200){
-      const groupList = group.result.map((item) => [...item.id,item.groupName])
+      const groupList = group.result.map((item) => [item.id,item.groupName])
       console.log(groupList)
       this.setState({groupList})
     }

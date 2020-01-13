@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import React, { Component, } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { Spin } from 'antd';
@@ -18,7 +19,7 @@ class serviceProviderRoute extends Component{
           };
           return(
             <Switch>
-                 <Route 
+              <Route 
                     exact   
                     path="/serviceProvider/provider"
                     component={Loadable({
@@ -27,8 +28,8 @@ class serviceProviderRoute extends Component{
                         './engineer/Index/index'),
                         loading: Loading
                     })}
-                 />
-                  <Route 
+              />
+              <Route 
                     exact   
                     path="/serviceProvider/provider/detail/:id"
                     component={Loadable({
@@ -37,8 +38,8 @@ class serviceProviderRoute extends Component{
                         './engineer/Detail/index'),
                         loading: Loading
                     })}
-                 />
-                   <Route 
+              />
+              <Route 
                     exact   
                     path="/serviceProvider/provider/new"
                     component={Loadable({
@@ -47,8 +48,8 @@ class serviceProviderRoute extends Component{
                         './engineer/Create/index'),
                         loading: Loading
                     })}
-                 />
-                  <Route 
+              />
+              <Route 
                     exact   
                     path="/serviceProvider/provider/edit/:id"
                     component={Loadable({
@@ -57,8 +58,8 @@ class serviceProviderRoute extends Component{
                         './engineer/Create/index'),
                         loading: Loading
                     })}
-                 />
-                 <Route 
+              />
+              <Route 
                     exact   
                     path="/serviceProvider/engineer"
                     component={Loadable({
@@ -67,8 +68,8 @@ class serviceProviderRoute extends Component{
                         './engineer/Index/index'),
                         loading: Loading
                     })}
-                 />
-                  <Route 
+              />
+              <Route 
                     exact   
                     path="/serviceProvider/engineer/detail/:id"
                     component={Loadable({
@@ -77,8 +78,8 @@ class serviceProviderRoute extends Component{
                         './engineer/Detail/index'),
                         loading: Loading
                     })}
-                 />
-                   <Route 
+              />
+              <Route 
                     exact   
                     path="/serviceProvider/engineer/new"
                     component={Loadable({
@@ -87,8 +88,8 @@ class serviceProviderRoute extends Component{
                         './engineer/Create/index'),
                         loading: Loading
                     })}
-                 />
-                  <Route 
+              />
+              <Route 
                     exact   
                     path="/serviceProvider/engineer/edit/:id"
                     component={Loadable({
@@ -97,7 +98,7 @@ class serviceProviderRoute extends Component{
                         './engineer/Create/index'),
                         loading: Loading
                     })}
-                 />
+              />
                  
             </Switch>
           )
