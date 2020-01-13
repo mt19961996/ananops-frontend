@@ -36,7 +36,7 @@ class Sub extends Component{
       const values={orderBy: "string",pageSize:100,pageNum:0,taskId:id,status:status}
           axios({
               method: 'POST',
-              url: '/imc/inspectionItem/save',
+              url: '/imc/inspectionItem/getAllItemByTaskId',
               headers: {
                 'deviceId': this.deviceId,
                 'Authorization':'Bearer '+this.state.token,
@@ -47,7 +47,7 @@ class Sub extends Component{
               if(res && res.status === 200){
               // console.log(res.data.result)
               var taskItemList
-              res.data.result==null?taskItemList=[]:taskItemList=res.data.result.taskItemList
+              res.data.result==null?taskItemList=[]:taskItemList=res.data.result
               // res.data.result==null?pageNum=0:pageNum=res.data.result.pageNum
               this.setState({
                   data:taskItemList,

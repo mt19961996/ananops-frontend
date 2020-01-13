@@ -191,7 +191,7 @@ class Sub extends Component{
                 projectId:imcTaskDetail.projectId,
                 scheduledStartTime:imcTaskDetail.scheduledStartTime,
                 taskName:imcTaskDetail.taskName,
-                userId:projectDetail.aleaderId,
+                userId:this.state.id,
                 imcAddInspectionItemDtoList:[{
                     description:imcItemDetail.description,
                     itemName:imcItemDetail.itemName,

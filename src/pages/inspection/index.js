@@ -35,11 +35,20 @@ class InspectionData extends Component {
         activeKey={(this.props.location.state && this.props.location.state.tabKey) ? this.props.location.state.tabKey : ''}
         onChange={this.onTabChange}>
             <TabPane 
-            tab="服务商待接单"
-            key=""
+            tab="负责人待审核"
+            key="check"
             >
             <Route exact 
-                path="/cbd/inspection" 
+                path="/cbd/inspection/check" 
+                component={Inpection} 
+                />
+            </TabPane>
+            <TabPane 
+            tab="服务商待接单"
+            key="accept"
+            >
+            <Route exact 
+                path="/cbd/inspection/accept" 
                 component={Inpection} 
                 />
             </TabPane>

@@ -34,7 +34,10 @@ class Inspection extends Component{
     var location=this.props.location.pathname
     var status
  
-    if(location=='/cbd/inspection'){  
+    if(location == '/cbd/inspection/check'){
+      status=0
+    }
+    if(location=='/cbd/inspection/accept'){  
       status=2
     }
     else if(location==='/cbd/inspection/execute'){
@@ -59,30 +62,32 @@ class Inspection extends Component{
       whichRole=1;
     else if(role==='服务商管理员'||role==='服务商负责人'||role==='服务商业务员')
       whichRole=2 
+    
     const values={orderBy: "string",pageSize:size,pageNum:page,userId:this.state.id,role:whichRole,status:status,projectId:null}
-        axios({
-            method: 'POST',
-            url: '/imc/inspectionTask/getTaskByUserId',
-            headers: {
-              'deviceId': this.deviceId,
-              'Authorization':'Bearer '+this.state.token,
-            },
-            data:values
-          })
-        .then((res) => {
-            if(res && res.status === 200){
-            this.setState({
-                data: res.data.result.taskList,
-                nowCurrent:res.data.result.pageNum,
-                status:status,
-               // roleCode:roleCode,
-            });
-            console.log(res.data)
-            }
-        })
-        .catch(function (error) {
-            console.log(error);
+    console.log(values)
+    axios({
+        method: 'POST',
+        url: '/imc/inspectionTask/getTaskByUserIdAndStatus',
+        headers: {
+          'deviceId': this.deviceId,
+          'Authorization':'Bearer '+this.state.token,
+        },
+        data:values
+      })
+    .then((res) => {
+        if(res && res.status === 200){
+        this.setState({
+            data: res.data.result,
+            nowCurrent:res.data.result.pageNum,
+            status:status,
+            // roleCode:roleCode,
         });
+        console.log(res.data)
+        }
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
       
 }
   //返回不同的状态按钮
