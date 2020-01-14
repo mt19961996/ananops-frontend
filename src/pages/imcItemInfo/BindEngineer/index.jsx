@@ -13,27 +13,23 @@ class BindEngineer extends Component{
           imcTaskDetail:{
 
           },
-          
-          engineerList:{
-
-          },
+          engineerList:[],
           token:window.localStorage.getItem('token')
         }
-        this.getDetail = this.getDetail.bind(this);
+        // this.getDetail = this.getDetail.bind(this);
     }
     componentDidMount(){
       const { 
         match : { params : { taskId,itemId } }
       } = this.props
-      console.log(itemId)
+      console.log("任务id：" + taskId)
+      this.getDetail(taskId)
 
     }
     //获取当前巡检任务子项对应的巡检任务的信息
-    getImcTaskDetail=(id)=>{
-
-    }
-    getDetail=(id)=>{
-      axios({
+    getDetail= async(id)=>{
+      console.log("+++"+id)
+      const res1 = await axios({
         method: 'GET',
         url: '/imc/inspectionTask/getTaskByTaskId/'+id,
         headers: {
@@ -41,28 +37,43 @@ class BindEngineer extends Component{
           'Authorization':'Bearer '+this.state.token,
         },
       })
-    .then((res) => {
-        if(res && res.status === 200){   
-            console.log(res.data.result)  
+      if(res1 && res1.status === 200){
         this.setState({
-           imcTaskDetail:res.data.result
-        }) ;
-        }
-    })
-    .catch(function (error) {
-        console.log(error);
-    });
-    
+          imcTaskDetail:res1.data.result
+       }) ;
+      }
+      const res2 = await axios({
+        method: 'POST',
+        url: '/spc/engineer/getEngineerIdListByProjectId/'+this.state.imcTaskDetail.projectId,
+        headers: {
+          'deviceId': this.deviceId,
+          'Authorization':'Bearer '+this.state.token,
+        },
+      })
+      if(res2 && res2.status === 200){
+        this.setState({
+          engineerList:res2.data.result
+        })
+        console.log("列表：" + this.state.engineerList)
+      }
 
     }
     render(){
       const {
         match : { params : { taskId,itemId } }
       } = this.props   
-      const children = [];
-      for (let i = 10; i < 36; i++) {
-        children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
+      const List = [];
+      const engineerIdList = this.state.engineerList;
+      let length=0;
+      for(let engineer in engineerIdList){
+        length++;
       }
+      for(let i=0;i<length;i++){
+        List.push(<Option key={engineerIdList[i]}>{engineerIdList[i]}</Option>);
+      }
+      // for (let i = 10; i < 36; i++) {
+      //   children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
+      // }
 
         return(
           <div className="bg">
@@ -75,7 +86,7 @@ class BindEngineer extends Component{
                   </Col>
               </Row> 
               <Select mode="tags" style={{ width: '100%' }} placeholder="请选择和该项目绑定的工程师" >
-                {children}
+                {List}
               </Select>
               
             </div>
