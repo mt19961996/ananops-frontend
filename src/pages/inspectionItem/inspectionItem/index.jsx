@@ -8,7 +8,7 @@ const FIRST_PAGE = 0;
 const PAGE_SIZE = 10;
 const Search = Input.Search;
 
-class Sub extends Component{
+class inspectionItem extends Component{
     constructor(props){
         super(props)
         this.state={
@@ -18,47 +18,74 @@ class Sub extends Component{
             size: PAGE_SIZE,
             // total: 20, 
             nowCurrent:FIRST_PAGE,
+            role:window.localStorage.getItem('role'),
+            size: PAGE_SIZE,
+            // total: 20, 
+            nowCurrent:FIRST_PAGE,
             data:[],
             status:null,
+            imcTaskId:null,
         }
         this.getInfo=this.getInfo.bind(this)
     }
     componentDidMount(){
       const { 
-        match : { params : { id } }
+        match : { params : { imcTaskId } }
       } = this.props
-      this.getInfo(id)
+      this.setState({
+        imcTaskId:imcTaskId
+      })
+      this.getInfo(imcTaskId)
     }
 
     //获取工单对应的子项
     getInfo=(id)=>{
-      const { size, status} = this.state;
+      var location = this.props.location.pathname;
+      console.log(location)
+      var status;
+      if(location.includes('/cbd/item/waitForMaintainer')){
+        //如果当前状态是等待分配工程师
+        status = 1;
+      }
+      if(location.includes('/cbd/item/waitForAccept')){
+        status = 2;
+      }
+      if(location.includes('/cbd/item/execute')){
+        status = 3;
+      }
+      if(location.includes('/cbd/item/finish')){
+        status = 4;
+      }
+      if(location.includes('/cbd/item/confirmed')){
+        status = 5;
+      }
       const values={orderBy: "string",pageSize:100,pageNum:0,taskId:id,status:status}
-          axios({
-              method: 'POST',
-              url: '/imc/inspectionItem/getAllItemByTaskId',
-              headers: {
-                'deviceId': this.deviceId,
-                'Authorization':'Bearer '+this.state.token,
-              },
-              data:values
-            })
-          .then((res) => {
-              if(res && res.status === 200){
-              // console.log(res.data.result)
-              var taskItemList
-              res.data.result==null?taskItemList=[]:taskItemList=res.data.result
-              // res.data.result==null?pageNum=0:pageNum=res.data.result.pageNum
-              this.setState({
-                  data:taskItemList,
-                //   status:status,
-                //  roleCode:roleCode,
-              });
-              }
-          })
-          .catch(function (error) {
-              console.log(error);
+      console.log(values)
+      axios({
+          method: 'POST',
+          url: '/imc/inspectionItem/getAllItemByTaskIdAndStatus',
+          headers: {
+            'deviceId': this.deviceId,
+            'Authorization':'Bearer '+this.state.token,
+          },
+          data:values
+        })
+      .then((res) => {
+          if(res && res.status === 200){
+          // console.log(res.data.result)
+          var taskItemList
+          res.data.result==null?taskItemList=[]:taskItemList=res.data.result
+          // res.data.result==null?pageNum=0:pageNum=res.data.result.pageNum
+          this.setState({
+              data:taskItemList,
+            //   status:status,
+            //  roleCode:roleCode,
           });
+          }
+      })
+      .catch(function (error) {
+          console.log(error);
+      });
         
     }
 
@@ -75,6 +102,7 @@ class Sub extends Component{
         const current = nowCurrent+1
         const limit = size
         console.log(roleCode)
+        console.log("巡检任务对应的Id：" + this.state.imcTaskId)
         return(
             <div>
             <div className="searchPart">
@@ -176,4 +204,4 @@ class Sub extends Component{
         )
     }
 }
-export default Sub
+export default inspectionItem

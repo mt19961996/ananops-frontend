@@ -22,8 +22,14 @@ class Inspection extends Component{
             // total: 20, 
             nowCurrent:FIRST_PAGE,
             data:[],
-            display_button1:'none',
-            display_button2:'none',
+            display_button1:'none',//甲方负责人同意任务按钮
+            display_button2:'none',//甲方负责人否决人物按钮
+            display_button3:'none',//服务商接单按钮
+            display_button4:'none',//甲方负责人确认巡检完成按钮
+            display_button5:'none',//甲方负责人付款按钮
+            display_button6:'none',//甲方负责人评论按钮
+            display_button7:'none',//服务商拒单
+            display_button8:'none',//删除任务
         }
         this.getInfo=this.getInfo.bind(this)
     }
@@ -35,56 +41,176 @@ class Inspection extends Component{
   getInfo(page){  
       var location=this.props.location.pathname
       var status
-  
+      if(location == '/cbd/inspection/deny'){
+        status=-1
+        this.setState({
+          display_button1:'none',
+          display_button2:'none',
+          display_button3:'none',
+          display_button4:'none',
+          display_button5:'none',
+          display_button6:'none',
+          display_button7:'none',
+          display_button8:'block',
+        })
+      }
       if(location == '/cbd/inspection/check'){
         status=0
         if(this.state.role!=null && this.state.role.includes('用户')){
           this.setState({
             display_button1:'block',
+            display_button2:'block',
+            display_button3:'none',
+            display_button4:'none',
+            display_button5:'none',
+            display_button6:'none',
+            display_button7:'none',
+            display_button8:'block',
+          })
+        }else{
+          this.setState({
+            display_button1:'none',
             display_button2:'none',
+            display_button3:'none',
+            display_button4:'none',
+            display_button5:'none',
+            display_button6:'none',
+            display_button7:'none',
+            display_button8:'none',
           })
         }
       }
       if(location=='/cbd/inspection/accept'){  
         status=2
-        this.setState({
-          display_button1:'none',
-          display_button2:'block',
-        })
+        if(this.state.role!=null && this.state.role.includes('服务商')){
+          this.setState({
+            display_button1:'none',
+            display_button2:'none',
+            display_button3:'block',
+            display_button4:'none',
+            display_button5:'none',
+            display_button6:'none',
+            display_button7:'block',
+            display_button8:'none',
+          })
+        }else{
+          this.setState({
+            display_button1:'none',
+            display_button2:'none',
+            display_button3:'none',
+            display_button4:'none',
+            display_button5:'none',
+            display_button6:'none',
+            display_button7:'none',
+            display_button8:'block',
+          })
+        }
+        
       }
       else if(location==='/cbd/inspection/execute'){
         status=3
-        this.setState({
-          display_button1:'none',
-          display_button2:'none',
-        })
+          this.setState({
+            display_button1:'none',
+            display_button2:'none',
+            display_button3:'none',
+            display_button4:'none',
+            display_button5:'none',
+            display_button6:'none',
+            display_button7:'none',
+            display_button8:'none',
+          })
       }
       else if(location==='/cbd/inspection/confirm'){
         status=4
-        this.setState({
-          display_button1:'none',
-          display_button2:'none',
-        })
+        if(this.state.role!=null && this.state.role.includes('用户')){
+          this.setState({
+            display_button1:'none',
+            display_button2:'none',
+            display_button3:'none',
+            display_button4:'block',
+            display_button5:'none',
+            display_button6:'none',
+            display_button7:'none',
+            display_button8:'none',
+          })
+        }else{
+          this.setState({
+            display_button1:'none',
+            display_button2:'none',
+            display_button3:'none',
+            display_button4:'none',
+            display_button5:'none',
+            display_button6:'none',
+            display_button7:'none',
+            display_button8:'none',
+          })
+        }
+        
       }
       else if(location==='/cbd/inspection/pay'){
         status=5
-        this.setState({
-          display_button1:'none',
-          display_button2:'none',
-        })
+        if(this.state.role!=null && this.state.role.includes('用户')){
+          this.setState({
+            display_button1:'none',
+            display_button2:'none',
+            display_button3:'none',
+            display_button4:'none',
+            display_button5:'block',
+            display_button6:'none',
+            display_button7:'none',
+            display_button8:'none',
+          })
+        }else{
+          this.setState({
+            display_button1:'none',
+            display_button2:'none',
+            display_button3:'none',
+            display_button4:'none',
+            display_button5:'none',
+            display_button6:'none',
+            display_button7:'none'
+          })
+        }
+        
       }
       else if(location==='/cbd/inspection/comment'){
         status=6
-        this.setState({
-          display_button1:'none',
-          display_button2:'none',
-        })
+        if(this.state.role!=null && this.state.role.includes('用户')){
+          this.setState({
+            display_button1:'none',
+            display_button2:'none',
+            display_button3:'none',
+            display_button4:'none',
+            display_button5:'none',
+            display_button6:'block',
+            display_button7:'none',
+            display_button8:'none',
+          })
+        }else{
+          this.setState({
+            display_button1:'none',
+            display_button2:'none',
+            display_button3:'none',
+            display_button4:'none',
+            display_button5:'none',
+            display_button6:'none',
+            display_button7:'none',
+            display_button8:'none',
+          })
+        }
+        
       }
       else if(location==='/cbd/inspection/finish'){
         status=7
         this.setState({
           display_button1:'none',
           display_button2:'none',
+          display_button3:'none',
+          display_button4:'none',
+          display_button5:'none',
+          display_button6:'none',
+          display_button7:'none',
+          display_button8:'none',
         })
       }
       const { size, } = this.state;
@@ -122,8 +248,8 @@ class Inspection extends Component{
       });
         
   }
-  //同意该巡检任务的执行
-  approveImcTask=(id)=>{
+  //甲方负责人同意该巡检任务的执行
+  approveImcTaskByA=(id)=>{
     console.log("当前巡检任务id为：" + id)
     const data={
       taskId:id
@@ -136,6 +262,102 @@ class Inspection extends Component{
           'Authorization':'Bearer '+this.state.token,
         },
         data:data
+      })
+    .then((res) => {
+        if(res && res.status === 200){
+          console.log(res.data)
+          this.getInfo(FIRST_PAGE)
+        }
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+  }
+  //甲方负责人否决该巡检任务的执行
+  denyImcTaskByA=(id)=>{
+    console.log("当前巡检任务id为：" + id)
+    const data={
+      taskId:id
+    }
+    axios({
+        method: 'POST',
+        url: '/imc/inspectionTask/denyImcTaskByPrincipal',
+        headers: {
+          'deviceId': this.deviceId,
+          'Authorization':'Bearer '+this.state.token,
+        },
+        data:data
+      })
+    .then((res) => {
+        if(res && res.status === 200){
+          console.log(res.data)
+          this.getInfo(FIRST_PAGE)
+        }
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+  }
+  //服务商接单
+  acceptImcTaskByB=(id)=>{
+    console.log("当前巡检任务id为：" + id)
+    const data={
+      taskId:id
+    }
+    axios({
+        method: 'POST',
+        url: '/imc/inspectionTask/acceptTaskByFacilitator',
+        headers: {
+          'deviceId': this.deviceId,
+          'Authorization':'Bearer '+this.state.token,
+        },
+        data:data
+      })
+    .then((res) => {
+        if(res && res.status === 200){
+          console.log(res.data)
+          this.getInfo(FIRST_PAGE)
+        }
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+  }
+  //服务商拒单
+  denyImcTaskByB=(id)=>{
+    console.log("当前巡检任务id为：" + id)
+    const data={
+      taskId:id
+    }
+    axios({
+        method: 'POST',
+        url: '/imc/inspectionTask/refuseTaskByFacilitator',
+        headers: {
+          'deviceId': this.deviceId,
+          'Authorization':'Bearer '+this.state.token,
+        },
+        data:data
+      })
+    .then((res) => {
+        if(res && res.status === 200){
+          console.log(res.data)
+          this.getInfo(FIRST_PAGE)
+        }
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+  }
+  //删除巡检任务
+  deleteTask=(id)=>{
+    console.log("当前巡检任务id为：" + id)
+    axios({
+        method: 'POST',
+        url: '/imc/inspectionTask/deleteTaskByTaskId/' + id,
+        headers: {
+          'deviceId': this.deviceId,
+          'Authorization':'Bearer '+this.state.token,
+        },
       })
     .then((res) => {
         if(res && res.status === 200){
@@ -246,35 +468,89 @@ class Inspection extends Component{
                 style={{ display: 'block' }}
               >
                 <Link
-                  to={`/cbd/item/sub/${record.id}`}
+                  to={`/cbd/item/${record.id}`}
                   style={{marginRight:'12px'}}
                 >巡检子项</Link>                
                 <Link
-                  to={`/cbd/item/log/${record.id}`}
+                  to={`/cbd/imcTaskInfo/log/${record.id}`}
                   style={{marginRight:'12px'}}
                 >巡检日志</Link>
                  <Link
-                  to={`/cbd/item/detail/${record.id}`}
+                  to={`/cbd/imcTaskInfo/detail/${record.id}`}
                   style={{marginRight:'12px'}}
                 >详情</Link> 
                 <Popconfirm
                     title="确定同意该巡检任务的执行？"
-                    onConfirm={()=> {this.approveImcTask(record.id)}}
+                    onConfirm={()=> {this.approveImcTaskByA(record.id)}}
                 >
                     <Button 
                     type="simple"
                     style={{marginRight:'12px',border:'none',padding:0,color:"#357aff",background:'transparent',display:this.state.display_button1}}
                     >同意执行</Button>
-                </Popconfirm>      
+                </Popconfirm>  
                 <Popconfirm
-                    title="确定接单？"
-                    onConfirm={()=> {alert("服务商接单啦")}}
+                    title="确定否决该巡检任务的执行？"
+                    onConfirm={()=> {this.denyImcTaskByA(record.id)}}
                 >
                     <Button 
                     type="simple"
                     style={{marginRight:'12px',border:'none',padding:0,color:"#357aff",background:'transparent',display:this.state.display_button2}}
+                    >否决执行</Button>
+                </Popconfirm>      
+                <Popconfirm
+                    title="确定接单？"
+                    onConfirm={()=> {this.acceptImcTaskByB(record.id)}}
+                >
+                    <Button 
+                    type="simple"
+                    style={{marginRight:'12px',border:'none',padding:0,color:"#357aff",background:'transparent',display:this.state.display_button3}}
                     >接单</Button>
                 </Popconfirm>  
+                <Popconfirm
+                    title="确定拒单？"
+                    onConfirm={()=> {this.denyImcTaskByB(record.id)}}
+                >
+                    <Button 
+                    type="simple"
+                    style={{marginRight:'12px',border:'none',padding:0,color:"#357aff",background:'transparent',display:this.state.display_button7}}
+                    >拒单</Button>
+                </Popconfirm> 
+                <Popconfirm
+                    title="确认巡检结果？"
+                    onConfirm={()=> {alert("巡检结果已经被确认")}}
+                >
+                    <Button 
+                    type="simple"
+                    style={{marginRight:'12px',border:'none',padding:0,color:"#357aff",background:'transparent',display:this.state.display_button4}}
+                    >确认完成</Button>
+                </Popconfirm>  
+                <Popconfirm
+                    title="确定付款？"
+                    onConfirm={()=> {alert("甲方付款成功啦")}}
+                >
+                    <Button 
+                    type="simple"
+                    style={{marginRight:'12px',border:'none',padding:0,color:"#357aff",background:'transparent',display:this.state.display_button5}}
+                    >付款</Button>
+                </Popconfirm> 
+                <Popconfirm
+                    title="提交评论？"
+                    onConfirm={()=> {alert("评论成功！")}}
+                >
+                    <Button 
+                    type="simple"
+                    style={{marginRight:'12px',border:'none',padding:0,color:"#357aff",background:'transparent',display:this.state.display_button6}}
+                    >评论</Button>
+                </Popconfirm>   
+                <Popconfirm
+                    title="确定删除该任务？"
+                    onConfirm={()=> {this.deleteTask(record.id)}}
+                >
+                    <Button 
+                    type="simple"
+                    style={{marginRight:'12px',border:'none',padding:0,color:"#357aff",background:'transparent',display:this.state.display_button8}}
+                    >删除</Button>
+                </Popconfirm>   
               </div>
             ),
           }]}

@@ -17,7 +17,7 @@ class InspectionData extends Component {
     // this.getUserInfo=this.getUserInfo.bind(this)
   }
   componentDidMount(){
-    //   this.getUserInfo()
+    this.props.history.replace({pathname:"/cbd/inspection/check",state:{tabKey:'check'}});
   }
 
   //tab栏每一个状态之间切换
@@ -91,6 +91,14 @@ class InspectionData extends Component {
             >  
                <Route exact 
                 path="/cbd/inspection/finish" 
+                component={Inpection} 
+                />                         
+            </TabPane>
+            <TabPane tab="已被否决任务"
+            key="deny"
+            >  
+               <Route exact 
+                path="/cbd/inspection/deny" 
                 component={Inpection} 
                 />                         
             </TabPane>

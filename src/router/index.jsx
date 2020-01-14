@@ -29,6 +29,7 @@ import Log from '../pages/monitor/log'
 import Token from '../pages/monitor/token'
 import Exception from '../pages/monitor/exception'
 import Item from '../pages/inspectionItem'
+import ImcTaskInfo from '../pages/imcTaskInfo'
 import axios from 'axios';
 class Index extends React.Component {
   constructor(props){
@@ -55,13 +56,14 @@ class Index extends React.Component {
               <Route path="/cbd/maintain/data" component={System}/>
               <Route path="/cbd/pro" component={Contract}/>
               <Route path="/cbd/inspection" component={PlanRoute}/>
-              <Route path="/cbd/item" component={Item}/>
+              <Route path="/cbd/item/:imcTaskId" component={Item}/>
               <Route path="/cbd/examine" component={PlanApproval}/>
               <Route path="/cbd/bill" component={Bill}/>
               <Route path="/cbd/alarm" component={Alarm}/>
               <Route path="/cbd/check" component={Acceptance}/>
               <Route path="/cbd/alliance" component={ServiceProvider}/>
               <Route path="/report" component={Report}/>
+              <Route path="/cbd/imcTaskInfo" component={ImcTaskInfo}/>
 
 
               <Route exact path="/uas/user/list" component={User}/>
