@@ -23,6 +23,7 @@ class Project extends Component{
             disVisible:false,
             data:[],
             add:{},
+            flag:null,
             projectId:null,
             lastPathName:null,
         }
@@ -169,11 +170,11 @@ class Project extends Component{
     
     //显示关联模态框
     add(record){
-        var addDetail={'projectId':Number(record.id),userId:null}
-        console.log(typeof(addDetail.projectId))
+        var addDetail={'projectId':Number(record.id),userId:null,flag:0}
+        console.log(addDetail.projectId)
         this.setState({
             connectVisible:true,
-            add:addDetail
+            add:addDetail,
         })
        
     }
@@ -188,9 +189,10 @@ class Project extends Component{
 
      //显示解绑模态框
      delete(record){
+        var addDetail={'projectId':Number(record.id),userId:null,flag:1}
         this.setState({
             disVisible:true,
-            projectId:record.id
+            add:addDetail,
         })
        
     }
@@ -209,15 +211,20 @@ class Project extends Component{
             connectVisible: false,
         });
         const values = this.form.getFieldsValue() 
+        let data = {
+            projectId:values.projectId,
+            userId:values.userId
+        }
+        console.log(data)
         axios({
-        contentType:'application/json',
-        method: 'POST',
-        url: '/pmc/project/addProUser',
-        headers: {
-            'deviceId': this.deviceId,
-            'Authorization':'Bearer '+this.state.token,
-        },
-        data:values
+            method: 'POST',
+            url: '/pmc/project/addProUser',
+            headers: {
+                'Content-Type':'application/json',
+                'deviceId': this.deviceId,
+                'Authorization':'Bearer '+this.state.token,
+            },
+            data:JSON.stringify(data)
         })
         .then((res) => {
         if(res && res.status === 200){
@@ -227,7 +234,7 @@ class Project extends Component{
         })
         .catch(function (error) {
             console.log(error);
-            alert('已绑定用户')
+            alert('绑定失败')
         });
   
   }  
@@ -236,15 +243,20 @@ class Project extends Component{
       this.setState({
           disVisible: false,
       });
-      const id=this.state.projectId
+      const values = this.form.getFieldsValue() 
+      let data = {
+        projectId:values.projectId,
+        userId:values.userId
+      }
       axios({
-      contentType:'application/json',
-      method: 'POST',
-      url: '/pmc/project/deleteProUser/'+id,
-      headers: {
-          'deviceId': this.deviceId,
-          'Authorization':'Bearer '+this.state.token,
-      },
+        method: 'POST',
+        url: '/pmc/project/deleteProUser',
+        headers: {
+            'Content-Type':'application/json',
+            'deviceId': this.deviceId,
+            'Authorization':'Bearer '+this.state.token,
+        },
+        data:JSON.stringify(data)
       })
       .then((res) => {
       if(res && res.status === 200){
@@ -438,11 +450,11 @@ class Project extends Component{
                             visible={this.state.disVisible}
                             onOk={this.disOk}
                             onCancel={this.disCancel}
-                            okText='确定'
+                            okText='解绑'
                             cancelText='取消'
                             destroyOnClose='true'
                         >
-                            <p>确认解绑？</p>
+                            <Add setAdd={(form)=>{this.form = form}}  add={add}/>
                         </Modal>
                     </div>
                     ),

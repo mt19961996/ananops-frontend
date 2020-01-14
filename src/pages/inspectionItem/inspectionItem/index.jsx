@@ -181,23 +181,23 @@ class inspectionItem extends Component{
                   return (record.description && record.description) || '--'
                 }
               },
-              // {
-              //   title: '操作',
-              //   render: (text, record, index) => (
-              //     <div className="operate-btns"
-              //       style={{ display: 'block' }}
-              //     >
-              //       <Link
-              //         to={`/cbd/service/sublog/${id}/${record.id}`}
-              //         style={{marginRight:'12px'}}
-              //       >子项日志</Link>
-              //       <Link
-              //         to={`/cbd/service/subplan/${id}/${record.id}`}
-              //         style={{marginRight:'12px'}}
-              //       >备件方案</Link>
-              //     </div>
-              //   ),
-              // }
+              {
+                title: '操作',
+                render: (text, record, index) => (
+                  <div className="operate-btns"
+                    style={{ display: 'block' }}
+                  >
+                    <Link
+                      to={`/cbd/imcItemInfo/log/${this.state.imcTaskId}/${record.id}`}
+                      style={{marginRight:'12px'}}
+                    >子项日志</Link>
+                    <Link
+                      to={`/cbd/imcItemInfo/bindEngineer/${this.state.imcTaskId}/${record.id}`}
+                      style={{marginRight:'12px'}}
+                    >绑定工程师</Link>
+                  </div>
+                ),
+              }
             ]}
             />
           </div>  

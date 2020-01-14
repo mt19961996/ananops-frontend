@@ -1,5 +1,5 @@
 import React,{Component,} from 'react'
-import { Button,Row,Col,Table,Input,Popconfirm,message,Modal,Form  } from 'antd';
+import { Button,Row,Col,Table,Input,Popconfirm,message,Modal,Form,Popover  } from 'antd';
 import { Link } from 'react-router-dom'
 import moment from 'moment';
 import axios from 'axios';
@@ -30,6 +30,7 @@ class Inspection extends Component{
             display_button6:'none',//甲方负责人评论按钮
             display_button7:'none',//服务商拒单
             display_button8:'none',//删除任务
+            display_button9:'none',//分配工程师
         }
         this.getInfo=this.getInfo.bind(this)
     }
@@ -52,6 +53,7 @@ class Inspection extends Component{
           display_button6:'none',
           display_button7:'none',
           display_button8:'block',
+          display_button9:'none',
         })
       }
       if(location == '/cbd/inspection/check'){
@@ -66,6 +68,7 @@ class Inspection extends Component{
             display_button6:'none',
             display_button7:'none',
             display_button8:'block',
+            display_button9:'none',
           })
         }else{
           this.setState({
@@ -77,6 +80,7 @@ class Inspection extends Component{
             display_button6:'none',
             display_button7:'none',
             display_button8:'none',
+            display_button9:'none',
           })
         }
       }
@@ -92,6 +96,7 @@ class Inspection extends Component{
             display_button6:'none',
             display_button7:'block',
             display_button8:'none',
+            display_button9:'none',
           })
         }else{
           this.setState({
@@ -103,12 +108,14 @@ class Inspection extends Component{
             display_button6:'none',
             display_button7:'none',
             display_button8:'block',
+            display_button9:'none',
           })
         }
         
       }
-      else if(location==='/cbd/inspection/execute'){
+      if(location==='/cbd/inspection/execute'||location === '/cbd/inspection/appoint'){
         status=3
+        if(this.state.role!=null && this.state.role.includes('服务商')){
           this.setState({
             display_button1:'none',
             display_button2:'none',
@@ -118,9 +125,24 @@ class Inspection extends Component{
             display_button6:'none',
             display_button7:'none',
             display_button8:'none',
+            display_button9:'block',
           })
+        }else{
+          this.setState({
+            display_button1:'none',
+            display_button2:'none',
+            display_button3:'none',
+            display_button4:'none',
+            display_button5:'none',
+            display_button6:'none',
+            display_button7:'none',
+            display_button8:'none',
+            display_button9:'none',
+          })
+        }
+          
       }
-      else if(location==='/cbd/inspection/confirm'){
+      if(location==='/cbd/inspection/confirm'){
         status=4
         if(this.state.role!=null && this.state.role.includes('用户')){
           this.setState({
@@ -132,6 +154,7 @@ class Inspection extends Component{
             display_button6:'none',
             display_button7:'none',
             display_button8:'none',
+            display_button9:'none',
           })
         }else{
           this.setState({
@@ -143,11 +166,12 @@ class Inspection extends Component{
             display_button6:'none',
             display_button7:'none',
             display_button8:'none',
+            display_button9:'none',
           })
         }
         
       }
-      else if(location==='/cbd/inspection/pay'){
+      if(location==='/cbd/inspection/pay'){
         status=5
         if(this.state.role!=null && this.state.role.includes('用户')){
           this.setState({
@@ -159,6 +183,7 @@ class Inspection extends Component{
             display_button6:'none',
             display_button7:'none',
             display_button8:'none',
+            display_button9:'none',
           })
         }else{
           this.setState({
@@ -168,12 +193,14 @@ class Inspection extends Component{
             display_button4:'none',
             display_button5:'none',
             display_button6:'none',
-            display_button7:'none'
+            display_button7:'none',
+            display_button8:'none',
+            display_button9:'none',
           })
         }
         
       }
-      else if(location==='/cbd/inspection/comment'){
+      if(location==='/cbd/inspection/comment'){
         status=6
         if(this.state.role!=null && this.state.role.includes('用户')){
           this.setState({
@@ -185,6 +212,7 @@ class Inspection extends Component{
             display_button6:'block',
             display_button7:'none',
             display_button8:'none',
+            display_button9:'none',
           })
         }else{
           this.setState({
@@ -196,11 +224,12 @@ class Inspection extends Component{
             display_button6:'none',
             display_button7:'none',
             display_button8:'none',
+            display_button9:'none',
           })
         }
         
       }
-      else if(location==='/cbd/inspection/finish'){
+      if(location==='/cbd/inspection/finish'){
         status=7
         this.setState({
           display_button1:'none',
@@ -211,6 +240,7 @@ class Inspection extends Component{
           display_button6:'none',
           display_button7:'none',
           display_button8:'none',
+          display_button9:'none',
         })
       }
       const { size, } = this.state;
@@ -550,7 +580,14 @@ class Inspection extends Component{
                     type="simple"
                     style={{marginRight:'12px',border:'none',padding:0,color:"#357aff",background:'transparent',display:this.state.display_button8}}
                     >删除</Button>
-                </Popconfirm>   
+                </Popconfirm> 
+                {/* <Popover content={<a>lalala</a>} title="请选择工程师">
+                  <Button 
+                  // onClick={()=>{alert("分配工程师")}}
+                  type="simple"
+                  style={{marginRight:'12px',border:'none',padding:0,color:"#357aff",background:'transparent',display:this.state.display_button9}}
+                  >分配工程师</Button>
+                </Popover> */}
               </div>
             ),
           }]}

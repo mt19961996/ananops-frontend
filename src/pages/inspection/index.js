@@ -12,12 +12,25 @@ class InspectionData extends Component {
     this.state = {
         tabKey:"",
         role:window.localStorage.getItem('role'),
+        partyA_show:'none',
+        partyB_show:'none',
     };
     this.onTabChange=this.onTabChange.bind(this);
     // this.getUserInfo=this.getUserInfo.bind(this)
   }
   componentDidMount(){
     this.props.history.replace({pathname:"/cbd/inspection/check",state:{tabKey:'check'}});
+    if(this.state.role.includes("用户")){
+      this.setState({
+        partyA_show:'block',
+        partyB_show:'none',
+      })
+    }else if(this.state.role.includes("服务商")){
+      this.setState({
+        partyA_show:'none',
+        partyB_show:'block',
+      })
+    }
   }
 
   //tab栏每一个状态之间切换
@@ -32,6 +45,7 @@ class InspectionData extends Component {
     return (    
       <div className="plan-approval-list-page">
         <Tabs 
+        style={{display:this.state.partyA_show}}
         activeKey={(this.props.location.state && this.props.location.state.tabKey) ? this.props.location.state.tabKey : ''}
         onChange={this.onTabChange}>
             <TabPane 
@@ -102,8 +116,31 @@ class InspectionData extends Component {
                 component={Inpection} 
                 />                         
             </TabPane>
-    </Tabs>
-      </div>
+      </Tabs>
+      <Tabs 
+        style={{display:this.state.partyB_show}}
+        activeKey={(this.props.location.state && this.props.location.state.tabKey) ? this.props.location.state.tabKey : ''}
+        onChange={this.onTabChange}>
+            <TabPane 
+            tab="服务商待接单"
+            key="accept"
+            >
+            <Route exact 
+                path="/cbd/inspection/accept" 
+                component={Inpection} 
+                />
+            </TabPane>
+            <TabPane 
+            tab="待分配维修工"
+            key="appoint"
+            >
+            <Route exact 
+                path="/cbd/inspection/appoint" 
+                component={Inpection} 
+                />
+            </TabPane>
+      </Tabs>
+    </div>
       
     );
   }

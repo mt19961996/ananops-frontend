@@ -30,6 +30,7 @@ import Token from '../pages/monitor/token'
 import Exception from '../pages/monitor/exception'
 import Item from '../pages/inspectionItem'
 import ImcTaskInfo from '../pages/imcTaskInfo'
+import ImcItemInfo from '../pages/imcItemInfo'
 import axios from 'axios';
 class Index extends React.Component {
   constructor(props){
@@ -64,7 +65,7 @@ class Index extends React.Component {
               <Route path="/cbd/alliance" component={ServiceProvider}/>
               <Route path="/report" component={Report}/>
               <Route path="/cbd/imcTaskInfo" component={ImcTaskInfo}/>
-
+              <Route path="/cbd/imcItemInfo" component={ImcItemInfo}/>
 
               <Route exact path="/uas/user/list" component={User}/>
               <Route path="/uas/user/list/online" component={OnlineUsers}/>
