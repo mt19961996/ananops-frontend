@@ -6,7 +6,7 @@ import HeaderBar from '../components/layout/HeaderBar.jsx'
 import Home from '../pages/home'
 import PlanApproval from '../pages/approval'
 import Acceptance from '../pages/acceptance'
-import Alarm from '../pages/alarm'
+import Alarm from '../pages/amc'
 import Authority from '../pages/authority'
 import Bill from '../pages/bill'
 import Contract from '../pages/contract'
@@ -58,7 +58,7 @@ class Index extends React.Component {
               <Route path="/cbd/item" component={Item}/>
               <Route path="/cbd/examine" component={PlanApproval}/>
               <Route path="/cbd/bill" component={Bill}/>
-              <Route path="/cbd/alarm" component={Alarm}/>
+              <Route path="/cbd/amc" component={Alarm}/>
               <Route path="/cbd/check" component={Acceptance}/>
               <Route path="/cbd/alliance" component={ServiceProvider}/>
               <Route path="/report" component={Report}/>
