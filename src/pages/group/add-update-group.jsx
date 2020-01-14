@@ -1,13 +1,14 @@
 import React,{Component} from 'react'
-import {Form,Input,Button,Radio} from 'antd'
+import {Form,Input,Button,Radio,Select} from 'antd'
 import PropTypes from 'prop-types'
 const Item = Form.Item
 const TextArea = Input.TextArea
+const Option = Select.Option
 class AddUpdateForm extends Component{
   //接收父组件参数
   static propTypes = {
     setForm:PropTypes.func.isRequired,
-    group:PropTypes.object
+    groupList:PropTypes.array.isRequired
   }
 
   componentWillMount() {
@@ -15,9 +16,12 @@ class AddUpdateForm extends Component{
   }
 
   render(){
-
-    const group = this.props.group
+    const groupList = this.props.groupList
   
+    const group = groupList.map((item,index)=>
+      <Option value={item[0]} key={index}>{item[1]}</Option>
+    )
+
     const formItemLayout = {
       labelCol:{span:4},
       wrapperCol:{span:15}
@@ -26,26 +30,31 @@ class AddUpdateForm extends Component{
     const {getFieldDecorator} = this.props.form
     return (
       <Form {...formItemLayout}>
-
         <Item label="上级组织：">
           {
-            getFieldDecorator('parentMenu',{
+            getFieldDecorator('pid',{
               initialValue:'',
-              
+              rules:[{
+                required:true,
+                message:'请选择父组织'
+              }]
             })(
-              <Input placeholder="请输入角色编码"></Input>
+              <Select>
+                {group}
+              </Select>
             )
           }
-         
         </Item>
-        
+
         <Item label="组织编码：">
           {
-            getFieldDecorator('menuCode',{
+            getFieldDecorator('groupCode',{
               initialValue:'',
-              
+              rules:[{
+                required:true,
+              }]
             })(
-              <Input placeholder="请输入菜单编码"></Input>
+              <Input placeholder="请输入组织编码"></Input>
             )
           }
          
@@ -53,35 +62,38 @@ class AddUpdateForm extends Component{
       
         <Item label="组织名称：">
           {
-            getFieldDecorator('icon',{
+            getFieldDecorator('groupName',{
               initialValue:'',
-              
+              rules:[{
+                required:true,
+              }]
             })(
               <Input></Input>
             )
           }
          
         </Item>
-
-        <Item label="状态：">
+        <Item label="组织地址：">
           {
-            getFieldDecorator('status',{
-              initialValue:'',
-              
+            getFieldDecorator('addressList',{
+              initialValue:[368100109646176256,368100109679730688,368100109767811072],
+              rules:[{
+                required:true,
+              }]
             })(
-              <Radio.Group>
-                <Radio value="ENABLE">启用</Radio>
-                <Radio value="DISABLE">禁用</Radio>
-              </Radio.Group>
+              <Input></Input>
             )
           }
+         
         </Item>
-        
         <Item label="联系人：">
           {
-            getFieldDecorator('number',{
+            getFieldDecorator('contact',{
               initialValue:'',
-              
+              rules:[{
+                required:true,
+                message:'请输入联系人'
+              }]
             })(
               <Input></Input>
             )
@@ -89,7 +101,7 @@ class AddUpdateForm extends Component{
         </Item>
         <Item label="联系电话：">
           {
-            getFieldDecorator('url',{
+            getFieldDecorator('contactPhone',{
               initialValue:'',
               rules:[{
                 required:true,
@@ -100,17 +112,34 @@ class AddUpdateForm extends Component{
             )
           }
         </Item>
+
         <Item label="组织类型：">
           {
-            getFieldDecorator('remark',{
+            getFieldDecorator('type',{
               initialValue:'',
               
             })(
-              <TextArea autoSize={{minRows:2,maxRows:6}}></TextArea>
+              <Select>
+                <Option value="公司" key="company">公司</Option>
+                <Option value="部门" key="apartment">部门</Option>
+              </Select>
             )
           }
         </Item>
-        <Button type="primary">保存</Button>
+        <Item label="状态：">
+          {
+            getFieldDecorator('status',{
+              initialValue:'',
+              
+            })(
+              <Radio.Group>
+                <Radio value="0">启用</Radio>
+                <Radio value="1">禁用</Radio>
+              </Radio.Group>
+            )
+          }
+        </Item>
+        
       </Form>
     )
   }

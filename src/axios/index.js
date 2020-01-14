@@ -44,6 +44,8 @@ export const reqGroupList = () => ajax('/uac/group/getGroupTree')
 export const reqOnlineUsers = (dataPost) => ajax('/uac/token/queryListWithPage',dataPost)
 //查询某用户的操作日志
 export const reqUserLogs = (dataPost) => ajax('/uac/user/queryUserLogListWithPage',dataPost)
+//根据userId获取绑定角色
+export const reqBindRole = (userId) => ajax('/uac/user/getPermitBindRole/'+userId)
 
 
 //获取操作日志
@@ -67,3 +69,10 @@ export const reqDisagree = (dataPost) => ajax('/activiti/approve/disagree',dataP
 export const reqAgree = (dataPost) => ajax('/activiti/approve/agree',dataPost)
 //获取批注
 export const reqComment = (processInstanceId) => ajax('/activiti/base/getComment',{processInstanceId},'GET')
+
+
+
+//新建/编辑组织信息
+export const reqAddOrUpdateGroup = (dataPost) => ajax('/uac/group/save',dataPost)
+//用户绑定角色
+export const reqUserBindRole = (dataPost) => ajax('/uac/user/bindRole',dataPost)

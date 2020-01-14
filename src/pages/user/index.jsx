@@ -4,7 +4,7 @@ import LinkButton from '../../components/link-button'
 import {formatDate} from '../../utils/dateUtils'
 import AddUpdateForm from './add-update-form'
 import BindRole from './bind-role'
-import {reqUserList,reqSwitchUserStatus,reqAddOrUpdateUser,reqResetPwd,reqDeleteUser,reqGroupList} from '../../axios/index'
+import {reqUserList,reqSwitchUserStatus,reqAddOrUpdateUser,reqResetPwd,reqDeleteUser,reqGroupList,reqBindRole,reqUserBindRole} from '../../axios/index'
 
 const Option = Select.Option
 export default class User extends Component{
@@ -22,7 +22,8 @@ export default class User extends Component{
     searchType:'', //根据哪个字段搜索
     isShowAddUpdate:false,
     isShowBindRole:false,
-    
+    allRoleSet:[],
+    alreadyBindRoleIdSet:[]
   }
 
   initColumns = () => {
@@ -124,7 +125,7 @@ export default class User extends Component{
               <LinkButton onClick={() => this.updateStatus(id,status==='ENABLE'?'DISABLE':'ENABLE')}>{status==='DISABLE'?'启用':'禁用'}</LinkButton>|
               <LinkButton onClick={() => this.showUpdate(user)}>修改</LinkButton>|
               <LinkButton onClick={() => {this.props.history.push({pathname:'/uas/user/list/detail',state:user});console.log(user)}}>详情</LinkButton>|
-              <LinkButton onClick={() => this.bindRole(id)}>角色绑定</LinkButton>|
+              <LinkButton onClick={() => this.bindRole(user)}>角色绑定</LinkButton>|
               <LinkButton onClick={() => this.resetPwd(id)}>重置密码</LinkButton>|
               <LinkButton onClick={() => this.deleteUser(user)}>删除</LinkButton>
             </span>
@@ -135,9 +136,30 @@ export default class User extends Component{
     ]
   }
 
-  bindRole = (id) => {
-    
+  bindRole = async (user) => {
+    const result = await reqBindRole(user.id)
+    if(result.code===200){
+      console.log('接口请求得到所有角色allRoleSet',result.result.allRoleSet)
+      console.log('接口请求得到已绑定角色alreadyBindRoleIdSet',result.result.alreadyBindRoleSet)
+      this.setState({user:user,allRoleSet:result.result.allRoleSet,alreadyBindRoleIdSet:result.result.alreadyBindRoleSet},()=>this.setState({isShowBindRole:true}))
+
+    }
   }
+
+  bindRoleConfirm = async () => {
+
+    console.log(this.roleIdList)
+    const dataPost = {
+      roleIdList:this.roleIdList,
+      userId:this.state.user.id
+    }
+    const result = await reqUserBindRole(dataPost)
+    if(result.code===200){
+      this.setState({user:{}},()=>{this.setState({isShowBindRole:false})})
+      
+    }
+  }
+  
 
   resetPwd = (userId) => {
     Modal.confirm({
@@ -241,14 +263,16 @@ export default class User extends Component{
     this.pageNum = pageNum
     this.setState({loading:true})
     const {searchLoginName,searchPhone,searchUserName,searchType} = this.state
-    
+    const loginAfter = JSON.parse(window.localStorage.getItem('loginAfter'))
+    const groupId = loginAfter.loginAuthDto.groupId
     const dataPost = {
       "pageNum": `${pageNum}`,
       "pageSize": 10,
       "userName": `${searchUserName}`,
       "loginName": `${searchLoginName}`,
       "mobileNo": `${searchPhone}`,
-      "status": `${searchType===''?'':(searchType==='roleOn'?'ENABLE':'DISABLE')}`
+      "status": `${searchType===''?'':(searchType==='roleOn'?'ENABLE':'DISABLE')}`,
+      groupId:groupId
     }
     const result = await reqUserList(dataPost)
     if(result.code===200){
@@ -295,8 +319,9 @@ export default class User extends Component{
 
   render(){
   
-    const {users,user,groupList,selectedRowKeys,total,loading,searchType,searchUserName,searchLoginName,searchPhone,isShowAddUpdate,isShowBindRole} = this.state
-  
+    const {users,user,groupList,selectedRowKeys,total,loading,searchType,searchUserName,searchLoginName,searchPhone,isShowAddUpdate,isShowBindRole,allRoleSet,alreadyBindRoleIdSet} = this.state
+    console.log('index中state拿到的allroleSet',allRoleSet)
+    console.log('index中state拿到的alreadyBindRoleIdSet',alreadyBindRoleIdSet)
     const title = (
       <span>
         <Select placeholder="状态" value={searchType?searchType:undefined} style={{width:120,}} onChange={value => this.setState({searchType:value})}>
@@ -356,19 +381,26 @@ export default class User extends Component{
           cancelText="取消"
         >
           <AddUpdateForm
-            setForm={(form)=>{this.form = form}} user={user} groupList={groupList}
+            setForm={(form)=>{this.form = form}} 
+            user={user} 
+            groupList={groupList}
           />
         </Modal>
       
         <Modal
           title="绑定角色"
           visible={isShowBindRole}
-          onOk={this.updateRole}
-          onCancel={() => {this.setState({isShowBindRole:false});}}
+          onOk={this.bindRoleConfirm}
+          onCancel={() => {this.setState({user:{}},()=>{this.setState({isShowBindRole:false})});}}
           okText="确认"
           cancelText="取消"
+          width="800px"
         >
-          <BindRole user={user}/>
+          <BindRole
+            setRoleIdList={(roleIdList)=>{this.roleIdList = roleIdList}} 
+            allRoleSet={allRoleSet} 
+            alreadyBindRoleIdSet={alreadyBindRoleIdSet}
+          />
         </Modal>
         
       </Card>
