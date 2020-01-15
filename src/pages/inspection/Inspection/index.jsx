@@ -1,9 +1,9 @@
 import React,{Component,} from 'react'
-import { Button,Row,Col,Table,Input,Popconfirm,message,Modal,Form,Popover  } from 'antd';
+import { Button,Row,Col,Table,Input,Popconfirm,message,Modal,Form,Popover,Rate  } from 'antd';
 import { Link } from 'react-router-dom'
 import moment from 'moment';
 import axios from 'axios';
-
+const { TextArea } = Input;
 const FIRST_PAGE = 0;
 const PAGE_SIZE = 100;
 const Search = Input.Search;
@@ -26,6 +26,8 @@ class Inspection extends Component{
 
             },
             data:[],
+            reviewRank:null,
+            reviewContent:null,
             display_button1:'none',//甲方负责人同意任务按钮
             display_button2:'none',//甲方负责人否决人物按钮
             display_button3:'none',//服务商接单按钮
@@ -244,7 +246,7 @@ class Inspection extends Component{
           display_button6:'none',
           display_button7:'none',
           display_button8:'none',
-          display_button9:'none',
+          display_button9:'block',
         })
       }
       if(location === '/cbd/inspection/appoint'){
@@ -512,6 +514,83 @@ class Inspection extends Component{
         console.log(error);
     });
   }
+  //甲方用户确认巡检完成
+  confirmFinished=(imcTaskId)=>{
+    const data = {
+      status:5,
+      taskId:imcTaskId
+    }
+    axios({
+        method: 'POST',
+        url: '/imc/inspectionTask/modifyTaskStatusByTaskId',
+        headers: {
+          'Content-Type':'application/json',
+          'deviceId': this.deviceId,
+          'Authorization':'Bearer '+this.state.token,
+        },
+        data:JSON.stringify(data)
+      })
+    .then((res) => {
+        if(res && res.status === 200){
+          console.log(res.data)
+          alert("巡检任务已经确认完成！")
+          this.getInfo(FIRST_PAGE)
+        }
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+  }
+  //甲方付款
+  payImcTask=(imcTaskId)=>{
+    const data = {
+      status:6,
+      taskId:imcTaskId
+    }
+    axios({
+        method: 'POST',
+        url: '/imc/inspectionTask/modifyTaskStatusByTaskId',
+        headers: {
+          'Content-Type':'application/json',
+          'deviceId': this.deviceId,
+          'Authorization':'Bearer '+this.state.token,
+        },
+        data:JSON.stringify(data)
+      })
+    .then((res) => {
+        if(res && res.status === 200){
+          console.log(res.data)
+          alert("巡检任务付款成功！")
+          this.getInfo(FIRST_PAGE)
+        }
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+  }
+  //获取任务的评价
+  getTaskReview = (taskId)=>{
+    axios({
+      method: 'GET',
+      url: '/imc/inspectionReview/getReviewByTaskId/' + taskId,
+      headers: {
+        'deviceId': this.deviceId,
+        'Authorization':'Bearer '+this.state.token,
+      },
+    })
+    .then((res) => {
+        if(res && res.status === 200){
+          console.log(JSON.stringify(res.data.result))
+          this.setState({
+            reviewRank:res.data.result.score,
+            reviewContent:res.data.result.contents,
+          })
+        }
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+  }
   //返回不同的状态按钮
 
   render(){
@@ -660,7 +739,7 @@ class Inspection extends Component{
                 </Popconfirm> 
                 <Popconfirm
                     title="确认巡检结果？"
-                    onConfirm={()=> {alert("巡检结果已经被确认")}}
+                    onConfirm={()=> {this.confirmFinished(record.id)}}
                 >
                     <Button 
                     type="simple"
@@ -669,22 +748,17 @@ class Inspection extends Component{
                 </Popconfirm>  
                 <Popconfirm
                     title="确定付款？"
-                    onConfirm={()=> {alert("甲方付款成功啦")}}
+                    onConfirm={()=> {this.payImcTask(record.id)}}
                 >
                     <Button 
                     type="simple"
                     style={{marginRight:'12px',border:'none',padding:0,color:"#357aff",background:'transparent',display:this.state.display_button5}}
                     >付款</Button>
                 </Popconfirm> 
-                <Popconfirm
-                    title="提交评论？"
-                    onConfirm={()=> {alert("评论成功！")}}
-                >
-                    <Button 
-                    type="simple"
-                    style={{marginRight:'12px',border:'none',padding:0,color:"#357aff",background:'transparent',display:this.state.display_button6}}
-                    >评论</Button>
-                </Popconfirm>   
+                <Link
+                  to={`/cbd/imcTaskInfo/review/${record.id}`}
+                  style={{marginRight:'12px',display:this.state.display_button6}}
+                >评论</Link>  
                 <Popconfirm
                     title="确定删除该任务？"
                     onConfirm={()=> {this.deleteTask(record.id)}}
@@ -694,13 +768,22 @@ class Inspection extends Component{
                     style={{marginRight:'12px',border:'none',padding:0,color:"#357aff",background:'transparent',display:this.state.display_button8}}
                     >删除</Button>
                 </Popconfirm> 
-                {/* <Popover content={<a>lalala</a>} title="请选择工程师">
+                <Popover 
+                content={
+                  <div>
+                    <TextArea rows={4} value={this.state.reviewContent} />
+                    <Rate value = {this.state.reviewRank}></Rate>
+                  </div>
+                } 
+                title="任务评价情况"
+                trigger="click"
+                >
                   <Button 
-                  // onClick={()=>{alert("分配工程师")}}
+                  onClick={()=>{this.getTaskReview(record.id)}}
                   type="simple"
                   style={{marginRight:'12px',border:'none',padding:0,color:"#357aff",background:'transparent',display:this.state.display_button9}}
-                  >分配工程师</Button>
-                </Popover> */}
+                  >查看评论</Button>
+                </Popover>
               </div>
             ),
           }]}

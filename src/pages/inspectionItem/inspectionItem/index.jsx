@@ -441,7 +441,7 @@ class inspectionItem extends Component{
                         <Button 
                         type="simple"
                         style={{marginRight:'12px',border:'none',padding:0,color:"#357aff",background:'transparent',display:this.state.display_button3}}
-                        >巡检完成</Button>
+                        >完成巡检</Button>
                     </Popconfirm> 
                   </div>
                 ),

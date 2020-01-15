@@ -38,6 +38,16 @@ class imcTaskInfo extends Component{
             loading: Loading
           })}
         />
+        <Route 
+          exact   
+          path="/cbd/imcTaskInfo/review/:taskId"
+          component={Loadable({
+            loader: () => import(
+              /* webpackChunkName: "EntranceWork" */
+              './Review/index'),
+            loading: Loading
+          })}
+        />
       </Switch>
     );
   }
