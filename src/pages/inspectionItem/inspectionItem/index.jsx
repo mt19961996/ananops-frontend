@@ -25,6 +25,10 @@ class inspectionItem extends Component{
             data:[],
             status:null,
             imcTaskId:null,
+            display_button1:'none',
+            display_button2:'none',
+            display_button3:'none',
+            maintainerId:window.localStorage.getItem('id'),
         }
         this.getInfo=this.getInfo.bind(this)
     }
@@ -46,47 +50,273 @@ class inspectionItem extends Component{
       if(location.includes('/cbd/item/waitForMaintainer')){
         //如果当前状态是等待分配工程师
         status = 1;
+        if(this.state.role && this.state.role.includes("服务商")){
+          this.setState({
+            display_button1:'block',
+            display_button2:'none',
+            display_button3:'none',
+          })
+        }else{
+          this.setState({
+            display_button1:'none',
+            display_button2:'none',
+            display_button3:'none',
+          })
+        }
+        
       }
       if(location.includes('/cbd/item/waitForAccept')){
         status = 2;
+        this.setState({
+          display_button1:'none',
+          display_button2:'none',
+          display_button3:'none',
+        })
       }
       if(location.includes('/cbd/item/execute')){
         status = 3;
+        this.setState({
+          display_button1:'none',
+          display_button2:'none',
+          display_button3:'none',
+        })
       }
       if(location.includes('/cbd/item/finish')){
         status = 4;
+        this.setState({
+          display_button1:'none',
+          display_button2:'none',
+          display_button3:'none',
+        })
       }
       if(location.includes('/cbd/item/confirmed')){
         status = 5;
+        this.setState({
+          display_button1:'none',
+          display_button2:'none',
+          display_button3:'none',
+        })
       }
-      const values={orderBy: "string",pageSize:100,pageNum:0,taskId:id,status:status}
-      console.log(values)
-      axios({
+      if(location.includes('/cbd/inspection/waitForMaintainer'))
+      {
+        //如果当前是工程师账号，且处于工程师待接单状态
+        this.setState({
+          display_button1:'none',
+          display_button2:'block',
+          display_button3:'none',
+        })
+        const values={orderBy:'string',pageSize:100,pageNum:0,maintainerId:this.state.maintainerId,status:2};
+        console.log(JSON.stringify(values));
+        axios({
           method: 'POST',
-          url: '/imc/inspectionItem/getAllItemByTaskIdAndStatus',
+          url: '/imc/inspectionItem/getItemByMaintainerIdAndStatus',
           headers: {
+            'Content-Type':'application/json',
             'deviceId': this.deviceId,
             'Authorization':'Bearer '+this.state.token,
           },
-          data:values
+          data:JSON.stringify(values)
+        })
+        .then((res) => {
+            if(res && res.status === 200){
+            console.log(res.data.result)
+            var taskItemList
+            res.data.result==null?taskItemList=[]:taskItemList=res.data.result
+            // res.data.result==null?pageNum=0:pageNum=res.data.result.pageNum
+            this.setState({
+                data:taskItemList,
+              //   status:status,
+              //  roleCode:roleCode,
+            });
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+        
+      }else if(location.includes('/cbd/inspection/maintainerAccept')){
+        //如果当前是工程师账号，且处于工程师已接单
+        this.setState({
+          display_button1:'none',
+          display_button2:'none',
+          display_button3:'block',
+        })
+        const values={orderBy:'string',pageSize:100,pageNum:0,maintainerId:this.state.maintainerId};
+        console.log(JSON.stringify(values));
+        axios({
+          method: 'POST',
+          url: '/imc/inspectionItem/getAllAcceptedItemByMaintainer',
+          headers: {
+            'Content-Type':'application/json',
+            'deviceId': this.deviceId,
+            'Authorization':'Bearer '+this.state.token,
+          },
+          data:JSON.stringify(values)
+        })
+        .then((res) => {
+            if(res && res.status === 200){
+            console.log(res.data.result)
+            var taskItemList
+            res.data.result==null?taskItemList=[]:taskItemList=res.data.result
+            // res.data.result==null?pageNum=0:pageNum=res.data.result.pageNum
+            this.setState({
+                data:taskItemList,
+              //   status:status,
+              //  roleCode:roleCode,
+            });
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+      }else{
+        const values={orderBy: "string",pageSize:100,pageNum:0,taskId:id,status:status}
+        console.log(values)
+        axios({
+            method: 'POST',
+            url: '/imc/inspectionItem/getAllItemByTaskIdAndStatus',
+            headers: {
+              'deviceId': this.deviceId,
+              'Authorization':'Bearer '+this.state.token,
+            },
+            data:values
+          })
+        .then((res) => {
+            if(res && res.status === 200){
+            // console.log(res.data.result)
+            var taskItemList
+            res.data.result==null?taskItemList=[]:taskItemList=res.data.result
+            // res.data.result==null?pageNum=0:pageNum=res.data.result.pageNum
+            this.setState({
+                data:taskItemList,
+              //   status:status,
+              //  roleCode:roleCode,
+            });
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+      }
+    }
+
+    //工程师接单
+    acceptImcItem=(itemId)=>{
+      const data = {
+        itemId:itemId
+      }
+      console.log(JSON.stringify(data))
+      axios({
+          method: 'POST',
+          url: '/imc/inspectionItem/acceptItemByMaintainer',
+          headers: {
+            'Content-Type':'application/json',
+            'deviceId': this.deviceId,
+            'Authorization':'Bearer '+this.state.token,
+          },
+          data:JSON.stringify(data)
         })
       .then((res) => {
           if(res && res.status === 200){
-          // console.log(res.data.result)
-          var taskItemList
-          res.data.result==null?taskItemList=[]:taskItemList=res.data.result
-          // res.data.result==null?pageNum=0:pageNum=res.data.result.pageNum
-          this.setState({
-              data:taskItemList,
-            //   status:status,
-            //  roleCode:roleCode,
-          });
+            alert("工程师接单成功！")
+            //如果当前是维修工账号
+            this.setState({
+              display_button1:'none',
+              display_button2:'block',
+            })
+            const values={orderBy:'string',pageSize:100,pageNum:0,maintainerId:this.state.maintainerId,status:2};
+            console.log(JSON.stringify(values));
+            axios({
+              method: 'POST',
+              url: '/imc/inspectionItem/getItemByMaintainerIdAndStatus',
+              headers: {
+                'Content-Type':'application/json',
+                'deviceId': this.deviceId,
+                'Authorization':'Bearer '+this.state.token,
+              },
+              data:JSON.stringify(values)
+            })
+            .then((res) => {
+                if(res && res.status === 200){
+                console.log(res.data.result)
+                var taskItemList
+                res.data.result==null?taskItemList=[]:taskItemList=res.data.result
+                // res.data.result==null?pageNum=0:pageNum=res.data.result.pageNum
+                this.setState({
+                    data:taskItemList,
+                  //   status:status,
+                  //  roleCode:roleCode,
+                });
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
           }
       })
       .catch(function (error) {
           console.log(error);
       });
-        
+    }
+
+    //工程师完成该巡检任务子项
+    finishImcItem=(itemId)=>{
+      const data = {
+        itemId:itemId,
+        status:4
+      }
+      console.log(JSON.stringify(data))
+      axios({
+          method: 'POST',
+          url: '/imc/inspectionItem/modifyItemStatusByItemId',
+          headers: {
+            'Content-Type':'application/json',
+            'deviceId': this.deviceId,
+            'Authorization':'Bearer '+this.state.token,
+          },
+          data:JSON.stringify(data)
+        })
+      .then((res) => {
+          if(res && res.status === 200){
+            alert("此次巡检完成！")
+            this.setState({
+              display_button1:'none',
+              display_button2:'none',
+              display_button3:'block',
+            })
+            const values={orderBy:'string',pageSize:100,pageNum:0,maintainerId:this.state.maintainerId};
+            console.log(JSON.stringify(values));
+            axios({
+              method: 'POST',
+              url: '/imc/inspectionItem/getAllAcceptedItemByMaintainer',
+              headers: {
+                'Content-Type':'application/json',
+                'deviceId': this.deviceId,
+                'Authorization':'Bearer '+this.state.token,
+              },
+              data:JSON.stringify(values)
+            })
+            .then((res) => {
+                if(res && res.status === 200){
+                console.log(res.data.result)
+                var taskItemList
+                res.data.result==null?taskItemList=[]:taskItemList=res.data.result
+                // res.data.result==null?pageNum=0:pageNum=res.data.result.pageNum
+                this.setState({
+                    data:taskItemList,
+                  //   status:status,
+                  //  roleCode:roleCode,
+                });
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+          }
+      })
+      .catch(function (error) {
+          console.log(error);
+      });
     }
 
     render(){
@@ -193,8 +423,26 @@ class inspectionItem extends Component{
                     >子项日志</Link>
                     <Link
                       to={`/cbd/imcItemInfo/bindEngineer/${this.state.imcTaskId}/${record.id}`}
-                      style={{marginRight:'12px'}}
+                      style={{marginRight:'12px',display:this.state.display_button1}}
                     >绑定工程师</Link>
+                    <Popconfirm
+                        title="确定接单？"
+                        onConfirm={()=> {this.acceptImcItem(record.id)}}
+                    >
+                        <Button 
+                        type="simple"
+                        style={{marginRight:'12px',border:'none',padding:0,color:"#357aff",background:'transparent',display:this.state.display_button2}}
+                        >接单</Button>
+                    </Popconfirm> 
+                    <Popconfirm
+                        title="确定已完成？"
+                        onConfirm={()=> {this.finishImcItem(record.id)}}
+                    >
+                        <Button 
+                        type="simple"
+                        style={{marginRight:'12px',border:'none',padding:0,color:"#357aff",background:'transparent',display:this.state.display_button3}}
+                        >巡检完成</Button>
+                    </Popconfirm> 
                   </div>
                 ),
               }

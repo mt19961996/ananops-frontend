@@ -261,13 +261,29 @@ class Inspection extends Component{
           display_button9:'block',
         })
       }
+      if(location === '/cbd/inspection/waitForMaintainer'){
+        status=3
+        this.setState({
+          display_button1:'none',
+          display_button2:'none',
+          display_button3:'none',
+          display_button4:'none',
+          display_button5:'none',
+          display_button6:'none',
+          display_button7:'none',
+          display_button8:'none',
+          display_button9:'block',
+        })
+      }
       const { size, } = this.state;
       var whichRole=null
       const {role}=this.state
       if(role==='用户管理员'||role==='用户负责人'||role==='用户值机员')
         whichRole=1;
       else if(role==='服务商管理员'||role==='服务商负责人'||role==='服务商业务员')
-        whichRole=2 
+        whichRole=2 ;
+      else if(role && role.includes('维修工'))
+        whichRole=3;
       if(whichRole===1){
         //如果当前是甲方
         const values={orderBy: "string",pageSize:size,pageNum:page,userId:this.state.id,role:whichRole,status:status,projectId:null}

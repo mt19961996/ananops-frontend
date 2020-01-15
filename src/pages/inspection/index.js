@@ -1,7 +1,8 @@
 import React, { Component, } from 'react';
 import {Route} from 'react-router-dom';
 import { Tabs } from 'antd';
-import Inpection from './Inspection';
+import Inspection from './Inspection';
+import InspectionItem from '../inspectionItem/inspectionItem'
 import axios from 'axios'
 import './index.styl'
 const TabPane = Tabs.TabPane;
@@ -14,6 +15,7 @@ class InspectionData extends Component {
         role:window.localStorage.getItem('role'),
         partyA_show:'none',
         partyB_show:'none',
+        partyC_show:'none',
     };
     this.onTabChange=this.onTabChange.bind(this);
     // this.getUserInfo=this.getUserInfo.bind(this)
@@ -24,11 +26,20 @@ class InspectionData extends Component {
       this.setState({
         partyA_show:'block',
         partyB_show:'none',
+        partyC_show:'none',
       })
     }else if(this.state.role &&this.state.role.includes("服务商")){
       this.setState({
         partyA_show:'none',
         partyB_show:'block',
+        partyC_show:'none',
+      })
+    }else if(this.state.role && this.state.role.includes("维修工"))
+    {
+      this.setState({
+        partyA_show:'none',
+        partyB_show:'none',
+        partyC_show:'block',
       })
     }
   }
@@ -54,7 +65,7 @@ class InspectionData extends Component {
             >
             <Route exact 
                 path="/cbd/inspection/check" 
-                component={Inpection} 
+                component={Inspection} 
                 />
             </TabPane>
             <TabPane 
@@ -63,7 +74,7 @@ class InspectionData extends Component {
             >
             <Route exact 
                 path="/cbd/inspection/accept" 
-                component={Inpection} 
+                component={Inspection} 
                 />
             </TabPane>
             <TabPane 
@@ -72,7 +83,7 @@ class InspectionData extends Component {
             >
             <Route exact 
                 path="/cbd/inspection/execute" 
-                component={Inpection} 
+                component={Inspection} 
                 />
             </TabPane>
             <TabPane 
@@ -81,7 +92,7 @@ class InspectionData extends Component {
             >  
                <Route exact 
                 path="/cbd/inspection/confirm" 
-                component={Inpection} 
+                component={Inspection} 
                 />                         
             </TabPane>
             <TabPane tab="巡检等待付款"
@@ -89,7 +100,7 @@ class InspectionData extends Component {
             >  
                <Route exact 
                 path="/cbd/inspection/pay" 
-                component={Inpection} 
+                component={Inspection} 
                 />                         
             </TabPane>
             <TabPane tab="巡检等待评论"
@@ -97,7 +108,7 @@ class InspectionData extends Component {
             >  
                <Route exact 
                 path="/cbd/inspection/comment" 
-                component={Inpection} 
+                component={Inspection} 
                 />                         
             </TabPane>
             <TabPane tab="本次巡检结束"
@@ -105,7 +116,7 @@ class InspectionData extends Component {
             >  
                <Route exact 
                 path="/cbd/inspection/finish" 
-                component={Inpection} 
+                component={Inspection} 
                 />                         
             </TabPane>
             <TabPane tab="已被否决任务"
@@ -113,7 +124,7 @@ class InspectionData extends Component {
             >  
                <Route exact 
                 path="/cbd/inspection/deny" 
-                component={Inpection} 
+                component={Inspection} 
                 />                         
             </TabPane>
       </Tabs>
@@ -127,7 +138,7 @@ class InspectionData extends Component {
             >
             <Route exact 
                 path="/cbd/inspection/accept" 
-                component={Inpection} 
+                component={Inspection} 
                 />
             </TabPane>
             <TabPane 
@@ -136,7 +147,39 @@ class InspectionData extends Component {
             >
             <Route exact 
                 path="/cbd/inspection/appoint" 
+                component={Inspection} 
+                />
+            </TabPane>
+            {/* <TabPane 
+            tab="已分配维修工"
+            key="alreadyAppoint"
+            >
+            <Route exact 
+                path="/cbd/inspection/alreadyAppoint" 
                 component={Inpection} 
+                />
+            </TabPane> */}
+      </Tabs>
+      <Tabs 
+        style={{display:this.state.partyC_show}}
+        activeKey={(this.props.location.state && this.props.location.state.tabKey) ? this.props.location.state.tabKey : ''}
+        onChange={this.onTabChange}>
+            <TabPane 
+            tab="维修工待接单"
+            key="waitForMaintainer"
+            >
+            <Route exact 
+                path="/cbd/inspection/waitForMaintainer" 
+                component={InspectionItem} 
+                />
+            </TabPane>
+            <TabPane 
+            tab="维修工已接单"
+            key="maintainerAccept"
+            >
+            <Route exact 
+                path="/cbd/inspection/maintainerAccept" 
+                component={InspectionItem} 
                 />
             </TabPane>
       </Tabs>

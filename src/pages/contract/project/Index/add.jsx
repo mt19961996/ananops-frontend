@@ -77,7 +77,7 @@ class Add extends Component{
       },
     })
     if(res2 && res2.status === 200){
-      console.log("res2:" + res2);
+      console.log("res2:" + JSON.stringify(res2));
       this.setState({
         partyBUserList:res2.data.result
       })
