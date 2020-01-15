@@ -53,6 +53,7 @@ class Add extends Component{
   }
 
   getAllPreparedData1 = async(projectId) => {
+    console.log("项目id：" + projectId)
     const res1 = await axios({
       method: 'POST',
       url: '/pmc/project/getById/'+projectId,
@@ -62,7 +63,7 @@ class Add extends Component{
       },
     })
     if(res1 && res1.status === 200){
-      console.log("res1:" + res1);
+      console.log("res1:" + JSON.stringify(res1));
       this.setState({
         projectDetail:res1.data.result
       })

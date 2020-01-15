@@ -21,6 +21,10 @@ class Inspection extends Component{
             size: PAGE_SIZE,
             // total: 20, 
             nowCurrent:FIRST_PAGE,
+            imcTaskIdList:[],
+            imcTaskList:{
+
+            },
             data:[],
             display_button1:'none',//甲方负责人同意任务按钮
             display_button2:'none',//甲方负责人否决人物按钮
@@ -113,7 +117,7 @@ class Inspection extends Component{
         }
         
       }
-      if(location==='/cbd/inspection/execute'||location === '/cbd/inspection/appoint'){
+      if(location==='/cbd/inspection/execute'){
         status=3
         if(this.state.role!=null && this.state.role.includes('服务商')){
           this.setState({
@@ -243,6 +247,20 @@ class Inspection extends Component{
           display_button9:'none',
         })
       }
+      if(location === '/cbd/inspection/appoint'){
+        status=3
+        this.setState({
+          display_button1:'none',
+          display_button2:'none',
+          display_button3:'none',
+          display_button4:'none',
+          display_button5:'none',
+          display_button6:'none',
+          display_button7:'none',
+          display_button8:'none',
+          display_button9:'block',
+        })
+      }
       const { size, } = this.state;
       var whichRole=null
       const {role}=this.state
@@ -250,33 +268,112 @@ class Inspection extends Component{
         whichRole=1;
       else if(role==='服务商管理员'||role==='服务商负责人'||role==='服务商业务员')
         whichRole=2 
-      
-      const values={orderBy: "string",pageSize:size,pageNum:page,userId:this.state.id,role:whichRole,status:status,projectId:null}
-      console.log(values)
-      axios({
-          method: 'POST',
-          url: '/imc/inspectionTask/getTaskByUserIdAndStatus',
-          headers: {
-            'deviceId': this.deviceId,
-            'Authorization':'Bearer '+this.state.token,
-          },
-          data:values
+      if(whichRole===1){
+        //如果当前是甲方
+        const values={orderBy: "string",pageSize:size,pageNum:page,userId:this.state.id,role:whichRole,status:status,projectId:null}
+        console.log(values)
+        axios({
+            method: 'POST',
+            url: '/imc/inspectionTask/getTaskByUserIdAndStatus',
+            headers: {
+              'deviceId': this.deviceId,
+              'Authorization':'Bearer '+this.state.token,
+            },
+            data:values
+          })
+        .then((res) => {
+            if(res && res.status === 200){
+            this.setState({
+                data: res.data.result,
+                nowCurrent:res.data.result.pageNum,
+                status:status,
+                // roleCode:roleCode,
+            });
+            console.log(res.data)
+            }
         })
-      .then((res) => {
-          if(res && res.status === 200){
-          this.setState({
-              data: res.data.result,
-              nowCurrent:res.data.result.pageNum,
-              status:status,
-              // roleCode:roleCode,
-          });
-          console.log(res.data)
-          }
+        .catch(function (error) {
+            console.log(error);
+        });
+      }else if(whichRole==2){
+        //如果当前是乙方
+        if(status==2){
+          //如果处于服务商待接单状态
+          //获取全部未审批的巡检工单
+          this.getAllUnConfirmedImcTask();
+        }else if (status==3){
+          //如果处于巡检任务执行状态
+          this.getAllUnDistributedImcTask();
+        }
+      }
+  }
+  //获取全部未审批的巡检工单
+  getAllUnConfirmedImcTask = async()=>{
+    const data = {
+      orderBy:"string",
+      pageNum:0,
+      pageSize:100
+    }
+    const res1 = await axios({
+      method: 'POST',
+        url: '/spc/workorder/getAllUnConfirmedWorkOrders',
+        headers: {
+          'Content-Type':'application/json',
+          'deviceId': this.deviceId,
+          'Authorization':'Bearer '+this.state.token,
+        },
+        data:JSON.stringify(data)
+    })
+    if(res1 && res1.status ===200){
+      console.log("ppppp:" + JSON.stringify(res1.data.result))
+      let imcTaskOrderList = res1.data.result.list;
+      let length=0;
+      // for(let imcTaskOrder in imcTaskOrderList){
+      //   length++;
+      // }
+      // let imcTaskIdList = [];
+      // for(let i = 0;i<length;i++){
+      //   imcTaskIdList.push(imcTaskOrderList[i].id)
+      // }
+      this.setState({
+        data:res1.data.result.list
       })
-      .catch(function (error) {
-          console.log(error);
-      });
-        
+      console.log("未审批的巡检任务的id列表：" + this.state.imcTaskIdList);
+    }
+  }
+  //获取全部为分配工程师的巡检任务
+  getAllUnDistributedImcTask = async()=>{
+    const data = {
+      orderBy:"string",
+      pageNum:0,
+      pageSize:100
+    }
+    const res1 = await axios({
+      method: 'POST',
+        url: '/spc/workorder/getAllUnDistributedWorkOrders',
+        headers: {
+          'Content-Type':'application/json',
+          'deviceId': this.deviceId,
+          'Authorization':'Bearer '+this.state.token,
+        },
+        data:JSON.stringify(data)
+    })
+    if(res1 && res1.status ===200){
+      let imcTaskOrderList = res1.data.result.list;
+      let length=0;
+      // for(let imcTaskOrder in imcTaskOrderList){
+      //   length++;
+      // }
+      // let imcTaskIdList = [];
+      // for(let i = 0;i<length;i++){
+      //   let res2
+      //   imcTaskIdList.push(imcTaskOrderList[i].id)
+      // }
+      this.setState({
+        data:res1.data.result.list
+      })
+      console.log("未分配工程师的巡检任务的id列表：" + JSON.stringify(this.state.data));
+    }
   }
   //甲方负责人同意该巡检任务的执行
   approveImcTaskByA=(id)=>{

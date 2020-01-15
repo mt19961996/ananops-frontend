@@ -14,7 +14,8 @@ class BindEngineer extends Component{
 
           },
           engineerList:[],
-          token:window.localStorage.getItem('token')
+          token:window.localStorage.getItem('token'),
+          whichEngineer:null,
         }
         // this.getDetail = this.getDetail.bind(this);
     }
@@ -25,6 +26,44 @@ class BindEngineer extends Component{
       console.log("任务id：" + taskId)
       this.getDetail(taskId)
 
+    }
+    chooseWho = (e) =>{
+      console.log(e)
+      this.setState({
+        whichEngineer:e
+      })
+    }
+    //为巡检任务子项分配工程师
+    appointEngineerForImcItem = (engineerId) =>{
+      const { 
+        match : { params : { taskId,itemId } }
+      } = this.props
+      console.log("itemId:" + itemId);
+      // alert(engineerId);
+      const values = {
+        engineerId:engineerId,
+        taskId:itemId
+      }
+      console.log("values:" + JSON.stringify(values))
+      axios({
+        method: 'POST',
+        url: '/spc/workorder/distributeEngineerWithImcOrder',
+        headers: {
+          'Content-Type':'application/json',
+          'deviceId': this.deviceId,
+          'Authorization':'Bearer '+this.state.token,
+        },
+        data:JSON.stringify(values)
+      })
+      .then((res) => {
+        if(res && res.status === 200){     
+        console.log(res.data.result)
+        alert("工程师分配成功！")
+        }
+      })
+      .catch(function (error) {
+          console.log(error);
+      });
     }
     //获取当前巡检任务子项对应的巡检任务的信息
     getDetail= async(id)=>{
@@ -69,7 +108,7 @@ class BindEngineer extends Component{
         length++;
       }
       for(let i=0;i<length;i++){
-        List.push(<Option key={engineerIdList[i]}>{engineerIdList[i]}</Option>);
+        List.push(<Option key={engineerIdList[i].id}>{engineerIdList[i].name}</Option>);
       }
       // for (let i = 10; i < 36; i++) {
       //   children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
@@ -85,9 +124,15 @@ class BindEngineer extends Component{
                   </Link>
                   </Col>
               </Row> 
-              <Select mode="tags" style={{ width: '100%' }} placeholder="请选择和该项目绑定的工程师" >
-                {List}
-              </Select>
+              <Form>
+                <Form.Item>
+                  <Select mode="tags" style={{ width: '100%' }} placeholder="请选择和该项目绑定的工程师" onSelect={this.chooseWho}>
+                    {List}
+                  </Select>
+                  <Button onClick={()=>{this.appointEngineerForImcItem(this.state.whichEngineer)}}>确定绑定</Button>
+                </Form.Item>
+              </Form>
+              
               
             </div>
           </div>  

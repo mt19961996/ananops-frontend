@@ -20,12 +20,12 @@ class InspectionData extends Component {
   }
   componentDidMount(){
     this.props.history.replace({pathname:"/cbd/inspection/check",state:{tabKey:'check'}});
-    if(this.state.role.includes("用户")){
+    if(this.state.role && this.state.role.includes("用户")){
       this.setState({
         partyA_show:'block',
         partyB_show:'none',
       })
-    }else if(this.state.role.includes("服务商")){
+    }else if(this.state.role &&this.state.role.includes("服务商")){
       this.setState({
         partyA_show:'none',
         partyB_show:'block',

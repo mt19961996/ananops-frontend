@@ -37,7 +37,7 @@ class Project extends Component{
 
     //分页
     handlePageChange = (page) => {
-        this.getGroupList(page-1)
+        this.getGroupList(page)
     }
     //获取列表信息+分页
     // getGroupList = (page) => {
@@ -91,7 +91,7 @@ class Project extends Component{
                 this.setState({
                     data: res.data.result.list,
                 }) ;
-                // console.log(this.state.data)
+                console.log("当前项目信息：" + JSON.stringify(this.state.data))
                 }
             })
             .catch(function (error) {
@@ -112,6 +112,7 @@ class Project extends Component{
                 this.setState({
                     data: res.data.result,
                 }) ;
+                console.log("当前项目信息：" + id)
                 // console.log(this.state.data)
                 }
             })
@@ -170,8 +171,9 @@ class Project extends Component{
     
     //显示关联模态框
     add(record){
-        var addDetail={'projectId':Number(record.id),userId:null,flag:0}
-        console.log(addDetail.projectId)
+        console.log("cdca" + record.id)
+        var addDetail={'projectId':record.id,userId:null,flag:0}
+        console.log("lalallalalalal+" + JSON.stringify(addDetail))
         this.setState({
             connectVisible:true,
             add:addDetail,
@@ -189,7 +191,7 @@ class Project extends Component{
 
      //显示解绑模态框
      delete(record){
-        var addDetail={'projectId':Number(record.id),userId:null,flag:1}
+        var addDetail={'projectId':record.id,userId:null,flag:1}
         this.setState({
             disVisible:true,
             add:addDetail,
