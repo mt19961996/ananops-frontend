@@ -120,7 +120,7 @@ class inspectionItem extends Component{
         })
         .then((res) => {
             if(res && res.status === 200){
-            console.log(res.data.result)
+            console.log("任务子项列表："+JSON.stringify(res.data.result))
             var taskItemList
             res.data.result==null?taskItemList=[]:taskItemList=res.data.result
             // res.data.result==null?pageNum=0:pageNum=res.data.result.pageNum
@@ -193,6 +193,7 @@ class inspectionItem extends Component{
               //   status:status,
               //  roleCode:roleCode,
             });
+            console.log(JSON.stringify(this.state.data))
             }
         })
         .catch(function (error) {
@@ -382,18 +383,25 @@ class inspectionItem extends Component{
                   return (record.maintainerId && record.maintainerId) || '--'
                 }
               },{
-                title: '巡检任务子项对应的甲方用户id', 
+                title: '巡检任务子项对应的网点', 
                 key: 'userId',
                 render: (text, record) => {
-                  return (record.userId && record.userId) || '--'
+                  return (record.location && record.location) || '--'
                 }
               }, {
-                title: '巡检周期（月）',
+                title: '巡检周期（天）',
                 key: 'frequency',
                 render: (text, record) => {
                   return (record.frequency && record.frequency) || '--'
                 }
-              },{
+              }, {
+                title: '巡检持续时间（天）',
+                key: 'days',
+                render: (text, record) => {
+                  return (record.days && record.days) || '--'
+                }
+              },
+              {
                 title: '实际开始时间 ',
                 key: 'actualStartTime',
                 render: (text, record) => {
@@ -422,6 +430,10 @@ class inspectionItem extends Component{
                       to={`/cbd/imcItemInfo/log/${this.state.imcTaskId}/${record.id}`}
                       style={{marginRight:'12px'}}
                     >子项日志</Link>
+                    <Link
+                      to={`/cbd/imcItemInfo/detail/${this.state.imcTaskId}/${record.id}`}
+                      style={{marginRight:'12px'}}
+                    >详情</Link>
                     <Link
                       to={`/cbd/imcItemInfo/bindEngineer/${this.state.imcTaskId}/${record.id}`}
                       style={{marginRight:'12px',display:this.state.display_button1}}

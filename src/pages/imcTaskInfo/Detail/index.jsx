@@ -5,7 +5,7 @@ import './index.styl'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 // const token=window.localStorage.getItem('token')
-class ItemDetail extends Component{
+class TaskDetail extends Component{
     constructor(props){
         super(props)
         this.state={
@@ -49,7 +49,7 @@ class ItemDetail extends Component{
     render(){
       const {imcTaskDetail}=this.state
       const {match : { params : { id } }} = this.props   
-      console.log(imcTaskDetail)
+      console.log("日志信息：" + JSON.stringify(imcTaskDetail))
         return(
                 <div className="bg">
                   <Descriptions bordered className="descriptions">
@@ -64,7 +64,7 @@ class ItemDetail extends Component{
                     <Descriptions.Item label="巡检任务对应的服务商组织的Id " span={1.5}>{imcTaskDetail.facilitatorGroupId}</Descriptions.Item>
                     <Descriptions.Item label="计划完成天数" span={1.5}>{imcTaskDetail.days}</Descriptions.Item>
                     <Descriptions.Item label="巡检类型" span={1.5}>{imcTaskDetail.inspectionType}</Descriptions.Item>
-                    <Descriptions.Item label="巡检位置信息" span={3}>{imcTaskDetail.location}</Descriptions.Item>
+                    <Descriptions.Item label="巡检周期" span={3}>{imcTaskDetail.frequency}</Descriptions.Item>
                     <Descriptions.Item label="巡检产生的维修维护费用" span={1.5}>{imcTaskDetail.maintenanceCost}</Descriptions.Item>
                     <Descriptions.Item label="备注" span={1.5}>{imcTaskDetail.remark}</Descriptions.Item>
                     <Descriptions.Item label="操作" span={3}>
@@ -77,4 +77,4 @@ class ItemDetail extends Component{
     }
 
 }
-export default ItemDetail
+export default TaskDetail
