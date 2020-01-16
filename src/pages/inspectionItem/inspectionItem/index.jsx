@@ -47,6 +47,7 @@ class inspectionItem extends Component{
       var location = this.props.location.pathname;
       console.log(location)
       var status;
+      //根据不同的url进行栏目的区分
       if(location.includes('/cbd/item/waitForMaintainer')){
         //如果当前状态是等待分配工程师
         status = 1;
