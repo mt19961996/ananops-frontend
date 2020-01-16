@@ -17,20 +17,99 @@ class Process extends Component {
             role: window.localStorage.getItem('role'),
             current: FIRST_PAGE,
             roleCode: window.localStorage.getItem('roleCode'),
-            data:[],
+            data: [],
+            alarmCount: null,
+            processedCount: null,
+            urgencyCount: null,
+            dealRate: null,
+            failureRate: null,
         }
         this.getAlarmListByGroupId = this.getAlarmListByGroupId.bind(this);
+
     }
 
     componentDidMount() {
         //保存当前页面的路由路径
         this.getAlarmListByGroupId();
+        this.getAlarmCount();
+        this.getProcessedCount();
+        this.getUrgencyCount();
     }
 
     //分页
     handlePageChange = (page) => {
         this.getAlarmListByGroupId(page - 1)
     }
+
+    //获取告警总数
+    getAlarmCount = () => {
+        axios({
+            method: 'POST',
+            url: '/amc/alarm/getDealingCount',
+            headers: {
+                'Content-Type': 'application/json',
+                'deviceId': this.deviceId,
+                'Authorization': 'Bearer ' + this.state.token,
+            },
+        })
+            .then((res) => {
+                if (res && res.status === 200) {
+                    this.setState({
+                        alarmCount: res.data.result,
+                    });
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    //获取急需处理告警数
+    getUrgencyCount = () => {
+        axios({
+            method: 'POST',
+            url: '/amc/alarm/getUrgencyCount',
+            headers: {
+                'Content-Type': 'application/json',
+                'deviceId': this.deviceId,
+                'Authorization': 'Bearer ' + this.state.token,
+            },
+        })
+            .then((res) => {
+                if (res && res.status === 200) {
+                    this.setState({
+                        urgencyCount: res.data.result,
+                    });
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    //获取已处理告警数
+    getProcessedCount = () => {
+        axios({
+            method: 'POST',
+            url: '/amc/alarm/getDealedCount',
+            headers: {
+                'Content-Type': 'application/json',
+                'deviceId': this.deviceId,
+                'Authorization': 'Bearer ' + this.state.token,
+            },
+        })
+            .then((res) => {
+                if (res && res.status === 200) {
+                    this.setState({
+                        processedCount: res.data.result,
+                    });
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
     getAlarmListByGroupId = () => {
         // const baseQuery={orderBy:'updateTime',pageSize:PAGE_SIZE,pageNum:page}
         axios({
@@ -41,8 +120,8 @@ class Process extends Component {
                 'deviceId': this.deviceId,
                 'Authorization': 'Bearer ' + this.state.token,
             },
-            data:JSON.stringify({
-                'baseQuery':null
+            data: JSON.stringify({
+                'baseQuery': null
             })
         })
             .then((res) => {
@@ -58,16 +137,40 @@ class Process extends Component {
             });
     }
 
+    deleteAlarmByAlarmId = (record) => {
+        axios({
+            method: 'POST',
+            url: '/amc/alarm/deleteAlarmByAlarmId/' + record.id,
+            headers: {
+                'deviceId': this.deviceId,
+                'Authorization': 'Bearer ' + this.state.token,
+            }
+        })
+            .then((res) => {
+                if (res && res.status === 200) {
+                    console.log(res.data.result)
+                    this.getAlarmListByGroupId()
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
     render() {
         const {
             data,
+            urgencyCount,
+            processedCount,
+            alarmCount,
         } = this.state;
         const columns = [
             {
                 title: '等级',
                 key: 'alarmLevel',
                 render: (text, record) => {
-                    return (record.alarmLevel && record.alarmLevel) || '--'
+                    return (record.alarmLevel === 1 ? '紧急' : (record.alarmLevel === 2 ? '可疑' : '提醒'))
+
                 }
             },
             {
@@ -100,8 +203,47 @@ class Process extends Component {
                 }
             },
             {
+                title: '状态',
+                key: 'alarmStatus',
+                render: (text, record) => {
+                    if (record.alarmStatus === 1) {
+                        return "未处理";
+                    } else {
+                        return "已处理";
+                    }
+                }
+
+            },
+            {
                 title: '操作',
-                key: 'operation',
+                key: 'action',
+                render: (text, record) => (
+                    <div className="operate-btns"
+                         style={{display: 'block'}}
+                    >
+                        <Link
+                            to={`/cbd/amc/alarm/detail/${record.id}`}
+                            style={{marginRight: '12px'}}
+                        >详情</Link>
+                        <Link
+                            to={`/cbd/amc/alarm/workOrder/`}
+                            style={{marginRight: '12px'}}
+                        >发起工单</Link>
+                        <Popconfirm
+                            title="确定要删除吗？"
+                            onConfirm={() => {
+                                this.deleteAlarmByAlarmId(record)
+                            }}
+                        >
+                            <Button
+                                type="simple"
+                                style={{border: 'none', padding: 0, color: "#357aff", background: 'transparent'}}
+                            >删除</Button>
+                        </Popconfirm>
+
+                    </div>
+                ),
+
             },
         ];
         return (
@@ -111,22 +253,22 @@ class Process extends Component {
                     <Row gutter={16}>
                         <Col span={4}>
                             <Card title="告警总数" bordered={false}>
-                                <Statistic value={14}/>
+                                <Statistic value={alarmCount}/>
                             </Card>
                         </Col>
                         <Col span={4}>
                             <Card title="急需处理告警数" bordered={false}>
-                                <Statistic value={14}/>
+                                <Statistic value={urgencyCount}/>
                             </Card>
                         </Col>
                         <Col span={4}>
                             <Card title="已处理告警数" bordered={false}>
-                                <Statistic value={14}/>
+                                <Statistic value={processedCount}/>
                             </Card>
                         </Col>
                         <Col span={4}>
                             <Card title="处理量" bordered={false}>
-                                <Progress type="circle" percent={75}/>
+                                <Progress type="circle" percent={processedCount / alarmCount * 100}/>
                             </Card>
                         </Col>
                         <Col span={4}>
