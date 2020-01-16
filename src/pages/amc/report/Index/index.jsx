@@ -3,23 +3,20 @@ import {Button, Row, Col, Table, Input, Popconfirm, message, Card, Statistic, Pr
 import {Link} from 'react-router-dom'
 import axios from 'axios'
 
-const FIRST_PAGE = 0;
 const PAGE_SIZE = 10;
-const Search = Input.Search;
 
 class Report extends Component {
     constructor(props) {
         super(props)
         this.state = {
             token: window.localStorage.getItem('token'),
-            current: FIRST_PAGE,
+            size: PAGE_SIZE,
+            total: 0,
             data: [],
             alarmCount: null,
             processedCount: null,
             urgencyCount: null,
             dealingCount: null,
-            dealRate: null,
-            failureRate: null,
         }
         this.getAlarmListByGroupId = this.getAlarmListByGroupId.bind(this);
 
@@ -27,16 +24,11 @@ class Report extends Component {
 
     componentDidMount() {
         //保存当前页面的路由路径
-        this.getAlarmListByGroupId();
+        this.getAlarmListByGroupId(1);
         this.getAlarmCount();
         this.getProcessedCount();
         this.getUrgencyCount();
         this.getDealingCount();
-    }
-
-    //分页
-    handlePageChange = (page) => {
-        this.getAlarmListByGroupId(page - 1)
     }
 
     //获取告警总数
@@ -129,8 +121,9 @@ class Report extends Component {
             });
     }
 
-    getAlarmListByGroupId = () => {
-        // const baseQuery={orderBy:'updateTime',pageSize:PAGE_SIZE,pageNum:page}
+    getAlarmListByGroupId = (pageNum) => {
+        this.pageNum = pageNum
+        const baseQuery = {orderBy: 'updateTime', pageSize: PAGE_SIZE, pageNum: `${pageNum}`}
         axios({
             method: 'POST',
             url: '/amc/alarm/getAlarmListByGroupId',
@@ -139,16 +132,17 @@ class Report extends Component {
                 'deviceId': this.deviceId,
                 'Authorization': 'Bearer ' + this.state.token,
             },
-            data: JSON.stringify({
-                'baseQuery': null
-            })
+            data: baseQuery
         })
             .then((res) => {
                 if (res && res.status === 200) {
                     this.setState({
                         data: res.data.result.list,
+                        total: res.data.result.total,
                     });
-                    console.log(this.state.data)
+                    console.log(res.data.result)
+                    console.log(this.state)
+                    console.log(this.pageNum)
                 }
             })
             .catch(function (error) {
@@ -184,6 +178,7 @@ class Report extends Component {
             processedCount,
             alarmCount,
             dealingCount,
+            total,
         } = this.state;
         const columns = [
                 {
@@ -345,7 +340,17 @@ class Report extends Component {
                     </Link>
                 </div>
                 <div>
-                    <Table dataSource={data} columns={columns} />
+                    <Table
+                        rowKey="id"
+                        dataSource={data}
+                        columns={columns}
+                        pagination={{
+                            current: this.pageNum,
+                            defaultPageSize: 10,
+                            showQuickJumper: true,
+                            total: total,
+                            onChange: this.getAlarmListByGroupId,
+                        }}/>
                 </div>
             </div>
         )

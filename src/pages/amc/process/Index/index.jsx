@@ -1,12 +1,9 @@
 import React, {Component,} from 'react';
-import {Button, Row, Col, Table, Input, Popconfirm, message, Card, Statistic, Progress, Icon,Tag} from 'antd';
+import {Button, Row, Col, Table, Input, Popconfirm, message, Card, Statistic, Progress, Icon, Tag} from 'antd';
 import {Link} from 'react-router-dom'
-import moment from 'moment';
 import axios from 'axios'
 
-const FIRST_PAGE = 0;
 const PAGE_SIZE = 10;
-const Search = Input.Search;
 
 class Process extends Component {
     constructor(props) {
@@ -14,15 +11,12 @@ class Process extends Component {
         this.state = {
             token: window.localStorage.getItem('token'),
             loginAfter: window.localStorage.getItem('loginAfter'),
-            role: window.localStorage.getItem('role'),
-            current: FIRST_PAGE,
-            roleCode: window.localStorage.getItem('roleCode'),
+            size: PAGE_SIZE,
+            total: 0,
             data: [],
             alarmCount: null,
             processedCount: null,
             urgencyCount: null,
-            dealRate: null,
-            failureRate: null,
         }
         this.getAlarmListByGroupId = this.getAlarmListByGroupId.bind(this);
 
@@ -30,17 +24,13 @@ class Process extends Component {
 
     componentDidMount() {
         //保存当前页面的路由路径
-        this.getAlarmListByGroupId();
+        this.getAlarmListByGroupId(1);
         this.getAlarmCount();
         this.getProcessedCount();
         this.getUrgencyCount();
         this.getDealingCount();
     }
 
-    //分页
-    handlePageChange = (page) => {
-        this.getAlarmListByGroupId(page - 1)
-    }
 
     //获取告警总数
     getAlarmCount = () => {
@@ -79,6 +69,7 @@ class Process extends Component {
                 if (res && res.status === 200) {
                     this.setState({
                         dealingCount: res.data.result,
+                        nowCurrent: res.data.result.pageNum - 1,
                     });
                 }
             })
@@ -133,8 +124,9 @@ class Process extends Component {
             });
     }
 
-    getAlarmListByGroupId = () => {
-        // const baseQuery={orderBy:'updateTime',pageSize:PAGE_SIZE,pageNum:page}
+    getAlarmListByGroupId = (pageNum) => {
+        this.pageNum = pageNum
+        const baseQuery = {orderBy: 'updateTime', pageSize: PAGE_SIZE, pageNum: `${pageNum}`}
         axios({
             method: 'POST',
             url: '/amc/alarm/getAlarmListByGroupId',
@@ -143,16 +135,20 @@ class Process extends Component {
                 'deviceId': this.deviceId,
                 'Authorization': 'Bearer ' + this.state.token,
             },
-            data: JSON.stringify({
-                'baseQuery': null
-            })
+            // data: JSON.stringify({
+            //     'baseQuery': null
+            // })
+            data: baseQuery
         })
             .then((res) => {
                 if (res && res.status === 200) {
                     this.setState({
                         data: res.data.result.list,
+                        total: res.data.result.total,
                     });
-                    console.log(this.state.data)
+                    console.log(res.data.result)
+                    console.log(this.state)
+                    console.log(this.pageNum)
                 }
             })
             .catch(function (error) {
@@ -187,13 +183,15 @@ class Process extends Component {
             processedCount,
             alarmCount,
             dealingCount,
+            total,
         } = this.state;
         const columns = [
             {
                 title: '等级',
                 key: 'alarmLevel',
                 render: (text, record) => {
-                    return (record.alarmLevel === 1 ?  <Tag color="#FF1A19">紧急</Tag> : (record.alarmLevel === 2 ? <Tag color="#ffc573">可疑</Tag> : <Tag color="#674E2E">提醒</Tag>))
+                    return (record.alarmLevel === 1 ? <Tag color="#FF1A19">紧急</Tag> : (record.alarmLevel === 2 ?
+                        <Tag color="#ffc573">可疑</Tag> : <Tag color="#674E2E">提醒</Tag>))
 
                 }
             },
@@ -231,7 +229,7 @@ class Process extends Component {
                 key: 'alarmStatus',
                 render: (text, record) => {
                     if (record.alarmStatus === 1) {
-                        return  <Tag color="red">未处理</Tag>;
+                        return <Tag color="red">未处理</Tag>;
                     } else {
                         return <Tag color="blue">已处理</Tag>;
                     }
@@ -251,10 +249,11 @@ class Process extends Component {
                         >详情</Link>
                         <Link
                             to={{
-                                pathname:`/cbd/amc/alarm/workOrder/`,
-                                query:{
-                                    alarmId:record.id,
-                                    alarmLevel:record.alarmLevel},
+                                pathname: `/cbd/amc/alarm/workOrder/`,
+                                query: {
+                                    alarmId: record.id,
+                                    alarmLevel: record.alarmLevel
+                                },
                             }}
                             style={{marginRight: '12px'}}
                         >发起工单</Link>
@@ -302,7 +301,7 @@ class Process extends Component {
                         </Col>
                         <Col span={4}>
                             <Card title="处理量" bordered={false}>
-                                <Progress type="circle" percent={(processedCount/alarmCount).toFixed(2)*100}/>
+                                <Progress type="circle" percent={(processedCount / alarmCount).toFixed(2) * 100}/>
                             </Card>
                         </Col>
                         <Col span={4}>
@@ -313,7 +312,17 @@ class Process extends Component {
                     </Row>
                 </div>
                 <div>
-                    <Table dataSource={data} columns={columns}/>
+                    <Table
+                        rowKey="id"
+                        dataSource={data}
+                        columns={columns}
+                        pagination={{
+                            current: this.pageNum,
+                            defaultPageSize: 10,
+                            showQuickJumper: true,
+                            total: total,
+                            onChange: this.getAlarmListByGroupId,
+                        }}/>
                 </div>
             </div>
         )
