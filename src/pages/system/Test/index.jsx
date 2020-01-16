@@ -4,6 +4,10 @@ import { Link } from 'react-router-dom'
 import Confirm from './confirm'
 import Result from './result'
 import Comment from './comment'
+import Assign from './assign'
+import Level from './level'
+import Note from './note'
+import Approval from './approval'
 import moment from 'moment';
 import axios from 'axios';
 import items from '../../../config/status'
@@ -14,50 +18,44 @@ const FIRST_PAGE = 0;
 const PAGE_SIZE = 100;
 const Search = Input.Search;
 class Test extends Component{
-    constructor(props){
-        super(props)
-        this.state={
-            id:window.localStorage.getItem('id'),
-            token:window.localStorage.getItem('token'),
-            role:'',
-            status:null,
-            statusMsg:'',
-            roleCode:window.localStorage.getItem('roleCode'),
-            current: FIRST_PAGE,
-            size: PAGE_SIZE,
-            // total: 20, 
-            nowCurrent:FIRST_PAGE,
-            data:[],
-            visible: false,
-            chooseid:'',
-            //detail:{},
-            result:{},
-            comment:{},
-            selectInfo:{},
-            detail:{
-            //   deviceItem: [
-            //   {
-            //     state: '',//是否在维保期内
-            //     deviceID: '',// 异常设备
-            //     manufacuture: '',// 对异常设备的描述
-            //     deleteDisplay: false,//删除异常设备按钮是否出现
-            //     addDisplay: true,//添加异常项按钮是否出现
-            //   }
-            // ],
-          },
-            commentVisible:false,
-            resultVisible:false,
-            selectVisible:false,
-        }
-        this.getInfo=this.getInfo.bind(this)
+  constructor(props){
+    super(props)
+    this.state={
+      id:window.localStorage.getItem('id'),
+      token:window.localStorage.getItem('token'),
+      role:'',
+      status:null,
+      statusMsg:'',
+      roleCode:window.localStorage.getItem('roleCode'),
+      current: FIRST_PAGE,
+      size: PAGE_SIZE,
+      // total: 20, 
+      nowCurrent:FIRST_PAGE,
+      data:[],
+      visible: false,
+      chooseid:'',
+      result:{},
+      comment:{},//值机员评价
+      assignDetail:{},//分配工程师
+      detail:{},
+      engineerAcceptDetail:{},//工程师接单定级
+      noteDetail:{},//用户备件审核意见
+      planApprovalDetail:{}, //服务商进行计划审批
+      commentVisible:false,
+      resultVisible:false,
+      assignVisible:false,
+      engineerAcceptVisible:false,
+      managerApprovalVisible:false,
+      planApprovalVisible:false,
     }
-    componentDidMount(){
-        this.getInfo(FIRST_PAGE)
-    }
+    this.getInfo=this.getInfo.bind(this)
+  }
+  componentDidMount(){
+    this.getInfo(FIRST_PAGE)
+  }
 
   //根据不同的路由，加载不同的信息
   getInfo(page){
-    console.log('here')
     var location=this.props.location.pathname
     var status
  
@@ -69,31 +67,31 @@ class Test extends Component{
       status=3
     }
     else if(location==='/cbd/maintain/data/billApproval'){
-      status=11
+      status=7
     }
     else if(location==='/cbd/maintain/data/maintainerWait'){
-      status=4
-    }
-    else if(location==='/cbd/maintain/data/planConfirm'){
       status=5
     }
-    else if(location==='/cbd/maintain/data/resultSubmit'){
-      status=7
+    else if(location==='/cbd/maintain/data/planConfirm'){
+      status=6
+    }
+    else if(location==='/cbd/maintain/data/assign'){
+      status=4
     }
     else if(location==='/cbd/maintain/data/orderApproval'){
       status=2
     }
     else if(location==='/cbd/maintain/data/planApproval'){
-      status=6
-    }
-    else if(location==='/cbd/maintain/data/serviceConfirm'){
-      status=9
-    }
-    else if(location==='/cbd/maintain/data/orderSubmit'){
-      status=2
+      status=8
     }
     else if(location==='/cbd/maintain/data/serviceFinish'){
       status=10
+    }
+    // else if(location==='/cbd/maintain/data/orderSubmit'){
+    //   status=2
+    // }
+    else if(location==='/cbd/maintain/data/serviceFinish'){
+      status=13
     }
     else if(location==='/cbd/maintain/data/pay'){
       status=11
@@ -101,50 +99,61 @@ class Test extends Component{
     else if(location==='/cbd/maintain/data/comment'){
       status=12
     }
-    // this.setState({status:status})
+    else if(location==='/cbd/maintain/data/finish'){
+      status=13
+    }
     console.log(status)
     const { size, } = this.state;
     const values={orderBy: "appointTime",pageSize:size,pageNum:page,id:this.state.id,roleCode:this.state.roleCode,status:status}
-        axios({
-            method: 'POST',
-            url: '/mdmc/mdmcTask/getTaskList',
-            headers: {
-              'deviceId': this.deviceId,
-              'Authorization':'Bearer '+this.state.token,
-            },
-            data:values
-          })
-        .then((res) => {
-            if(res && res.status === 200){
-            this.setState({
-                data: res.data.result.taskList,
-                nowCurrent:res.data.result.pageNum,
-                status:status,
-               // roleCode:roleCode,
-            });
-            }
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+    axios({
+      method: 'POST',
+      url: '/mdmc/mdmcTask/getTaskList',
+      headers: {
+        'deviceId': this.deviceId,
+        'Authorization':'Bearer '+this.state.token,
+      },
+      data:values
+    })
+      .then((res) => {
+        if(res && res.status === 200){
+          this.setState({
+            data: res.data.result.taskList,
+            nowCurrent:res.data.result.pageNum,
+            status:status,
+            // roleCode:roleCode,
+          });
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
       
-}
+  }
   //返回不同的状态按钮
   getFunction(record,status,roleCode){
     if(status===3){
       return (
         <div>
+          <Popconfirm
+            title="确认接单？"
+            onConfirm={()=> {this.changeStatus(record.id,4,'审核通过，待服务商接单')}}
+          >
             <Button 
               type="simple"
               style={{border:'none',padding:0,color:"#357aff",background:'transparent',marginRight:'12px'}}
-            //  onClick={()=>{this.changeStatus(record.id,4,'服务商业务员已接单，待维修工接单')}}
-              onClick={()=>{this.select(record.id)}}
-              >接单</Button>
-              <Button 
+              // onClick={()=>{this.providerAccept(record.id)}}
+            >接单</Button>
+          </Popconfirm>
+          <Popconfirm
+            title="确认拒单？"
+            onConfirm={()=> {this.changeStatus(record.id,14,'服务商业务员拒绝工单，待平台服务员重新派单')}}
+          >
+            <Button 
               type="simple"
               style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
-              onClick={()=>{this.changeStatus(record.id,14,'服务商业务员拒绝工单')}}
-              >拒单</Button>
+            //  onClick={()=>{this.providerRefuse(record.id)}}
+            >拒单</Button>
+          </Popconfirm>
         </div>
       )
     }
@@ -152,122 +161,154 @@ class Test extends Component{
       return (
         <div>
           <Button 
-              type="simple"
-              style={{border:'none',padding:0,color:"#357aff",background:'transparent',marginRight:'12px'}}
-              onClick={()=>{this.changeStatus(record.id,5,'维修工已接单，进入维修中')}}
-              >接单</Button>
-            <Button 
+            type="simple"
+            style={{border:'none',padding:0,color:"#357aff",background:'transparent',marginRight:'12px'}}
+            onClick={()=>{this.assign(record.id)}}
+          >分配工程师</Button>
+          {/* <Button 
               type="simple"
               style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
               onClick={()=>{this.changeStatus(record.id,15,'维修工拒绝工单')}}
-              >拒单</Button>
+              >拒单</Button> */}
         </div>
       )
     }
     else if(status===5){
       return (
-            // <Button 
-            //   type="simple"
-            //   style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
-            //   onClick={()=>{this.confirm(record.id)}}
-            //   >方案确定</Button>
-            <Link
-              to={`/cbd/service/plan/${record.id}`}
-              style={{marginRight:'12px'}}
-            >方案确定</Link>
-      )
-    }
-    else if(status===6&&roleCode=='user_manager'){
-      return (
+        <div>
+          <Button 
+            type="simple"
+            style={{border:'none',padding:0,color:"#357aff",background:'transparent',marginRight:'12px'}}
+            onClick={()=>{this.engineerAccept(record.id)}}
+          >接单</Button>
+          <Popconfirm
+            title="确认拒单？"
+            onConfirm={()=> {this.changeStatus(record.id,15,'工程师拒绝工单，待服务商重新派单')}}
+          >
             <Button 
               type="simple"
               style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
-              onClick={()=>{this.changeStatus(record.id,7,'用户负责人通过备件方案，二次维修')}}
-              >方案通过</Button>
+              // onClick={()=>{this.engineerRefuse(record.applicantId)}}
+            >拒单</Button>
+          </Popconfirm>
+        </div>
+      )
+    }
+    else if(status===6){
+      return (
+        <div>
+          <Link
+            to={`/cbd/service/plan/${record.id}`}
+            style={{marginRight:'12px'}}
+          >方案确定</Link>
+          <Button 
+            type="simple"
+            style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
+            onClick={()=>{this.resultSubmit(record.id)}}
+          >提交结果</Button>
+              
+        </div>
       )
     }
     else if(status===7){
       return (
+        <div>
+          <Button 
+            type="simple"
+            style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
+            onClick={()=>{this.planApproval(record.id)}}
+          >备件方案通过</Button>
+          <Popconfirm
+            title="确认该备件方案不通过？"
+            onConfirm={()=> {this.changeStatus(record.id,16,'备件库管理员驳回备品备件方案，待工程师重新提交备品备件申请')}}
+          >
             <Button 
               type="simple"
               style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
-              onClick={()=>{this.submit(record.id)}}
-              >结果提交</Button>
+              //  onClick={()=>{this.planRefuse(record.id)}}
+            >备件方案不通过
+            </Button>
+          </Popconfirm>
+        </div>
       )
     }
     else if(status===8){
       return (
         <div>
+          <Button 
+            type="simple"
+            style={{border:'none',padding:0,color:"#357aff",background:'transparent',marginRight:'12px'}}
+            onClick={()=>{this.managerApproval(record.id)}}
+          >备件方案通过</Button>
+          <Popconfirm
+            title="确认该备件方案不通过？"
+            onConfirm={()=> {this.changeStatus(record.id,17,'用户负责人驳回备品备件方案，待工程师重新提交备品备件申请')}}
+          >
             <Button 
               type="simple"
-              style={{border:'none',padding:0,color:"#357aff",background:'transparent',marginRight:'12px'}}
-              onClick={()=>{this.changeStatus(record.id,8,'维修工提交维修结果，待服务商审核维修结果')}}
-              >通过</Button>
-              <Button 
-              type="simple"
               style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
-              onClick={()=>{this.changeStatus(record.id,16,'服务商拒绝账单')}}
-              >拒绝</Button>
+            //  onClick={()=>{this.managerRefuse(record.id)}}
+            >备件方案不通过</Button>
+          </Popconfirm>
         </div>
       )
     }
-    else if(status===2&&roleCode=='user_manager'){
+    else if(status===2&&(roleCode=='user_manager'||roleCode==='user_leader'||roleCode==='user_service')){
       return (
         <div>
+          <Popconfirm
+            title="确定该工单通过审核？"
+            onConfirm={()=> {this.changeStatus(record.id,3,'审核通过，待服务商接单')}}
+          >
             <Button 
               type="simple"
               style={{border:'none',padding:0,color:"#357aff",background:'transparent',marginRight:'12px'}}
-              onClick={()=>{this.changeStatus(record.id,3,'审核通过，待服务商接单')}}
-            >通过</Button>
+            //  onClick={()=>{this.orderApproval(record.id)}}
+            >工单审核通过</Button>
+          </Popconfirm>
+          <Popconfirm
+            title="确定该工单不通过审核？"
+            onConfirm={()=> {this.changeStatus(record.id,1,'用户负责人审核工单未通过，工单已取消')}}
+          >
             <Button 
               type="simple"
               style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
-              onClick={()=>{this.changeStatus(record.id,1,'用户负责人审核工单未通过，工单已取消')}}
-            >拒绝</Button>
-        </div>
-      )
-    }
-    else if(status===9){
-      return (
-        <div>
-            <Button 
-              type="simple"
-              style={{border:'none',padding:0,color:"#357aff",background:'transparent',marginRight:'12px'}}
-              onClick={()=>{this.changeStatus(record.id,10,'负责人审核账单通过，待值机员确认')}}
-            >通过</Button>
-            <Button 
-              type="simple"
-              style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
-              onClick={()=>{this.changeStatus(record.id,17,'负责人拒绝账单')}}
-            >拒绝</Button>
+            //  onClick={()=>{this.orderRefuse(record.id)}}
+            >工单审核不通过</Button>
+          </Popconfirm>
         </div>
       )
     }
     else if(status===10){
       return (
-            <Button 
-              type="simple"
-              style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
-              onClick={()=>{this.changeStatus(record.id,11,'值机员确认服务，待负责人支付')}}
-              >确认</Button>
+        <Popconfirm
+          title="确定维修完成？"
+          onConfirm={()=> {this.changeStatus(record.id,11,'值机员确认，待用户负责人审核账单')}}
+        >
+          <Button 
+            type="simple"
+            style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
+          //    onClick={()=>{this.confirmFinish(record.id)}}
+          >确认完成</Button>
+        </Popconfirm>
       )
     }
     else if(status===11){
       return (
-            <Button 
-              type="simple"
-              style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
-              onClick={this.pay}
-              >支付</Button>
+        <Button 
+          type="simple"
+          style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
+          onClick={()=>{this.pay(record.id)}}
+        >支付</Button>
       )
     }
     else if(status===12){
       return (
-            <Button 
-              type="simple"
-              style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
-              onClick={()=>{this.comment(record.id)}}
-              >评价</Button>
+        <Button 
+          type="simple"
+          style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
+          onClick={()=>{this.comment(record.id)}}
+        >评价</Button>
       )
     }
   }
@@ -276,59 +317,42 @@ class Test extends Component{
   changeStatus(id,status,statusMsg){
     const values={"status": status,"statusMsg": statusMsg,"taskId":id}
     axios({
-        method: 'POST',
-        url: '/mdmc/mdmcTask/modifyTaskStatusByTaskId/{taskId}',
-        headers: {
-          'Content-Type': 'application/json',
-          'deviceId': this.deviceId,
-          'Authorization':'Bearer '+this.state.token,
-        },
-        data:JSON.stringify(values)
-      })
-    .then((res) => {
-        if(res && res.status === 200){
-        this.getInfo(FIRST_PAGE)
-        }
-    })
-    .catch(function (error) {
-        console.log(error);
-    });
-  }
-
-  //提交方案，获取已填信息
-  confirm(id){
-    this.setState({visible:true})
-    axios({
-      method: 'GET',
-      url: '/mdmc/mdmcTask/getTaskByTaskId/'+id,
+      method: 'POST',
+      url: '/mdmc/mdmcTask/modifyTaskStatusByTaskId/{taskId}',
       headers: {
+        'Content-Type': 'application/json',
         'deviceId': this.deviceId,
         'Authorization':'Bearer '+this.state.token,
       },
+      data:JSON.stringify(values)
     })
-    .then((res) => {
-      if(res && res.status === 200){
-        var plan={}
-     //   plan.id=null
-        plan.objectId=res.data.result.id
-        plan.objectType=1
-        plan.currentApprover=null
-        plan.applicant=window.localStorage.getItem('roleName')
-        plan.currentApproverId=res.data.result.principalId
-        plan.applicantId=res.data.result.maintainerId
-        plan.DeviceOrderItemInfoDto=[{ 
-        state: '',//是否在维保期内
-        deviceID: '',// 异常设备
-        manufacuture: '',// 对异常设备的描述
-        deleteDisplay: false,//删除异常设备按钮是否出现
-        addDisplay: true,//添加异常项按钮是否出现
-      }]
-       this.setState({detail:plan})
-      }
-  })
-  .catch(function (error) {
-      console.log(error);
-  });
+      .then((res) => {
+        if(res && res.status === 200){
+          this.getInfo(FIRST_PAGE)
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+  
+  //备件库管理员处理后，待用户管理员审核
+  managerApproval=(record)=>{
+    var info={}
+    info.id=record
+    this.setState({
+      managerApprovalVisible:true,
+      noteDetail:info
+    })
+  }
+  //获取工程师信息
+  assign=(record)=>{
+    var info={}
+    info.id=record
+    this.setState({
+      assignVisible:true,
+      assignDetail:info
+    })
   }
 
   //提交方案modal框
@@ -337,44 +361,44 @@ class Test extends Component{
       visible: true,
     });
   };
-  //编辑提交的信息 包括总花费以及方案
-  handleOk = e => {  
+
+  //工程师接单
+  engineerAccept=(id)=>{
+    var info={}
+    info.id=id
     this.setState({
-      visible: false,
-    });
-    const values = this.form.getFieldsValue()
-    console.log(values)
+      engineerAcceptVisible:true,
+      engineerAcceptDetail:info
+    })
+  }
+ 
+  //服务商审批备品备件
+  planApproval=(id)=>{
+    this.setState({ planApprovalVisible:true})
     axios({
-      contentType:'application/json',
-      method: 'POST',
-      url: '/mdmc/mdmcDevice/save',
+      method: 'GET',
+      url: '/rdc/deviceOrder/all/object/'+id+'/'+1,
       headers: {
         'deviceId': this.deviceId,
         'Authorization':'Bearer '+this.state.token,
       },
-       data:values
     })
-    .then((res) => {
-      if(res && res.status === 200){
-        this.changeStatus(res.data.result.id,6,'维修工提交备件方案后，待用户负责人审核')
-      }
-    })
-    .catch(function (error) {
+      .then((res) => {
+        if(res && res.status === 200){
+          var response=res.data.result
+          var info={}
+          info.id=response.deviceOrderList[0].deviceOrder.id
+          info.objectType=1
+          //  info.objectId=res.deviceOrderList[0].deviceOrder.id
+          this.setState({planApprovalDetail:info})
+        }
+      })
+      .catch(function (error) {
         console.log(error);
-    });
-  
-
-  };
- //取消方案确定模态框
-  handleCancel = e => {
-    console.log(e);
-    this.setState({
-      visible: false,
-    });
-  };
- 
+      });
+  }
   //提交结果，获取已填部分
-  submit(id){
+  resultSubmit(id){
     this.setState({resultVisible:true})
     axios({
       method: 'GET',
@@ -384,14 +408,15 @@ class Test extends Component{
         'Authorization':'Bearer '+this.state.token,
       },
     })
-    .then((res) => {
-      if(res && res.status === 200){
-       this.setState({result:res.data.result})
-      }
-    })
-    .catch(function (error) {
+      .then((res) => {
+        if(res && res.status === 200){
+          console.log(res.data.result)
+          this.setState({result:res.data.result})
+        }
+      })
+      .catch(function (error) {
         console.log(error);
-    });
+      });
   }
 
   //确认提交
@@ -400,26 +425,27 @@ class Test extends Component{
       resultVisible: false,
     });
     const values = this.form.getFieldsValue() 
-    values.result = 1
+    values.status = 10
     console.log(values)
     axios({
       contentType:'application/json',
       method: 'POST',
-      url: '/mdmc/mdmcTask/modify',
+      url: '/mdmc/mdmcTask/save',
       headers: {
         'deviceId': this.deviceId,
         'Authorization':'Bearer '+this.state.token,
       },
-       data:values
+      data:values
     })
-    .then((res) => {
-      if(res && res.status === 200){
-        this.changeStatus(res.data.result.id,8,'维修工提交维修结果，待服务商审核维修结果')
-      }
-    })
-    .catch(function (error) {
+      .then((res) => {
+        if(res && res.status === 200){
+          this.getInfo(FIRST_PAGE)
+          //   this.changeStatus(res.data.result.id,8,'维修工提交维修结果，待服务商审核维修结果')
+        }
+      })
+      .catch(function (error) {
         console.log(error);
-    });
+      });
   
   }
   //取消提交
@@ -441,20 +467,18 @@ class Test extends Component{
         'Authorization':'Bearer '+this.state.token,
       },
     })
-    .then((res) => {
-      if(res && res.status === 200){
-        var receive={}
-        receive.taskId=res.data.result.id
-        receive.principalId=res.data.result.principalId
-        receive.userId=res.data.result.userId
-        receive.score=null
-        receive.content=''
-       this.setState({comment:receive})
-      }
-    })
-    .catch(function (error) {
+      .then((res) => {
+        if(res && res.status === 200){
+          var receive={}
+          receive.taskId=res.data.result.id
+          receive.userId=res.data.result.userId
+          receive.principleId=res.data.result.principleId
+          this.setState({comment:receive})
+        }
+      })
+      .catch(function (error) {
         console.log(error);
-    });
+      });
   }
 
   //提交评论信息
@@ -463,6 +487,8 @@ class Test extends Component{
       commentVisible: false,
     });
     const values = this.form.getFieldsValue() 
+    values.status=13
+    console.log(values)
     axios({
       contentType:'application/json',
       method: 'POST',
@@ -471,16 +497,17 @@ class Test extends Component{
         'deviceId': this.deviceId,
         'Authorization':'Bearer '+this.state.token,
       },
-       data:values
+      data:values
     })
-    .then((res) => {
-      if(res && res.status === 200){
-        this.changeStatus(res.data.result.taskId,13,'值机员评价完成，订单完成')
-      }
-    })
-    .catch(function (error) {
+      .then((res) => {
+        if(res && res.status === 200){
+          // this.changeStatus(res.data.result.taskId,13,'值机员评价完成，订单完成')
+          this.getInfo(FIRST_PAGE)
+        }
+      })
+      .catch(function (error) {
         console.log(error);
-    });
+      });
   
   }
   
@@ -492,13 +519,145 @@ class Test extends Component{
   }
   
   //指定工程师模态框
-  selectOk=e=>{
-    this.setState({selectVisible:true})
+  assignOk=e=>{
+    this.setState({assignVisible:false})
+    const values = this.form.getFieldsValue() 
+    console.log(values.maintainId)
+    values.status=5
+    values.deadline=this.form.getFieldValue('deadline').format('YYYY-MM-DD HH:mm:ss')
+    console.log(values)
+    axios({
+      contentType:'application/json',
+      method: 'POST',
+      url: '/mdmc/mdmcTask/save',
+      headers: {
+        'deviceId': this.deviceId,
+        'Authorization':'Bearer '+this.state.token,
+      },
+      data:values
+    })
+      .then((res) => {
+        if(res && res.status === 200){
+          alert('提交成功')
+          this.getInfo(FIRST_PAGE)
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  
   }
   //取消指定
-  selectCancle=e=>{
+  assignCancel=e=>{
     this.setState({
-      selectVisible:false
+      assignVisible:false
+    })
+  }
+
+  //工程师指定等级
+  engineerAcceptOK=()=>{
+    this.setState({engineerAcceptVisible:false})
+    const values = this.form.getFieldsValue() 
+    values.status=6
+    console.log(values)
+    axios({
+      contentType:'application/json',
+      method: 'POST',
+      url: '/mdmc/mdmcTask/save',
+      headers: {
+        'deviceId': this.deviceId,
+        'Authorization':'Bearer '+this.state.token,
+      },
+      data:values
+    })
+      .then((res) => {
+        if(res && res.status === 200){
+          alert('提交成功')
+          this.getInfo(FIRST_PAGE)
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  
+  }
+
+  //工程师取消modal框
+  engineerAcceptCancel=()=>{
+    this.setState({
+      planApprovalVisible:false
+    })
+  }
+  
+  //用户支付流程
+  pay=(id)=>{
+    alert("支付完成")
+    this.changeStatus(id,12,'用户负责人支付完成，待值机员评价')
+  }
+
+  //备品备件服务商审批
+  planApprovalOk=()=>{
+    this.setState({planApprovalVisible:false})
+    const values=this.form.getFieldsValue()
+    values.objectId=values.id
+    values.status=1
+    console.log(values)
+    axios({
+      contentType:'application/json',
+      method: 'POST',
+      url: '/rdc/deviceOrder/operation',
+      headers: {
+        'deviceId': this.deviceId,
+        'Authorization':'Bearer '+this.state.token,
+      },
+      data:values
+    })
+      .then((res) => {
+        if(res && res.status === 200){
+          alert('提交成功')
+          this.getInfo(FIRST_PAGE)
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+  //备品备件用户审核意见确认
+  managerApprovalOK=()=>{
+    this.setState({managerApprovalVisible:false})
+    const values = this.form.getFieldsValue() 
+    values.status=6
+    axios({
+      contentType:'application/json',
+      method: 'POST',
+      url: '/mdmc/mdmcTask/save',
+      headers: {
+        'deviceId': this.deviceId,
+        'Authorization':'Bearer '+this.state.token,
+      },
+      data:values
+    })
+      .then((res) => {
+        if(res && res.status === 200){
+          alert('提交成功')
+          this.getInfo(FIRST_PAGE)
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+  
+  //备品备件审核取消
+  planApprovalCancel=()=>{
+    this.setState({
+      planApprovalVisible:false
+    })
+  }
+  //备品备件用户审核取消
+  managerApprovalCancel=()=>{
+    this.setState({
+      managerApprovalVisible:false
     })
   }
   //获取状态数值
@@ -512,9 +671,9 @@ class Test extends Component{
     var a=items.find(item => {    
       return item.status === status;
     })
-   return a
+    return a
   }
- 
+  
   render(){
     const {
       data,
@@ -525,13 +684,16 @@ class Test extends Component{
       detail,
       result,
       comment,
-      selectInfo,
-      } = this.state;
-      const current = nowCurrent+1
-      const limit = size
+      assignDetail,
+      engineerAcceptDetail,
+      noteDetail,
+      planApprovalDetail,
+    } = this.state;
+    const current = nowCurrent+1
+    const limit = size
 
     return(
-        <div>
+      <div>
         <div className="searchPart">
           <Row>
             {/* <Col span={2}>巡检人姓名：</Col> */}
@@ -542,7 +704,7 @@ class Test extends Component{
                 onSearch={value => this.selectActivity(value)}
               />
             </Col> */}
-             {(roleCode=="user_watcher"&&status==2)&&<Col push={21}>
+            {((roleCode=="user_watcher"||roleCode=='user_manager'||roleCode==='user_leader')&&status==null)&&<Col push={21}>
               <Link to={`/cbd/service/new`}>
                 <Button type="primary">
                             +创建工单
@@ -571,91 +733,113 @@ class Test extends Component{
           //     return ((record.id && record.id) || '--')
           //   }   
           // }, 
-          {
-            title: '维修任务名称',
-            key: 'title',
-            render: (text, record) => {
-              return (record.title && record.title) || '--'
-            }
-          }, {
-            title: '创建时间',
-            key: 'createdTime',
-            render: (text, record) => {
-              return (record.createdTime && record.createdTime)|| '--'
-            }
-          },
-          // {
-          //   title: '项目ID', 
-          //   key: 'projectId',
-          //   render: (text, record) => {
-          //     return (record.projectId && record.projectId) || '--'
-          //   }
-          // },
-           {
-            title: '报修人编号',
-            key: 'userId',
-            render: (text, record) => {
-              return (record.userId && record.userId) || '--'
-            }
-          },{
-            title: '状态',
-            key: 'status',
-            render: (text, record) => {
-              return (record.status && this.setStatus(record.status))|| '--'
-            }
-          },
-          {
-            title: '紧急程度',
-            key: 'level',
-            render: (text, record) => {
-              return (record.level && record.level===1?'一般':(record.level===2?'紧急':'非常紧急')) || '--'
-            }
-          },
-          {
-            title: '操作',
-            render: (text, record, index) => (
-              <div className="operate-btns"
-                style={{ display: 'block',width:'140px' }}
-              >
-                <Link
-                  to={`/cbd/service/sub/${record.id}`}
-                  style={{marginRight:'12px'}}
-                >任务子项</Link>                
-                <Link
-                  to={`/cbd/service/log/${record.id}`}
-                  style={{marginRight:'12px'}}
-                >任务日志</Link>
-                <br/>
-                <Link
-                  to={`/cbd/service/spare/${record.id}`}
-                  style={{marginRight:'12px'}}
-                >备品备件</Link>
-                 <Link
-                  to={`/cbd/service/detail/${record.id}`}
-                  style={{marginRight:'12px'}}
-                >详情</Link>
-                {this.getFunction(record,status,roleCode)}            
-              </div>
-            ),
-          }]}
+            {
+              title: '维修任务名称',
+              key: 'title',
+              render: (text, record) => {
+                return (record.title && record.title) || '--'
+              }
+            }, {
+              title: '创建时间',
+              key: 'createdTime',
+              render: (text, record) => {
+                return (record.createdTime && record.createdTime)|| '--'
+              }
+            },
+            // {
+            //   title: '项目ID', 
+            //   key: 'projectId',
+            //   render: (text, record) => {
+            //     return (record.projectId && record.projectId) || '--'
+            //   }
+            // },
+            {
+              title: '报修人编号',
+              key: 'userId',
+              render: (text, record) => {
+                return (record.userId && record.userId) || '--'
+              }
+            },{
+              title: '状态',
+              key: 'status',
+              render: (text, record) => {
+                return (record.status && this.setStatus(record.status))|| '--'
+              }
+            },
+            {
+              title: '紧急程度',
+              key: 'level',
+              render: (text, record) => {
+                return (record.level && record.level===1?'一般':(record.level===2?'紧急':'非常紧急')) || '--'
+              }
+            },
+            {
+              title: '操作',
+              render: (text, record, index) => (
+                <div className="operate-btns"
+                  style={{ display: 'block',width:'140px' }}
+                >
+                  <Link
+                    to={`/cbd/service/sub/${record.id}`}
+                    style={{marginRight:'12px'}}
+                  >任务子项</Link>                
+                  <Link
+                    to={`/cbd/service/log/${record.id}`}
+                    style={{marginRight:'12px'}}
+                  >任务日志</Link>
+                  <br/>
+                  <Link
+                    to={`/cbd/service/spare/${record.id}`}
+                    style={{marginRight:'12px'}}
+                  >备品备件</Link>
+                  <Link
+                    to={`/cbd/service/detail/${record.id}`}
+                    style={{marginRight:'12px'}}
+                  >详情</Link>
+                  {this.getFunction(record,status,roleCode)}            
+                </div>
+              ),
+            }]}
         />
-         {/* <Modal
-          title="指定工程师"
-          visible={this.state.selectVisible}
-          onOk={this.selectOk}
-          onCancel={this.selectCancel}
+        <Modal
+          title="备品备件审核"
+          visible={this.state.planApprovalVisible}
+          onOk={this.planApprovalOk}
+          onCancel={this.planApprovalCancel}
           okText="确定"
           cancelText="取消"
         >
-          <Comment setSelect={(form)=>{this.form = form}}  selectInfo={selectInfo}/>
-        </Modal> */}
-         <Modal
-          title="方案提交"
-          visible={this.state.visible}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
+          <Approval setApproval={(form)=>{this.form = form}}  planApprovalDetail={planApprovalDetail}/>
+        </Modal>
+        <Modal
+          title="分配工程师"
+          visible={this.state.assignVisible}
+          onOk={this.assignOk}
+          onCancel={this.assignCancel}
+          okText="确定"
+          cancelText="取消"
         >
-          <Confirm setForm={(form)=>{this.form = form}} detail={detail}/>
+          <Assign setAssign={(form)=>{this.form = form}} assignDetail={assignDetail}/>
+        </Modal>
+        <Modal
+          title="工程师定级"
+          visible={this.state.engineerAcceptVisible}
+          onOk={this.engineerAcceptOK}
+          onCancel={this.engineerAcceptCancel}
+          okText="确定"
+          cancelText="取消"
+        >
+          <Level setLevel={(form)=>{this.form = form}} engineerAcceptDetail={engineerAcceptDetail}/>
+        </Modal>
+        <Modal
+          title="备品备件审核"
+          visible={this.state.managerApprovalVisible}
+          onOk={this.managerApprovalOK}
+          onCancel={this.managerApprovalCancel}
+          okText="确定"
+          cancelText="取消"
+        >
+          <Note setNote={(form)=>{this.form = form}} noteDetail={noteDetail}/>
         </Modal>
         <Modal
           title="提交结果"
@@ -679,6 +863,6 @@ class Test extends Component{
         </Modal>
       </div>  
     )
-}
+  }
 }
 export default Test;

@@ -77,8 +77,8 @@ class ProjectDetail extends Component{
                     <Descriptions.Item label="截止时间" span={1.5}>{projectDetail.deadline&&projectDetail.deadline||'--'}</Descriptions.Item>
                     <Descriptions.Item label="计划开始时间" span={1.5}>{projectDetail.scheduledStartTime&&moment(parseInt(projectDetail.scheduledStartTime)).format('YYYY-MM-DD')||'--'}</Descriptions.Item>
                     <Descriptions.Item label="计划结束时间" span={1.5}>{projectDetail.scheduledFinishTime&&moment(parseInt(projectDetail.scheduledFinishTime)).format('YYYY-MM-DD')||'--'}</Descriptions.Item>
-                    <Descriptions.Item label="实际开始时间" span={1.5}>{projectDetail.actualStartTime&&moment(parseInt(projectDetail.actualStartTime)).format('YYYY-MM-DD')||'--'}</Descriptions.Item>
-                    <Descriptions.Item label="实际结束时间" span={1.5}>{projectDetail.actualFinishTime&&moment(parseInt(projectDetail.actualFinishTime)).format('YYYY-MM-DD')||'--'}</Descriptions.Item>                  
+                    <Descriptions.Item label="实际开始时间" span={1.5}>{projectDetail.actualStartTime&&projectDetail.actualStartTime}</Descriptions.Item>
+                    <Descriptions.Item label="实际结束时间" span={1.5}>{projectDetail.actualFinishTime&&projectDetail.actualFinishTime}</Descriptions.Item>                  
                     <Descriptions.Item label="地址名" span={1.5}>{projectDetail.address_name}</Descriptions.Item>
                     <Descriptions.Item label="紧急程度" span={1.5}>{projectDetail.level && projectDetail.level===1?'一般':(projectDetail.level===2?'紧急':'非常紧急')}</Descriptions.Item>
                     <Descriptions.Item label="审核人ID" span={1.5}>{projectDetail.principalId}</Descriptions.Item>
@@ -87,8 +87,8 @@ class ProjectDetail extends Component{
                     <Descriptions.Item label="预计花费" span={1.5}>{projectDetail.totalCost}</Descriptions.Item>
                     <Descriptions.Item label="操作" span={3}>
                       <Link to={`/cbd/maintain/data`} style={{marginRight:'5px'}}>返回上一级</Link>
-                      <Link to={`/cbd/pro/contract/detail/${projectDetail.contract}`} style={{marginRight:'5px'}}>查看合同</Link>
-                      <Link to={`/cbd/pro/project/detail/${projectDetail.projectId}`}>查看项目</Link>
+                      {/* {projectDetail.contract&&<Link to={`/cbd/pro/contract/detail/${projectDetail.contractId}`} style={{marginRight:'5px'}}>查看合同</Link>} */}
+                     {projectDetail.projectId&& <Link to={`/cbd/pro/project/detail/${projectDetail.projectId}`}>查看项目</Link>}
                     </Descriptions.Item>
                   </Descriptions>
                 

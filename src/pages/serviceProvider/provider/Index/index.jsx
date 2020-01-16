@@ -1,176 +1,73 @@
 import React, { Component, } from 'react';
-import { Button,Row,Col,Table,Input,Popconfirm,message  } from 'antd';
-import { Link } from 'react-router-dom'
-import moment from 'moment';
+import { Button,Descriptions,Card } from 'antd'
+import {reqCompanyInfo} from '../../../../axios/index.js'
 import './index.styl'
-const FIRST_PAGE = 0;
-const PAGE_SIZE = 10;
-const Search = Input.Search;
 
-class Provider extends Component{
-    constructor(props){
-        super(props)
-        this.state={
-            current: FIRST_PAGE,
-            size: PAGE_SIZE,
-            total: 20, 
-            nowCurrent:FIRST_PAGE,
-            data:{
-                data:[
-                    {
-                        "accountId": "string",
-                        "accountName": "string",
-                        "businessScope": "string",
-                        "companyAddress": "string",
-                        "companyName": "string",
-                        "companyType": "string",
-                        "contactName": "string",
-                        "contactPhone": "string",
-                        "country": "string",
-                        "expirationDate": "2019-12-10T14:59:04.025Z",
-                        "id": 0,
-                        "legalId": "string",
-                        "legalName": "string",
-                        "legalPhone": "string",
-                        "licenseType": "string",
-                        "mainWork": "string",
-                        "productCategory": "string",
-                        "registeredAddress": "string",
-                        "registeredCaptial": "string",
-                        "socialCreditCode": "string",
-                        "zipCode": "string"
-                      
-                    }
-                ],
-                limit:3,
-                page:0,
-                allCount:0,
-            }
-        }
+const Item = Descriptions.Item
+export default class Provider extends Component{
+
+  constructor(props) {
+    super(props);
+    this.state={
+      providerInfo:{}
     }
-    render(){
-        const {
-            data:{
-              allCount,
-              data,
-              limit,
-              page,
-            },
-          } = this.state;
-          const total = allCount
-          const current = page+1
-          const size = limit
-        return(
-            <div>
-            <div className="searchPart">
-            <Row>
-                {/* <Col span={2}>巡检人姓名：</Col> */}
-                <Col span={5}>
-                <Search
-                    placeholder="搜索从这里开始"
-                    enterButton
-                    onSearch={value => this.selectActivity(value)}
-                />
-                </Col>
-                <Col push={16}>
-                <Link to={"/serviceProvider/provider/new"}>
-                    <Button type="primary">
-                                +添加服务加盟商
-                    </Button>
-                </Link>
-                </Col>
-            </Row> 
-            </div>
-            <Table
-            className="group-list-module"
-            bordered
-            showHeader={true}
-            pagination={{
-                current,
-                total,
-                pageSize: size,
-                onChange: this.handlePageChange,
-                // showTotal: () => `共${allCount} 条数据`
-            }}
-            rowClassName={this.setRowClassName}
-            dataSource={data}
-            columns={[{
-                title: 'ID',
-                key: 'id',
-                render: (text, record) => {
-                return ((record.id && record.id) || '--')
-                }   
-            }, {
-                title: '公司名称',
-                key: 'companyName',
-                render: (text, record) => {
-                return (record.companyName && record.companyName) || '--'
-                }
-            }, {
-                title: '所属国家',
-                key: 'country',
-                render: (text, record) => {
-                return (record.country && record.country) || '--'
-                }
-            },
-            {
-                title: '公司类型', 
-                key: 'companyType',
-                render: (text, record) => {
-                return (record.companyType && record.companyType) || '--'
-                }
-            }, {
-                title: '联系电话',
-                key: 'contactPhone',
-                render: (text, record) => {
-                return (record.contactPhone && record.contactPhone) || '--'
-                }
-            },{
-                title: '公司地址',
-                key: 'companyAddress',
-                render: (text, record) => {
-                return (record.companyAddress && record.companyAddress) || '--'
-                }
-            },{
-                title: '经营范围',
-                key: 'businessScope',
-                render: (text, record) => {
-                return (record.businessScope && record.businessScope) || '--'
-                }
-            },
-            {
-                title: '操作',
-                render: (text, record, index) => (
-                <div className="operate-btns"
-                    style={{ display: 'block' }}
-                >
-                    <Link
-                    to={`/serviceProvider/provider/detail/${record.id}`}
-                    style={{marginRight:'12px'}}
-                    >详情</Link>               
-                    <Link
-                    to={`/serviceProvider/provider/edit/${record.id}`}
-                    style={{marginRight:'12px'}}
-                    >修改</Link>
-                    <Link
-                    to={`/serviceProvider/provider/delete/${record.id}`}
-                    style={{marginRight:'8px'}}
-                    >删除</Link>
-                    {/* <Popconfirm
-                            title="确定要删除吗？"
-                            onConfirm={()=> {this.deleteGroup(record)}}
-                        >
-                            <Button 
-                            type="simple"
-                            style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
-                            >删除</Button>
-                        </Popconfirm> */}
-                </div>
-                ),
-            }]}
-            />
-     </div>
-        )
+  }
+    
+  
+
+  getProviderInfo = async () => {
+    const companyId = 789802135269134252
+    const result = await reqCompanyInfo(companyId)
+    if(result.code===200){
+      this.setState({providerInfo:result.result})
     }
+  }
+
+  componentDidMount() {
+    this.getProviderInfo()
+  }
+
+  render(){
+    const {providerInfo} = this.state
+    return(
+      <div>
+        <Card title="基础信息" extra={(<Button type="default" icon="edit" onClick={() => this.props.history.push('/cbd/alliance/business/edit',providerInfo)}>编辑</Button>)}>
+          <Descriptions bordered>
+            <Item label="主体名称" span={3}>{providerInfo.groupName}</Item>
+            <Item label="法定代表人姓名">{providerInfo.legalPersonName}</Item>
+            <Item label="法定代表人联系电话">{providerInfo.legalPersonPhone}</Item>
+            <Item label="法定代表人身份证号">{providerInfo.legalPersonNumber}</Item>
+            
+            <Item label="主体机构类别">{providerInfo.type}</Item>
+            <Item label="主体行业">{providerInfo.mainWork}</Item>
+            <Item label="国别/地区">{providerInfo.country}</Item>
+            {/* <Item label="注册地"></Item> */}
+            <Item label="详细地址" span={2}>{providerInfo.detailAddress}</Item>
+            <Item label="邮政编码">{providerInfo.zipCode}</Item>
+            <Item label="联系人">{providerInfo.contact}</Item>
+            <Item label="联系人电话">{providerInfo.contactPhone}</Item>
+            <Item label="附件"></Item>
+          </Descriptions>
+        </Card>
+        <Card title="基本账户开户许可证">
+          <Descriptions bordered>
+            <Item label="基本户账户名称">{providerInfo.accountName}</Item>
+            <Item label="基本户账号">{providerInfo.accountNumber}</Item>
+          </Descriptions>
+        </Card>
+        <Card title="营业执照">
+          <Descriptions bordered>
+            <Item label="类型">{providerInfo.licenseType}</Item>
+            <Item label="注册资本（人民币）">{providerInfo.registeredCaptial}</Item>
+            <Item label="统一社会信用代码">{providerInfo.groupCode}</Item>
+            <Item label="有效期">{providerInfo.expirationDate}</Item>
+            <Item label="经营范围">{providerInfo.businessScope}</Item>
+            <Item label="供应产品类别">{providerInfo.productCategory}</Item>
+            <Item label="附件"></Item>
+          </Descriptions>
+        </Card>
+      </div>
+      
+    )
+  }
 }
-export default Provider;

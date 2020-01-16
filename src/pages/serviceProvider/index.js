@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import React, { Component, } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { Spin } from 'antd';
@@ -18,86 +19,39 @@ class serviceProviderRoute extends Component{
           };
           return(
             <Switch>
-                 <Route 
+               
+              <Route 
                     exact   
-                    path="/serviceProvider/provider"
+                    path="/cbd/alliance/engineer"
                     component={Loadable({
                         loader: () => import(
                         /* webpackChunkName: "EntranceWork" */
-                        './engineer/Index/index'),
+                        './engineer/index'),
                         loading: Loading
                     })}
                  />
-                  <Route 
+              <Route 
                     exact   
-                    path="/serviceProvider/provider/detail/:id"
+                    path="/cbd/alliance/business"
                     component={Loadable({
                         loader: () => import(
                         /* webpackChunkName: "EntranceWork" */
-                        './engineer/Detail/index'),
+                        './provider/Index/index'),
                         loading: Loading
                     })}
-                 />
-                   <Route 
-                    exact   
-                    path="/serviceProvider/provider/new"
+              />
+              <Route 
+                    exact
+                    path="/cbd/alliance/business/edit"
                     component={Loadable({
                         loader: () => import(
                         /* webpackChunkName: "EntranceWork" */
-                        './engineer/Create/index'),
+                        './provider/Edit/index'),
                         loading: Loading
                     })}
-                 />
-                  <Route 
-                    exact   
-                    path="/serviceProvider/provider/edit/:id"
-                    component={Loadable({
-                        loader: () => import(
-                        /* webpackChunkName: "EntranceWork" */
-                        './engineer/Create/index'),
-                        loading: Loading
-                    })}
-                 />
-                 <Route 
-                    exact   
-                    path="/serviceProvider/engineer"
-                    component={Loadable({
-                        loader: () => import(
-                        /* webpackChunkName: "EntranceWork" */
-                        './engineer/Index/index'),
-                        loading: Loading
-                    })}
-                 />
-                  <Route 
-                    exact   
-                    path="/serviceProvider/engineer/detail/:id"
-                    component={Loadable({
-                        loader: () => import(
-                        /* webpackChunkName: "EntranceWork" */
-                        './engineer/Detail/index'),
-                        loading: Loading
-                    })}
-                 />
-                   <Route 
-                    exact   
-                    path="/serviceProvider/engineer/new"
-                    component={Loadable({
-                        loader: () => import(
-                        /* webpackChunkName: "EntranceWork" */
-                        './engineer/Create/index'),
-                        loading: Loading
-                    })}
-                 />
-                  <Route 
-                    exact   
-                    path="/serviceProvider/engineer/edit/:id"
-                    component={Loadable({
-                        loader: () => import(
-                        /* webpackChunkName: "EntranceWork" */
-                        './engineer/Create/index'),
-                        loading: Loading
-                    })}
-                 />
+              />
+              
+             
                  
             </Switch>
           )

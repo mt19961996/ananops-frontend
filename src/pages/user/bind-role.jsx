@@ -1,28 +1,30 @@
 import React,{Component} from 'react'
-import {Transfer,Switch} from 'antd'
+import {Transfer} from 'antd'
+import PropTypes from 'prop-types'
 
-const mockData = [];
-for (let i = 0; i < 20; i++) {
-  mockData.push({
-    key: i.toString(),
-    title: `content${i + 1}`,
-    description: `description of content${i + 1}`,
-    disabled: i % 3 < 1,
-  });
-}
-
-const oriTargetKeys = mockData.filter(item => +item.key % 3 > 1).map(item => item.key);
 export default class BindRole extends Component{
 
-  state = {
-    targetKeys: oriTargetKeys,
-    selectedKeys: [],
-    disabled: false,
-  };
+  static propTypes = {
+    setRoleIdList:PropTypes.func.isRequired,
+    allRoleSet:PropTypes.array.isRequired,
+    alreadyBindRoleIdSet:PropTypes.array.isRequired
+  }
+
+  constructor(props) {
+    super(props);
+    const alreadySet = this.props.alreadyBindRoleIdSet.map(item=>item.key)
+    this.state = {
+      targetKeys: alreadySet,
+      selectedKeys: [],
+      disabled: false,
+    }
+  }
+  
 
   handleChange = (nextTargetKeys, direction, moveKeys) => {
-    this.setState({ targetKeys: nextTargetKeys });
-
+    this.setState({ targetKeys: nextTargetKeys },()=> {
+      this.props.setRoleIdList(this.state.targetKeys)
+    });
     console.log('targetKeys: ', nextTargetKeys);
     console.log('direction: ', direction);
     console.log('moveKeys: ', moveKeys);
@@ -35,38 +37,42 @@ export default class BindRole extends Component{
     console.log('targetSelectedKeys: ', targetSelectedKeys);
   };
 
-  handleScroll = (direction, e) => {
-    console.log('direction:', direction);
-    console.log('target:', e.target);
-  };
+  // handleScroll = (direction, e) => {
+  //   console.log('direction:', direction);
+  //   console.log('target:', e.target);
+  // }
 
-  handleDisable = disabled => {
-    this.setState({ disabled });
-  };
+  componentWillReceiveProps(nextProps){
+    console.log(' componentWillReceiveProps()',nextProps)
+    const alreadySet = nextProps.alreadyBindRoleIdSet.map(item=>item.key)
+    this.setState({
+      targetKeys:alreadySet
+    })
+  }
 
   render(){
     const { targetKeys, selectedKeys, disabled } = this.state;
+    const allRoleSet = this.props.allRoleSet
+    console.log('props传入得到所有角色allroleset',allRoleSet)
+    console.log('props传入得到已绑定角色alreadyRoleSet',targetKeys)
     return (
-      <div>
-        <Transfer
-          dataSource={mockData}
-          titles={['Source', 'Target']}
-          targetKeys={targetKeys}
-          selectedKeys={selectedKeys}
-          onChange={this.handleChange}
-          onSelectChange={this.handleSelectChange}
-          onScroll={this.handleScroll}
-          render={item => item.title}
-          disabled={disabled}
-        />
-        <Switch
-          unCheckedChildren="disabled"
-          checkedChildren="disabled"
-          checked={disabled}
-          onChange={this.handleDisable}
-          style={{ marginTop: 16 }}
-        />
-      </div>
+      
+      <Transfer
+        dataSource={allRoleSet}
+        titles={['角色列表', '已选角色']}
+        targetKeys={targetKeys}
+        selectedKeys={selectedKeys}
+        onChange={this.handleChange}
+        onSelectChange={this.handleSelectChange}
+        //onScroll={this.handleScroll}
+        render={item => `${item.roleName} - ${item.roleId}`}
+        disabled={disabled}
+        listStyle={{
+          width: 350,
+          height: 300,
+        }}
+      />
+        
     )
   }
 }
