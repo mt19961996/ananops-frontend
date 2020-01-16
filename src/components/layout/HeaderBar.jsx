@@ -3,6 +3,7 @@ import { Layout, Menu, Dropdown, Icon, Breadcrumb,Modal } from 'antd';
 // import customUrl from '../../images/custom.jpeg';
 import { connect } from 'react-redux';
 const { Header } = Layout;
+const loginName=window.localStorage.getItem('loginName')
 
 class UserInfo extends React.Component {
   state = {
@@ -61,7 +62,7 @@ class UserInfo extends React.Component {
     return (
       <Dropdown overlay={menu} onVisibleChange={this.handleVisibleChange} visible={this.state.visible}>
         <div className="ant-dropdown-link">
-          用户
+          {loginName}
           <Icon type="caret-down" />
         </div>
       </Dropdown>

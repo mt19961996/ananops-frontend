@@ -118,7 +118,7 @@ class Login extends React.Component {
       if (res && res.data.code === 200) {
         console.log('登陆成功');
         console.log(res.data.result)
-        // window.localStorage.setItem('loginName',res.data.result.loginName);
+        window.localStorage.setItem('loginName',res.data.result.loginName);
         window.localStorage.setItem('loggedIn', true);
         window.localStorage.setItem('token',res.data.result.access_token)
         window.localStorage.setItem('access_token',res.data.result.access_token)
