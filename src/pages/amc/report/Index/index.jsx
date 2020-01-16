@@ -1,5 +1,5 @@
 import React, {Component,} from 'react';
-import {Button, Row, Col, Table, Input, Popconfirm, message, Card, Statistic, Progress, Icon} from 'antd';
+import {Button, Row, Col, Table, Input, Popconfirm, message, Card, Statistic, Progress, Icon, Tag} from 'antd';
 import {Link} from 'react-router-dom'
 import axios from 'axios'
 
@@ -206,7 +206,7 @@ class Report extends Component {
                     ],
                     render:
                         (text, record) => {
-                            return (record.alarmLevel === 1 ? '紧急' : (record.alarmLevel === 2 ? '可疑' : '提醒'))
+                            return (record.alarmLevel === 1 ?  <Tag color="#FF1A19">紧急</Tag> : (record.alarmLevel === 2 ? <Tag color="#ffc573">可疑</Tag> : <Tag color="#674E2E">提醒</Tag>))
 
                         }
                 },
@@ -258,9 +258,9 @@ class Report extends Component {
                     render:
                         (text, record) => {
                             if (record.alarmStatus === 1) {
-                                return "未处理";
+                                return  <Tag color="red">未处理</Tag>;
                             } else {
-                                return "已处理";
+                                return <Tag color="blue">已处理</Tag>;
                             }
                         }
 
@@ -309,7 +309,7 @@ class Report extends Component {
                     <Row gutter={16}>
                         <Col span={4}>
                             <Card title="告警总数" bordered={false}>
-                                <Statistic value={8}/>
+                                <Statistic value={alarmCount}/>
                             </Card>
                         </Col>
                         <Col span={4}>
@@ -329,7 +329,7 @@ class Report extends Component {
                         </Col>
                         <Col span={4}>
                             <Card title="处理量" bordered={false}>
-                                <Progress type="circle" percent={95}/>
+                                <Progress type="circle" percent={(processedCount/alarmCount).toFixed(2)*100}/>
                             </Card>
                         </Col>
                         <Col span={4}>
