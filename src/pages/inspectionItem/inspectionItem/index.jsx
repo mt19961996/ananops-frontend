@@ -287,7 +287,7 @@ class inspectionItem extends Component{
               display_button3:'block',
             })
             const values={orderBy:'string',pageSize:100,pageNum:0,maintainerId:this.state.maintainerId};
-            console.log(JSON.stringify(values));
+            console.log('/imc/inspectionItem/modifyItemStatusByItemId' + JSON.stringify(values));
             axios({
               method: 'POST',
               url: '/imc/inspectionItem/getAllAcceptedItemByMaintainer',
@@ -300,7 +300,7 @@ class inspectionItem extends Component{
             })
             .then((res) => {
                 if(res && res.status === 200){
-                console.log(res.data.result)
+                console.log('/imc/inspectionItem/modifyItemStatusByItemId' + JSON.stringify(res.data.result))
                 var taskItemList
                 res.data.result==null?taskItemList=[]:taskItemList=res.data.result
                 // res.data.result==null?pageNum=0:pageNum=res.data.result.pageNum
@@ -438,6 +438,10 @@ class inspectionItem extends Component{
                       to={`/cbd/imcItemInfo/bindEngineer/${this.state.imcTaskId}/${record.id}`}
                       style={{marginRight:'12px',display:this.state.display_button1}}
                     >绑定工程师</Link>
+                    {/* <Link
+                      to={`/cbd/imcItemInfo/bindEngineer/${this.state.imcTaskId}/${record.id}`}
+                      style={{marginRight:'12px',display:this.state.display_button1}}
+                    >发起维修维护申请</Link> */}
                     <Popconfirm
                         title="确定接单？"
                         onConfirm={()=> {this.acceptImcItem(record.id)}}

@@ -57,6 +57,7 @@ class TaskDetail extends Component{
                     <Descriptions.Item label="巡检任务名称" span={1.5}>{imcTaskDetail.taskName}</Descriptions.Item>
                     {/* <Descriptions.Item label="巡检任务对应的甲方用户id" span={1.5}>{imcTaskDetail.userId}</Descriptions.Item>    */}
                     <Descriptions.Item label="计划起始时间" span={1.5}>{imcTaskDetail.scheduledStartTime}</Descriptions.Item>
+                    {/* <Descriptions.Item label="实际起始时间" span={1.5}>{imcTaskDetail.actualStartTime}</Descriptions.Item> */}
                     <Descriptions.Item label="实际完成时间" span={1.5}>{imcTaskDetail.actualFinishTime}</Descriptions.Item>
                     <Descriptions.Item label="项目ID " span={1.5}>{imcTaskDetail.projectId}</Descriptions.Item>
                     <Descriptions.Item label="项目负责人ID" span={1.5}>{imcTaskDetail.principalId}</Descriptions.Item>
