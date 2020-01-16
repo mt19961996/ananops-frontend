@@ -51,8 +51,20 @@ class Fault extends Component{
         match : { params : { id } }
       } = this.props
         const {
-            data,
+            data,roleCode
           } = this.state;
+          const extra = (
+            roleCode==='fac_leader'?
+            <span>
+            <Button type="primary" style={{marginRight:'15px'}} onClick={() => this.showAdd()}><Icon type="plus"/>添加工程师</Button>
+            <Button type="primary" style={{marginRight:'15px'}} onClick={() => this.showAdd()}><Icon type="plus"/>添加工程师</Button>
+            </span>:(roleCode==='user_leader'? <span>
+            <Button type="primary" style={{marginRight:'15px'}} onClick={() => this.showAdd()}><Icon type="plus"/>添加工程师</Button>
+            <Button type="primary" style={{marginRight:'15px'}} onClick={() => this.showAdd()}><Icon type="plus"/>添加工程师</Button>
+            </span>:(roleCode==='engineer'?<span>
+            <Button type="primary" style={{marginRight:'15px'}} onClick={() => this.showAdd()}><Icon type="plus"/>添加工程师</Button>
+            </span>:null))
+        )
         return(
             <div>
             <div className="searchPart">
@@ -68,6 +80,7 @@ class Fault extends Component{
             {data&&data.map((items,index)=>(
                 <Card key={index} className='orderList'
                   title="备品备件信息" bordered={false}
+                  extra={extra}
                 >
                     {/* <div    
                     style={{borderLeft:'5px solid #49A5FE',borderRadius:'5px',height:'40px',marginBottom:'5px',fontSize:'25px'}}

@@ -18,46 +18,7 @@ class serviceProviderRoute extends Component{
           };
           return(
             <Switch>
-                 <Route 
-                    exact   
-                    path="/serviceProvider/provider"
-                    component={Loadable({
-                        loader: () => import(
-                        /* webpackChunkName: "EntranceWork" */
-                        './engineer/Index/index'),
-                        loading: Loading
-                    })}
-                 />
-                  <Route 
-                    exact   
-                    path="/serviceProvider/provider/detail/:id"
-                    component={Loadable({
-                        loader: () => import(
-                        /* webpackChunkName: "EntranceWork" */
-                        './engineer/Detail/index'),
-                        loading: Loading
-                    })}
-                 />
-                   <Route 
-                    exact   
-                    path="/serviceProvider/provider/new"
-                    component={Loadable({
-                        loader: () => import(
-                        /* webpackChunkName: "EntranceWork" */
-                        './engineer/Create/index'),
-                        loading: Loading
-                    })}
-                 />
-                  <Route 
-                    exact   
-                    path="/serviceProvider/provider/edit/:id"
-                    component={Loadable({
-                        loader: () => import(
-                        /* webpackChunkName: "EntranceWork" */
-                        './engineer/Create/index'),
-                        loading: Loading
-                    })}
-                 />
+               
                  <Route 
                     exact   
                     path="/cbd/alliance/engineer"

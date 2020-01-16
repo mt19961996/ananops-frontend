@@ -388,7 +388,6 @@ class Test extends Component{
         var res=res.data.result
         var info={}
         info.id=res.deviceOrderList[0].deviceOrder.id
-        console.log(res.deviceOrderList)
         info.objectType=1
       //  info.objectId=res.deviceOrderList[0].deviceOrder.id
        this.setState({planApprovalDetail:info})
@@ -816,6 +815,8 @@ class Test extends Component{
           visible={this.state.assignVisible}
           onOk={this.assignOk}
           onCancel={this.assignCancel}
+          okText="确定"
+          cancelText="取消"
         >
           <Assign setAssign={(form)=>{this.form = form}} assignDetail={assignDetail}/>
         </Modal>
@@ -824,6 +825,8 @@ class Test extends Component{
           visible={this.state.engineerAcceptVisible}
           onOk={this.engineerAcceptOK}
           onCancel={this.engineerAcceptCancel}
+          okText="确定"
+          cancelText="取消"
         >
           <Level setLevel={(form)=>{this.form = form}} engineerAcceptDetail={engineerAcceptDetail}/>
         </Modal>
@@ -832,6 +835,8 @@ class Test extends Component{
           visible={this.state.managerApprovalVisible}
           onOk={this.managerApprovalOK}
           onCancel={this.managerApprovalCancel}
+          okText="确定"
+          cancelText="取消"
         >
           <Note setNote={(form)=>{this.form = form}} noteDetail={noteDetail}/>
         </Modal>
