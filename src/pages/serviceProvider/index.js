@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import React, { Component, } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { Spin } from 'antd';
@@ -19,7 +20,7 @@ class serviceProviderRoute extends Component{
           return(
             <Switch>
                
-                 <Route 
+              <Route 
                     exact   
                     path="/cbd/alliance/engineer"
                     component={Loadable({
@@ -29,16 +30,28 @@ class serviceProviderRoute extends Component{
                         loading: Loading
                     })}
                  />
-                  <Route 
+              <Route 
                     exact   
-                    path="/cbd/alliance/engineer/new"
+                    path="/cbd/alliance/business"
                     component={Loadable({
                         loader: () => import(
                         /* webpackChunkName: "EntranceWork" */
-                        './engineer/new'),
+                        './provider/Index/index'),
                         loading: Loading
                     })}
-                 />
+              />
+              <Route 
+                    exact
+                    path="/cbd/alliance/business/edit"
+                    component={Loadable({
+                        loader: () => import(
+                        /* webpackChunkName: "EntranceWork" */
+                        './provider/Edit/index'),
+                        loading: Loading
+                    })}
+              />
+              
+             
                  
             </Switch>
           )
