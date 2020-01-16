@@ -46,7 +46,8 @@ export const reqOnlineUsers = (dataPost) => ajax('/uac/token/queryListWithPage',
 export const reqUserLogs = (dataPost) => ajax('/uac/user/queryUserLogListWithPage',dataPost)
 //根据userId获取绑定角色
 export const reqBindRole = (userId) => ajax('/uac/user/getPermitBindRole/'+userId)
-
+//用户绑定组织
+export const reqBindGroup = (dataPost) => ajax('/uac/group/bindUser',dataPost)
 
 //获取操作日志
 export const reqLogs = (dataPost) => ajax('/uac/log/queryListWithPage',dataPost)
@@ -76,3 +77,14 @@ export const reqComment = (processInstanceId) => ajax('/activiti/base/getComment
 export const reqAddOrUpdateGroup = (dataPost) => ajax('/uac/group/save',dataPost)
 //用户绑定角色
 export const reqUserBindRole = (dataPost) => ajax('/uac/user/bindRole',dataPost)
+
+
+//根据公司Id查询公司信息
+export const reqCompanyInfo = (companyId) => ajax('/spc/company/getSpcCompanyById/'+companyId)
+
+//获取地址列表
+export const reqAddressList = () => ajax('/mdc/address/get4City')
+
+
+//编辑保存服务商信息
+export const reqEditProvider = (dataPost) => ajax('/spc/company/save',dataPost)

@@ -21,24 +21,25 @@ class serviceProviderRoute extends Component{
             <Switch>
               <Route 
                     exact   
-                    path="/serviceProvider/provider"
+                    path="/cbd/alliance/business"
                     component={Loadable({
                         loader: () => import(
                         /* webpackChunkName: "EntranceWork" */
-                        './engineer/Index/index'),
+                        './provider/Index/index'),
                         loading: Loading
                     })}
               />
               <Route 
                     exact   
-                    path="/serviceProvider/provider/detail/:id"
+                    path="/cbd/alliance/business/edit"
                     component={Loadable({
                         loader: () => import(
                         /* webpackChunkName: "EntranceWork" */
-                        './engineer/Detail/index'),
+                        './provider/Edit/index'),
                         loading: Loading
                     })}
               />
+              
               <Route 
                     exact   
                     path="/serviceProvider/provider/new"

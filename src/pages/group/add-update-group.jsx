@@ -1,6 +1,7 @@
 import React,{Component} from 'react'
-import {Form,Input,Button,Radio,Select} from 'antd'
+import {Form,Input,Button,Radio,Select,Cascader} from 'antd'
 import PropTypes from 'prop-types'
+import {reqAddressList} from '../../axios/index'
 const Item = Form.Item
 const TextArea = Input.TextArea
 const Option = Select.Option
@@ -11,8 +12,43 @@ class AddUpdateForm extends Component{
     groupList:PropTypes.array.isRequired
   }
 
+  state = {
+    addressList:[]
+  }
+
+  getAddressList = async () => {
+    const result = await reqAddressList()
+    if(result.code===200){
+      const addressList = this.mapAddressList(result.result)
+      this.setState({addressList:addressList})
+    }
+  }
+
+  mapAddressList = (addressList) => {
+    return addressList.reduce((pre,curr)=> {
+      if(curr.children){
+        pre.push({
+          value:curr.id,
+          label:curr.nodeName,
+          children:this.mapAddressList(curr.children)
+        })
+      }else{
+        pre.push({
+          value:curr.id,
+          label:curr.nodeName
+        })
+      }
+      return pre
+    },[])
+  }
+
+  onChange = (value) => {
+    console.log(value)
+  }
+
   componentWillMount() {
     this.props.setForm(this.props.form)
+    this.getAddressList()
   }
 
   render(){
@@ -21,6 +57,9 @@ class AddUpdateForm extends Component{
     const group = groupList.map((item,index)=>
       <Option value={item[0]} key={index}>{item[1]}</Option>
     )
+  
+    const {addressList} = this.state
+
 
     const formItemLayout = {
       labelCol:{span:4},
@@ -76,12 +115,15 @@ class AddUpdateForm extends Component{
         <Item label="组织地址：">
           {
             getFieldDecorator('addressList',{
-              initialValue:[368100109646176256,368100109679730688,368100109767811072],
               rules:[{
-                required:true,
+                required:true
               }]
             })(
-              <Input></Input>
+              <Cascader 
+                options={addressList}
+                onChange={this.onChange}
+                placeholder="请选择组织地址"
+              />
             )
           }
          
