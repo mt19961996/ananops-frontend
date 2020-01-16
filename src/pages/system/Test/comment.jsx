@@ -41,20 +41,6 @@ class Comment extends Component{
           }
          
         </Item>
-        <Item label="负责人ID：">
-          {
-            getFieldDecorator('principalId',{
-              initialValue:comment.principalId,
-              disabled:true,
-              rules:[{
-                required:true,
-                message:'请输入负责人ID'
-              }]
-            })(
-              <Input disable='true' placeholder="请输入负责人ID"></Input>
-            )
-          }       
-        </Item>
         <Item label="用户ID">
           {
             getFieldDecorator('userId',{
@@ -64,7 +50,7 @@ class Comment extends Component{
                 message:'请输入用户ID'
               }]
             })(
-              <Input disable='true' placeholder="请输入用户ID"></Input>
+              <Input placeholder="请输入用户ID"  disabled='true'></Input>
             )
           }
          
@@ -92,7 +78,7 @@ class Comment extends Component{
                 message:'请输入评论'
               }]
             })(
-              <Input.TextArea placeholder="请输入评论" autosize={{minRows:2,maxRows:6}}></Input.TextArea>
+              <Input.TextArea placeholder="请输入评论" autosize={{minRows:4,maxRows:6}} allowClear></Input.TextArea>
             )
           }
          

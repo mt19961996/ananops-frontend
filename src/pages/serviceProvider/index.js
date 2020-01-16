@@ -60,41 +60,21 @@ class serviceProviderRoute extends Component{
                  />
                  <Route 
                     exact   
-                    path="/serviceProvider/engineer"
+                    path="/cbd/alliance/engineer"
                     component={Loadable({
                         loader: () => import(
                         /* webpackChunkName: "EntranceWork" */
-                        './engineer/Index/index'),
+                        './engineer/index'),
                         loading: Loading
                     })}
                  />
                   <Route 
                     exact   
-                    path="/serviceProvider/engineer/detail/:id"
+                    path="/cbd/alliance/engineer/new"
                     component={Loadable({
                         loader: () => import(
                         /* webpackChunkName: "EntranceWork" */
-                        './engineer/Detail/index'),
-                        loading: Loading
-                    })}
-                 />
-                   <Route 
-                    exact   
-                    path="/serviceProvider/engineer/new"
-                    component={Loadable({
-                        loader: () => import(
-                        /* webpackChunkName: "EntranceWork" */
-                        './engineer/Create/index'),
-                        loading: Loading
-                    })}
-                 />
-                  <Route 
-                    exact   
-                    path="/serviceProvider/engineer/edit/:id"
-                    component={Loadable({
-                        loader: () => import(
-                        /* webpackChunkName: "EntranceWork" */
-                        './engineer/Create/index'),
+                        './engineer/new'),
                         loading: Loading
                     })}
                  />

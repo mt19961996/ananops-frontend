@@ -231,7 +231,7 @@ class Data extends Component {
 //         )
 //     }
 //   }
-if(role==='用户管理员'){
+if(role==='用户管理员'||role==='用户负责人'||role==='用户业务员'){
     return(
         <Tabs  
         activeKey={(this.props.location.state && this.props.location.state.tabKey) ? this.props.location.state.tabKey : ''}
@@ -255,7 +255,7 @@ if(role==='用户管理员'){
                 />
             </TabPane>
             <TabPane 
-            tab="方案审核"
+            tab="方案确认"
             key="planApproval"
             >
             <Route exact 
@@ -263,7 +263,7 @@ if(role==='用户管理员'){
                 component={Test} 
                 />
             </TabPane>
-            <TabPane 
+            {/* <TabPane 
             tab="确认服务"
             key="serviceConfirm"
             >
@@ -271,7 +271,7 @@ if(role==='用户管理员'){
                 path="/cbd/maintain/data/serviceConfirm" 
                 component={Test} 
                 />
-            </TabPane>
+            </TabPane> */}
             <TabPane tab="待支付"
             key="pay"
             >  
@@ -279,6 +279,15 @@ if(role==='用户管理员'){
                 path="/cbd/maintain/data/pay" 
                 component={Test} 
                 />                        
+            </TabPane>
+            <TabPane 
+            tab="已完成"
+            key="finish"
+            >
+               <Route exact 
+                path="/cbd/maintain/data/finish" 
+                component={Test} 
+                />
             </TabPane>
     </Tabs>
     )
@@ -314,14 +323,23 @@ else if(role=='维修工程师'){
                 component={Test} 
                 />                         
             </TabPane>
-            <TabPane tab="结果提交"
+            <TabPane 
+            tab="已完成"
+            key="finish"
+            >
+               <Route exact 
+                path="/cbd/maintain/data/finish" 
+                component={Test} 
+                />
+            </TabPane>
+            {/* <TabPane tab="结果提交"
             key="resultSubmit"
             >  
                <Route exact 
                 path="/cbd/maintain/data/resultSubmit" 
                 component={Test} 
                 />                         
-            </TabPane>
+            </TabPane> */}
     </Tabs>
     )
 }
@@ -340,10 +358,10 @@ else if(role=='用户值机员'){
                 />
             </TabPane>
             <TabPane tab="待审核"
-            key="orderSubmit"
+            key="orderApproval"
             >  
                 <Route exact 
-                path="/cbd/maintain/data/orderSubmit" 
+                path="/cbd/maintain/data/orderApproval" 
                 component={Test} 
                 />                                          
             </TabPane>
@@ -365,10 +383,19 @@ else if(role=='用户值机员'){
                 component={Test} 
                 />
             </TabPane>
+            <TabPane 
+            tab="已完成"
+            key="finish"
+            >
+               <Route exact 
+                path="/cbd/maintain/data/finish" 
+                component={Test} 
+                />
+            </TabPane>
     </Tabs>
     )
 }
-else if(role=='服务商业务员'){
+else if(role=='服务商业务员'||role==='服务商管理员'||role==='服务商负责人'){
     return(
         <Tabs
         activeKey={(this.props.location.state && this.props.location.state.tabKey) ? this.props.location.state.tabKey : ''}
@@ -392,11 +419,29 @@ else if(role=='服务商业务员'){
                 />
             </TabPane>
             <TabPane 
-            tab="账单审核"
+            tab="待分配"
+            key="assign"
+            >
+               <Route exact 
+                path="/cbd/maintain/data/assign" 
+                component={Test} 
+                />
+            </TabPane>
+            <TabPane 
+            tab="备件审核"
             key="billApproval"
             >
                 <Route exact 
                 path="/cbd/maintain/data/billApproval" 
+                component={Test} 
+                />
+            </TabPane>
+            <TabPane 
+            tab="已完成"
+            key="finish"
+            >
+               <Route exact 
+                path="/cbd/maintain/data/finish" 
                 component={Test} 
                 />
             </TabPane>
@@ -417,6 +462,7 @@ else{
                 component={Test} 
                 />
             </TabPane>
+
     </Tabs>
     )
 }

@@ -9,6 +9,7 @@ import Acceptance from '../pages/acceptance'
 import Alarm from '../pages/alarm'
 import Authority from '../pages/authority'
 import Bill from '../pages/bill'
+import Device from '../pages/device'
 import Contract from '../pages/contract'
 import System from '../pages/system'
 import Service from '../pages/service'
@@ -58,6 +59,7 @@ class Index extends React.Component {
               <Route path="/cbd/item" component={Item}/>
               <Route path="/cbd/examine" component={PlanApproval}/>
               <Route path="/cbd/bill" component={Bill}/>
+              <Route path="/cbd/rdc" component={Device}/>
               <Route path="/cbd/alarm" component={Alarm}/>
               <Route path="/cbd/check" component={Acceptance}/>
               <Route path="/cbd/alliance" component={ServiceProvider}/>
