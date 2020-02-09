@@ -73,11 +73,28 @@ class EditBasicInfo extends Component{
       this.providerInfo = providerInfo || {}
     }
 
-    render(){
+    getOptUploadFileReqDto() {
+      return {
+        fileType: 'picture',
+        bucketName: 'ananops',
+        filePath: 'ananops/spc/'
+      };
+    };
 
+    getOptUploadFileReqDto1() {
+      return {
+        fileType: 'png',
+        bucketName: 'ananops',
+        filePath: 'accountOpeningLicense'
+      };
+    };
+
+    render(){
+      const loginName = window.localStorage.getItem('loginName');
       const providerInfo = this.providerInfo
       const { cities } = this.state;
       const { secondArea } = this.state;
+      var deviceId = new Date().getTime();
 
       const formItemLayout  = {
         labelCol : { span: 7 },
@@ -93,10 +110,51 @@ class EditBasicInfo extends Component{
 
       const props = {
         name: 'file',
-        action: 'https://www.ananops.com/v1/5cc8019d300000980a055e76',
+        action: 'http://www.ananops.com:29995/opc/file/uploadFile',
         headers: {
-          authorization: 'authorization-text',
+          authorization: 'Bearer '+window.localStorage.getItem('token'),
+          'deviceId': deviceId,
         },
+        data: this.getOptUploadFileReqDto,
+        onChange(info) {
+          if (info.file.status !== 'uploading') {
+            console.log(info.file, info.fileList);
+          }
+          if (info.file.status === 'done') {
+            message.success(`${info.file.name} file uploaded successfully`);
+          } else if (info.file.status === 'error') {
+            message.error(`${info.file.name} file upload failed.`);
+          }
+        },
+      };
+
+      const props1 = {
+        name: 'file',
+        action: 'http://www.ananops.com:29995/spc/company/uploadCompanyPicture',
+        transformFile(file) {
+          return new Promise(resolve => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+              const canvas = document.createElement('canvas');
+              const img = document.createElement('img');
+              img.src = reader.result;
+              img.onload = () => {
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+                ctx.fillStyle = 'red';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(loginName, 20, 20);
+                canvas.toBlob(resolve);
+              };
+            };
+          });
+        },
+        headers: {
+          authorization: 'Bearer '+window.localStorage.getItem('token'),
+          'deviceId': deviceId,
+        },
+        data: this.getOptUploadFileReqDto1,
         onChange(info) {
           if (info.file.status !== 'uploading') {
             console.log(info.file, info.fileList);
@@ -224,7 +282,7 @@ class EditBasicInfo extends Component{
                   hasFeedback
                 >
                   {getFieldDecorator('legalCertification')(
-                    <Upload {...props}>
+                    <Upload {...props1}>
                       <Button>
                         <Icon type="upload"/> 附件上传
                       </Button>
@@ -351,7 +409,7 @@ class EditBasicInfo extends Component{
                       {/* {required: true, message: '请上传基本户开户行许可证影印件!' } */}
                     ]
                   })(
-                    <Upload {...props}>
+                    <Upload {...props1}>
                       <Button>
                         <Icon type="upload"/> 附件上传
                       </Button>

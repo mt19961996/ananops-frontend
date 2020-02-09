@@ -76,7 +76,7 @@ class Login extends React.Component {
         'Content-Type': 'application/json',
         'deviceId': this.state.deviceId
       },
-      url: '/spc/auth/company/registCompany',
+      url: '/uac/auth/company/registCompany',
       
       data:dataPost
      
