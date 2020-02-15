@@ -51,7 +51,7 @@ export default class Provider extends Component{
         </Card>
         <Card title="基本账户开户许可证">
           <Descriptions bordered>
-            <Item label="基本户账户名称">{providerInfo.accountName}</Item>
+            <Item label="基本户账户名称">{providerInfo.groupName}</Item>
             <Item label="基本户账号">{providerInfo.accountNumber}</Item>
           </Descriptions>
         </Card>
