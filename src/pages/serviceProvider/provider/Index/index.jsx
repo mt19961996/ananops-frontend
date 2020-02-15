@@ -16,8 +16,8 @@ export default class Provider extends Component{
   
 
   getProviderInfo = async () => {
-    const companyId = 789802135269134252
-    const result = await reqCompanyInfo(companyId)
+    const userId = window.localStorage.getItem('id');
+    const result = await reqCompanyInfo(userId)
     if(result.code===200){
       this.setState({providerInfo:result.result})
     }

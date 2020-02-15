@@ -13,9 +13,9 @@ const cityData = {
 };
 
 class EditBasicInfo extends Component{
-  constructor(props){
-    super(props);
-  }
+    constructor(props){
+      super(props);
+    }
 
     state = {
       cities: cityData[provinceData[0]],
@@ -49,16 +49,38 @@ class EditBasicInfo extends Component{
       console.log(`checked = ${e.target.checked}`);
     }
   
+    getAttachments(fileList) {
+      var res = [];
+      var size = fileList.length;
+      for (var i=0; i<size; i++) {
+        var attachmentId = fileList[i].response[0].attachmentId;
+        res.push(attachmentId);
+      }
+      return res.toString();
+    }
+
     handleSubmit = async e => {
       e.preventDefault();
-      const value = this.props.form.getFieldsValue()
-      value.expirationDate = value.expirationDate.format("YYYY-MM-DD HH:mm:ss")
-      console.log(value)
-      // this.props.form.validateFields((err, values) => {
-      //   if (!err) {
-      //     console.log('Received values of form: ', values);
-      //   }
-      // });
+      this.props.form.validateFields((err, values) => {
+        if (!err) {
+          message.error('请正确填写加*项');
+        }
+      });
+      const value = this.props.form.getFieldsValue();
+      console.log(value);
+      // value.expirationDate = value.expirationDate.format("YYYY-MM-DD HH:mm:ss");
+      if (value.legalCertification != undefined) {
+        var fileList = value.legalCertification.fileList;
+        value.legalCertification = this.getAttachments(fileList);
+      }
+      if (value.bankCertification != undefined) {
+        var fileList = value.bankCertification.fileList;
+        value.bankCertification = this.getAttachments(fileList);
+      }
+      if (value.buLicensePhoto != undefined) {
+        var fileList = value.buLicensePhoto.fileList;
+        value.buLicensePhoto = this.getAttachments(fileList);
+      }
       const result = await reqEditProvider(value)
       if(result.code===200){
         message.success("修改成功")
@@ -110,46 +132,7 @@ class EditBasicInfo extends Component{
 
       const props = {
         name: 'file',
-        action: 'http://www.ananops.com:29995/opc/file/uploadFile',
-        headers: {
-          authorization: 'Bearer '+window.localStorage.getItem('token'),
-          'deviceId': deviceId,
-        },
-        data: this.getOptUploadFileReqDto,
-        onChange(info) {
-          if (info.file.status !== 'uploading') {
-            console.log(info.file, info.fileList);
-          }
-          if (info.file.status === 'done') {
-            message.success(`${info.file.name} file uploaded successfully`);
-          } else if (info.file.status === 'error') {
-            message.error(`${info.file.name} file upload failed.`);
-          }
-        },
-      };
-
-      const props1 = {
-        name: 'file',
         action: 'http://www.ananops.com:29995/spc/company/uploadCompanyPicture',
-        transformFile(file) {
-          return new Promise(resolve => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => {
-              const canvas = document.createElement('canvas');
-              const img = document.createElement('img');
-              img.src = reader.result;
-              img.onload = () => {
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0);
-                ctx.fillStyle = 'red';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(loginName, 20, 20);
-                canvas.toBlob(resolve);
-              };
-            };
-          });
-        },
         headers: {
           authorization: 'Bearer '+window.localStorage.getItem('token'),
           'deviceId': deviceId,
@@ -282,7 +265,7 @@ class EditBasicInfo extends Component{
                   hasFeedback
                 >
                   {getFieldDecorator('legalCertification')(
-                    <Upload {...props1}>
+                    <Upload {...props}>
                       <Button>
                         <Icon type="upload"/> 附件上传
                       </Button>
@@ -406,10 +389,10 @@ class EditBasicInfo extends Component{
                 >
                   {getFieldDecorator('bankCertification', {
                     rules: [
-                      {/* {required: true, message: '请上传基本户开户行许可证影印件!' } */}
+                      {required: true, message: '请上传基本户开户行许可证影印件!' }
                     ]
                   })(
-                    <Upload {...props1}>
+                    <Upload {...props}>
                       <Button>
                         <Icon type="upload"/> 附件上传
                       </Button>
@@ -500,7 +483,7 @@ class EditBasicInfo extends Component{
                 >
                   {getFieldDecorator('buLicensePhoto',{
                     rules: [
-                      {/* {required: true, message: '请上传营业执照影印件!' } */}
+                      {required: true, message: '请上传营业执照影印件!' }
                     ]
                   })(
                     <Upload {...props}>
