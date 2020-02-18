@@ -98,26 +98,26 @@ class Confirm extends Component{
          
         </Item>
         <Item label="备件添加：">
-            {getFieldDecorator('DeviceOrderItemInfoDto')(
-              <div>
+          {getFieldDecorator('DeviceOrderItemInfoDto')(
+            <div>
               {detail.DeviceOrderItemInfoDto &&
                 detail.DeviceOrderItemInfoDto.map((item, index) => (
                   <div className="inspection-log-abnormal" key={index}>
                     <div className="inspection-log-abnormal-flex">
-                    <Radio.Group onChange={(value) => {this.selectStatus(value, index) }} value={item.status}>
-                      <Radio value={1}>是</Radio>
-                      <Radio value={2}>否</Radio>
-                    </Radio.Group>
-                    {item.value===1?
-                    <div>
-                      <Select
-                        placeholder="请选择备件编号"
-                        className="inspection-log-abnormal-select"
-                        value={item.deviceID}
-                        onChange={(value) => { this.selectdeviceID(value, index) }}
-                        allowClear
-                      >
-                        {/* {
+                      <Radio.Group onChange={(value) => {this.selectStatus(value, index) }} value={item.status}>
+                        <Radio value={1}>是</Radio>
+                        <Radio value={2}>否</Radio>
+                      </Radio.Group>
+                      {item.value===1?
+                        <div>
+                          <Select
+                            placeholder="请选择备件编号"
+                            className="inspection-log-abnormal-select"
+                            value={item.deviceID}
+                            onChange={(value) => { this.selectdeviceID(value, index) }}
+                            allowClear
+                          >
+                            {/* {
                           SELECT_INSPECTION_ABNORMA_ITEM &&
                           SELECT_INSPECTION_ABNORMA_ITEM.map((cur, index) => (
                             <Select.Option key={index}
@@ -125,28 +125,28 @@ class Confirm extends Component{
                             >{cur.name}</Select.Option>
                           ))
                         } */}
-                          <Select.Option key='1'
+                            <Select.Option key='1'
                             >{1}
                             </Select.Option>
                             <Select.Option key='1'
                             >{1}
                             </Select.Option>
-                      </Select>
-                      <Input
-                        value={item.manufacture}
-                        onChange={(value) => { this.manufactureChange(value, index) }}
-                        onBlur={this.descriptionTextJudge}
-                        placeholder="请输入设备服务商"
-                      /></div>
-                      :<div>
-                    <Input
-                      value={item.manufacture}
-                      onChange={(value) => { this.manufactureChange(value, index) }}
-                      onBlur={this.descriptionTextJudge}
-                      placeholder="请输入设备服务商"
-                    />
-                    </div>
-                    }
+                          </Select>
+                          <Input
+                            value={item.manufacture}
+                            onChange={(value) => { this.manufactureChange(value, index) }}
+                            onBlur={this.descriptionTextJudge}
+                            placeholder="请输入设备服务商"
+                          /></div>
+                        :<div>
+                          <Input
+                            value={item.manufacture}
+                            onChange={(value) => { this.manufactureChange(value, index) }}
+                            onBlur={this.descriptionTextJudge}
+                            placeholder="请输入设备服务商"
+                          />
+                        </div>
+                      }
                       
                     </div>
                     <Icon type="minus-circle" className="inspection-log-abnormal-delete"

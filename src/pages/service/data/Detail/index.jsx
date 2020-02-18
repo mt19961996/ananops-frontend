@@ -73,7 +73,7 @@ class ProjectDetail extends Component{
     const {roleCode}=this.state
     if(status===3&&roleCode==='fac_leader'){
       return (
-        <div>
+        <div style={{textAlign:'center'}}>
           <Popconfirm
             title="确认接单？"
             onConfirm={()=> {this.changeStatus(id,4,'审核通过，待服务商接单')}}
@@ -95,10 +95,20 @@ class ProjectDetail extends Component{
         </div>
       )
     }
- 
+    else if(status===4&&roleCode==='fac_leader'){
+      return (
+        <div style={{textAlign:'center'}}>
+          <Button 
+            type="simple"
+            style={{border:'none',padding:0,color:"#357aff",background:'transparent',marginRight:'12px'}}
+            onClick={()=>{this.assign(id)}}
+          >分配工程师</Button>
+        </div>
+      )
+    }
     else if(status===5&&roleCode==='engineer'){
       return (
-        <div>
+        <div style={{textAlign:'center'}}>
           <Button 
             type="simple"
             style={{border:'none',padding:0,color:"#357aff",background:'transparent',marginRight:'12px'}}
@@ -116,7 +126,128 @@ class ProjectDetail extends Component{
         </div>
       )
     }
+    else if(status===6&&roleCode==='engineer'){
+      return (
+        <div style={{textAlign:'center'}}>
+          <Link
+            to={`/cbd/service/plan/${id}`}
+            style={{marginRight:'12px'}}
+          >方案确定</Link>
+          <Button 
+            type="simple"
+            style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
+            onClick={()=>{this.resultSubmit(id)}}
+          >提交结果</Button>
+               
+        </div>
+      )
+    }
+    else if(status===7&&roleCode==='fac_leader'){
+      return (
+        <div style={{textAlign:'center'}}>
+          <Button 
+            type="simple"
+            style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
+            onClick={()=>{this.planApproval(id)}}
+          >备件方案通过</Button>
+          <Popconfirm
+            title="确认该备件方案不通过？"
+            onConfirm={()=> {this.changeStatus(id,16,'备件库管理员驳回备品备件方案，待工程师重新提交备品备件申请')}}
+          >
+            <Button 
+              type="simple"
+              style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
+            >备件方案不通过
+            </Button>
+          </Popconfirm>
+        </div>
+      )
+    }
+    else if(status===8&&roleCode==='user_leader'){
+      return (
+        <div style={{textAlign:'center'}}>
+          <Button 
+            type="simple"
+            style={{border:'none',padding:0,color:"#357aff",background:'transparent',marginRight:'12px'}}
+            onClick={()=>{this.managerApproval(id)}}
+          >备件方案通过</Button>
+          <Popconfirm
+            title="确认该备件方案不通过？"
+            onConfirm={()=> {this.changeStatus(id,17,'用户负责人驳回备品备件方案，待工程师重新提交备品备件申请')}}
+          >
+            <Button 
+              type="simple"
+              style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
+            >备件方案不通过</Button>
+          </Popconfirm>
+        </div>
+      )
+    }
+    else if(status===2&&(roleCode=='user_manager'||roleCode==='user_leader'||roleCode==='user_service')){
+      return (
+        <div style={{textAlign:'center'}}>
+          <Popconfirm
+            title="确定该工单通过审核？"
+            onConfirm={()=> {this.changeStatus(id,3,'审核通过，待服务商接单')}}
+          >
+            <Button 
+              type="simple"
+              style={{border:'none',padding:0,color:"#357aff",background:'transparent',marginRight:'12px'}}
+            >工单审核通过</Button>
+          </Popconfirm>
+          <Popconfirm
+            title="确定该工单不通过审核？"
+            onConfirm={()=> {this.changeStatus(id,1,'用户负责人审核工单未通过，工单已取消')}}
+          >
+            
+            <Button 
+              type="simple"
+              style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
+            >工单审核不通过</Button>
+          </Popconfirm>
+        </div>
+      )
+    }
+    else if(status===10&&roleCode==='user_watcher'){
+      return (
+        <div style={{textAlign:'center'}}>
+          <Popconfirm
+            title="确定维修完成？"
+            onConfirm={()=> {this.changeStatus(id,11,'值机员确认，待用户负责人审核账单')}}
+          >
+            <Button 
+              type="simple"
+              style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
+            >确认完成</Button>
+          </Popconfirm>
+        </div>
+      )
+    }
+    else if(status===11&&roleCode==='user_leader'){
+      return (
+        <div style={{textAlign:'center'}}>
+          <Button 
+            type="simple"
+            style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
+            onClick={()=>{this.pay(id)}}
+          >支付</Button>
+        </div>
+      )
+    }
+    else if(status===12&&roleCode==='user_watcher'){
+      return (
+        <div style={{textAlign:'center'}}>
+          <Button 
+            type="simple"
+            style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
+            onClick={()=>{this.comment(id)}}
+          >评价</Button>
+        </div>
+      
+      )
+    }
   }
+
 
  
 
@@ -243,13 +374,14 @@ class ProjectDetail extends Component{
           <Descriptions.Item label="状态" span={1.5}>{projectDetail.status&&this.setStatus(projectDetail.status)}</Descriptions.Item>
           <Descriptions.Item label="服务商ID" span={1.5}>{projectDetail.facilitatorId}</Descriptions.Item>
           <Descriptions.Item label="预计花费" span={1.5}>{projectDetail.totalCost}</Descriptions.Item>
-          <Descriptions.Item label="操作" span={1.5}>
-            <Link to={`/cbd/maintain/data`} style={{marginRight:'5px'}}>返回上一级</Link>
-            {/* {projectDetail.contract&&<Link to={`/cbd/pro/contract/detail/${projectDetail.contractId}`} style={{marginRight:'5px'}}>查看合同</Link>} */}
-            {projectDetail.projectId&& <Link to={`/cbd/pro/project/detail/${projectDetail.projectId}`}>查看项目</Link>}
-            {this.getFunction(id,statusCode)}
-          </Descriptions.Item>  
         </Descriptions>
+        {this.getFunction(id,statusCode)}
+        <div style={{textAlign:'right'}}>
+          <Link to={`/cbd/maintain/data`} style={{marginRight:'5px'}}>返回上一级</Link>
+          {/* {projectDetail.contract&&<Link to={`/cbd/pro/contract/detail/${projectDetail.contractId}`} style={{marginRight:'5px'}}>查看合同</Link>} */}
+          {projectDetail.projectId&& <Link to={`/cbd/pro/project/detail/${projectDetail.projectId}`}>查看项目</Link>}
+        </div>
+
       </div>
     )
   }

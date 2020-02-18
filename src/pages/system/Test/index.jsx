@@ -796,7 +796,7 @@ class Test extends Component{
                     to={`/cbd/service/detail/${record.id}`}
                     style={{marginRight:'12px'}}
                   >详情</Link>
-                  {this.getFunction(record,status,roleCode)}            
+                            
                 </div>
               ),
             }]}

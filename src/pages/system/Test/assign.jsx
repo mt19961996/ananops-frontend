@@ -13,65 +13,65 @@ class Assign extends Component{
     assignDetail:PropTypes.object
   }
   constructor(props){
-      super(props)
-      this.state={
-          maintainers:{},
-          token:window.localStorage.getItem('token'),
-          projectId:'',
-      }
-      this.getUser=this.getUser.bind(this)
+    super(props)
+    this.state={
+      maintainers:{},
+      token:window.localStorage.getItem('token'),
+      projectId:'',
+    }
+    this.getUser=this.getUser.bind(this)
     //  this.getOption=this.getOption.bind(this)
   }
   componentWillMount() {
     this.props.setAssign(this.props.form)
   }
   componentDidMount(){
-   this.getUser(window.localStorage.getItem('id'))
- //  this.getOption()
+    this.getUser(window.localStorage.getItem('id'))
+    //  this.getOption()
   }
   getUser=()=>{
     const assignDetail = this.props.assignDetail
-        axios({
-          method: 'GET',
-          url: '/mdmc/mdmcTask/getTaskByTaskId/'+assignDetail.id,
-          headers: {
-            'deviceId': this.deviceId,
-            'Authorization':'Bearer '+this.state.token,
-          },
-        })
-        .then((res) => {
-          if(res && res.status === 200){     
+    axios({
+      method: 'GET',
+      url: '/mdmc/mdmcTask/getTaskByTaskId/'+assignDetail.id,
+      headers: {
+        'deviceId': this.deviceId,
+        'Authorization':'Bearer '+this.state.token,
+      },
+    })
+      .then((res) => {
+        if(res && res.status === 200){     
           console.log(res.data.result)
           this.setState({
             projectId:res.data.result.projectId
           })
           this.getEngineer()
-          }
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
   getEngineer=()=>{
     const {projectId}=this.state
-      axios({
-        method: 'POST',
-        url: '/spc/engineer/getEngineerIdListByProjectId/'+projectId,
-        headers: {
-          'deviceId': this.deviceId,
-          'Authorization':'Bearer '+this.state.token,
-        },
-      })
+    axios({
+      method: 'POST',
+      url: '/spc/engineer/getEngineerIdListByProjectId/'+projectId,
+      headers: {
+        'deviceId': this.deviceId,
+        'Authorization':'Bearer '+this.state.token,
+      },
+    })
       .then((res) => {
         if(res && res.status === 200){     
-        console.log(res.data.result)
-        this.setState({
-          maintain:res.data.result
-        })
+          console.log(res.data.result)
+          this.setState({
+            maintain:res.data.result
+          })
         }
       })
       .catch(function (error){
-          console.log(error);
+        console.log(error);
       });
   }
   selectMaintainerID=(id)=>{  
@@ -80,9 +80,9 @@ class Assign extends Component{
   getOption(){
     const {maintain}=this.state
     var maintainer=maintain&&maintain.map((item, index) => (
-        <Select.Option key={index} value={item.id}> 
-            {item.name}
-        </Select.Option>
+      <Select.Option key={index} value={item.id}> 
+        {item.name}
+      </Select.Option>
     ))
     return maintainer
   }
@@ -123,14 +123,14 @@ class Assign extends Component{
                 message:'请选择工程师编号'
               }]
             })(
-                <Select
+              <Select
                 placeholder="请选择工程师编号"
                 // value={id}
                 // onChange={(value) => {this.selectMaintainerID(value) }}
                 allowClear
               >
                 {this.getOption()}
-               {/* { maintain&&maintain.map((item, index) => (
+                {/* { maintain&&maintain.map((item, index) => (
                 <Select.Option key={index} value={item.id}> 
                     {item.name}
                 </Select.Option>
@@ -149,7 +149,7 @@ class Assign extends Component{
                 message:'请选择最晚维修时间'
               }]
             })(
-                <DatePicker
+              <DatePicker
                 locale={locale}
                 format="YYYY-MM-DD HH:mm:ss"
                 placeholder="请选择最晚维修时间"

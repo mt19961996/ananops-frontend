@@ -50,9 +50,9 @@ class Note extends Component{
               }]
             })(
               <Input.TextArea
-              autoSize={{minRows:4, maxRows:6 }}
-              placeholder="请输入审核意见，不超过300字"
-              allowClear
+                autoSize={{minRows:4, maxRows:6 }}
+                placeholder="请输入审核意见，不超过300字"
+                allowClear
               />
             )
           }

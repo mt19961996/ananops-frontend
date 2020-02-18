@@ -50,7 +50,7 @@ class Result extends Component{
                 message:'请选择紧急程度'
               }]
             })(
-                <Select
+              <Select
                 placeholder="请选择紧急程度"
                 allowClear
               >
@@ -77,19 +77,19 @@ class Result extends Component{
               }]
             })(
               <Select
-              placeholder="请选择紧急程度"
-              allowClear
-            >
-              <Select.Option key={0} value={0}> 
+                placeholder="请选择紧急程度"
+                allowClear
+              >
+                <Select.Option key={0} value={0}> 
                   维修结束
-              </Select.Option>
-              <Select.Option key={1} value={2}> 
+                </Select.Option>
+                <Select.Option key={1} value={2}> 
                   维修暂停
-              </Select.Option>
-              <Select.Option key={2} value={3}> 
+                </Select.Option>
+                <Select.Option key={2} value={3}> 
                   维修中止
-              </Select.Option>
-            </Select>
+                </Select.Option>
+              </Select>
             )
           }
          
