@@ -374,9 +374,9 @@ class Project extends Component{
                 // },
                 {
                     title: '甲方名称', 
-                    key: 'partAName',
+                    key: 'partyAName',
                     render: (text, record) => {
-                    return (record.partAName && record.partAName) || '--'
+                    return (record.partyAName && record.partyAName) || '--'
                     }
                 }, {
                     title: ' 乙方名称',
