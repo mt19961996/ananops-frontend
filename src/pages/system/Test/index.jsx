@@ -312,7 +312,6 @@ class Test extends Component{
       )
     }
   }
-
   //操作改变进行状态之间的切换
   changeStatus(id,status,statusMsg){
     const values={"status": status,"statusMsg": statusMsg,"taskId":id}
@@ -796,7 +795,6 @@ class Test extends Component{
                     to={`/cbd/service/detail/${record.id}`}
                     style={{marginRight:'12px'}}
                   >详情</Link>
-                            
                 </div>
               ),
             }]}
