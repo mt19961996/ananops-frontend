@@ -1,33 +1,36 @@
-import React, { Component, } from 'react';
-import { Form,Input,Button,message,DatePicker,Radio } from 'antd';
+import React, {Component,} from 'react';
+import {Form, Input, Button, message, DatePicker, Radio, Select} from 'antd';
 import moment from 'moment';
 import axios from 'axios';
 import locale from 'antd/es/date-picker/locale/zh_CN';
+
 const token = window.localStorage.getItem('token')
-class AlarmNew extends Component{
-    constructor(props){
+const {Option} = Select;
+
+class AlarmNew extends Component {
+    constructor(props) {
         super(props)
-        this.state={
-            alarmDetail:{
-            }
+        this.state = {
+            alarmDetail: {}
         }
     }
-    componentDidMount(){
-        const {match : { params : { id } }} = this.props
-        if(id){
+
+    componentDidMount() {
+        const {match: {params: {id}}} = this.props
+        if (id) {
             axios({
                 method: 'POST',
-                url: '/amc/alarm/getAlarmById/'+id,
+                url: '/amc/alarm/getAlarmById/' + id,
                 headers: {
                     'deviceId': this.deviceId,
-                    'Authorization':'Bearer '+token,
+                    'Authorization': 'Bearer ' + token,
                 },
             })
                 .then((res) => {
-                    if(res && res.status === 200){
+                    if (res && res.status === 200) {
                         console.log(res.data.result)
                         this.setState({
-                            alarmDetail:res.data.result
+                            alarmDetail: res.data.result
                         })
                     }
                 })
@@ -36,47 +39,49 @@ class AlarmNew extends Component{
                 });
         }
     }
+
     handleSubmit = (e) => {
         e.preventDefault()
         const {
             form,
             history,
-            match : { params : {id } },
+            match: {params: {id}},
         } = this.props
-        const { getFieldValue } = form;
+        const {getFieldValue} = form;
         const values = form.getFieldsValue()
-        if(!getFieldValue('alarmName')){
+        if (!getFieldValue('alarmName')) {
             message.error('请填写告警名称')
         }
-        if(!getFieldValue('alarmType')){
+        if (!getFieldValue('alarmType')) {
             message.error('请填写告警类型')
         }
-        if(!getFieldValue('alarmType')){
+        if (!getFieldValue('alarmType')) {
             message.error('请填写告警等级')
         }
-        if(!getFieldValue('alarmType')){
+        if (!getFieldValue('alarmType')) {
             message.error('请填写告警位置')
         }
-        if(!getFieldValue('lastOccurTime')){
+        if (!getFieldValue('lastOccurTime')) {
             message.error('请填写最近发生时间')
         }
-        if(id){
-            values.id=id
+        if (id) {
+            values.id = id
         }
-        values.lastOccurTime=getFieldValue('lastOccurTime').format('YYYY-MM-DD HH:mm:ss')
+        values.lastOccurTime = getFieldValue('lastOccurTime').format('YYYY-MM-DD HH:mm:ss')
         axios({
             method: 'POST',
             url: '/amc/alarm/save',
             headers: {
                 'Content-Type': 'application/json',
                 'deviceId': this.deviceId,
-                'Authorization':'Bearer '+token,
+                'Authorization': 'Bearer ' + token,
             },
-            data:JSON.stringify(values)
+            data: JSON.stringify(values)
         })
             .then((res) => {
-                if(res && res.status === 200){
-                    history.push('/cbd/alarm/report')
+                if (res && res.status === 200) {
+                    alert("成功发起报警");
+                    history.push('/cbd/amc/report')
                 }
             })
             .catch(function (error) {
@@ -84,19 +89,20 @@ class AlarmNew extends Component{
                 message.info("您不具备该权限")
             });
     }
-    render(){
+
+    render() {
         const createFormItemLayout = {
-            labelCol: {span:8},
-            wrapperCol : {span:8},
+            labelCol: {span: 8},
+            wrapperCol: {span: 8},
         }
         const {
-            form: { getFieldDecorator },
-            match : { params : { id } }
+            form: {getFieldDecorator},
+            match: {params: {id}}
         } = this.props
-        const { alarmDetail } = this.state
-        return(
+        const {alarmDetail} = this.state
+        return (
             <div>
-                <div >
+                <div>
                     <Form
                         onSubmit={this.handleSubmit}
                     >
@@ -104,39 +110,45 @@ class AlarmNew extends Component{
                             {...createFormItemLayout}
                             label="告警名称"
                         >
-                            {getFieldDecorator('alarmName',{
+                            {getFieldDecorator('alarmName', {
                                 initialValue: id && alarmDetail.alarmName,
-                                rules:[{
-                                    required:true,
-                                    message:"告警名称",
+                                rules: [{
+                                    required: true,
+                                    message: "告警名称",
                                 }]
                             })(
-                                <Input placeholder="告警名称" />
+                                <Input placeholder="告警名称"/>
                             )}
                         </Form.Item>
                         <Form.Item
                             {...createFormItemLayout}
                             label="告警类型"
                         >
-                            {getFieldDecorator('alarmType',{
+                            {getFieldDecorator('alarmType', {
                                 initialValue: id && alarmDetail.alarmType,
-                                rules:[{
-                                    required:true,
-                                    message:"请填写告警类型",
+                                rules: [{
+                                    required: true,
+                                    message: "请填写告警类型",
                                 }]
                             })(
-                                <Input placeholder="请输入告警类型" />
+                                <Select initialValue="磁控开关报警" style={{width: 200}}>
+                                    <Option value="磁控开关报警">磁控开关报警</Option>
+                                    <Option value="震动报警">震动报警</Option>
+                                    <Option value="声报警">声报警</Option>
+                                    <Option value="超声波报警">超声波报警</Option>
+                                    <Option value="电场报警">电场报警</Option>
+                                </Select>
                             )}
                         </Form.Item>
                         <Form.Item
                             {...createFormItemLayout}
                             label="告警等级"
                         >
-                            {getFieldDecorator('alarmLevel',{
+                            {getFieldDecorator('alarmLevel', {
                                 initialValue: id && alarmDetail.alarmLevel,
-                                rules:[{
-                                    required:true,
-                                    message:"请选择告警等级",
+                                rules: [{
+                                    required: true,
+                                    message: "请选择告警等级",
                                 }]
                             })(
                                 <Radio.Group defaultValue={1}>
@@ -150,46 +162,52 @@ class AlarmNew extends Component{
                             {...createFormItemLayout}
                             label="告警资产"
                         >
-                            {getFieldDecorator('alarmAsset',{
+                            {getFieldDecorator('alarmAsset', {
                                 initialValue: id && alarmDetail.alarmAsset,
-                                rules:[{
-                                    required:true,
-                                    message:"请填写告警资产",
+                                rules: [{
+                                    required: true,
+                                    message: "请填写告警资产",
                                 }]
                             })(
-                                <Input placeholder="请输入告警资产" />
+                                <Select initialValue="工程机械" style={{width: 200}}>
+                                    <Option value="工程机械">磁控开关报警</Option>
+                                    <Option value="电工机械">电工机械</Option>
+                                    <Option value="仪器仪表">仪器仪表</Option>
+                                    <Option value="包装机械">包装机械</Option>
+                                    <Option value="环保机械">环保机械</Option>
+                                </Select>
                             )}
                         </Form.Item>
                         <Form.Item
                             {...createFormItemLayout}
                             label="告警位置"
                         >
-                            {getFieldDecorator('alarmLocation',{
+                            {getFieldDecorator('alarmLocation', {
                                 initialValue: id && alarmDetail.alarmLocation,
-                                rules:[{
-                                    required:true,
-                                    message:"请填写告警位置",
+                                rules: [{
+                                    required: true,
+                                    message: "请填写告警位置",
                                 }]
                             })(
-                                <Input placeholder="请输入告警位置" />
+                                <Input placeholder="请输入告警位置"/>
                             )}
                         </Form.Item>
                         <Form.Item
                             {...createFormItemLayout}
                             label="最近发生时间"
                         >
-                            {getFieldDecorator('lastOccurTime',{
+                            {getFieldDecorator('lastOccurTime', {
                                 initialValue: id && moment(alarmDetail.lastOccurTime),
-                                rules:[{
-                                    required:true,
-                                    message:"请选择最近发生时间",
+                                rules: [{
+                                    required: true,
+                                    message: "请选择最近发生时间",
                                 }]
                             })(
                                 <DatePicker
                                     locale={locale}
                                     format="YYYY-MM-DD HH:mm:ss"
                                     placeholder="请选择最近发生时间"
-                                    showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
+                                    showTime={{defaultValue: moment('00:00:00', 'HH:mm:ss')}}
                                 />,
                             )}
                         </Form.Item>
@@ -197,18 +215,18 @@ class AlarmNew extends Component{
                             {...createFormItemLayout}
                             label="描述信息"
                         >
-                            {getFieldDecorator('description',{
+                            {getFieldDecorator('description', {
                                 initialValue: id && alarmDetail.description,
-                                rules:[{
-                                    required:false,
-                                    message:"请填写描述信息",
+                                rules: [{
+                                    required: false,
+                                    message: "请填写描述信息",
                                 }]
                             })(
-                                <Input placeholder="请输入描述信息" />
+                                <Input placeholder="请输入描述信息"/>
                             )}
                         </Form.Item>
                         <section className="operator-container">
-                            <div style={{textAlign:"center"}}>
+                            <div style={{textAlign: "center"}}>
                                 <Button
                                     htmlType="submit"
                                     type="primary"
@@ -216,9 +234,9 @@ class AlarmNew extends Component{
                                 >{id ? '编辑' : '新建'}
                                 </Button>
                                 <Button
-                                    style={{marginLeft:"28px"}}
+                                    style={{marginLeft: "28px"}}
                                     size="default"
-                                    onClick={()=> {
+                                    onClick={() => {
                                         const {
                                             history,
                                         } = this.props
@@ -234,4 +252,5 @@ class AlarmNew extends Component{
         )
     }
 }
+
 export default Form.create()(AlarmNew);

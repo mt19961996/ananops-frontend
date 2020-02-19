@@ -216,7 +216,7 @@ class Report extends Component {
                 }
                 ,
                 {
-                    title: '受影响设备',
+                    title: '告警资产',
                     key:
                         'alarmAsset',
                     render:
@@ -271,7 +271,7 @@ class Report extends Component {
                                  style={{display: 'block'}}
                             >
                                 <Link
-                                    to={`/cbd/amc/alarm/detail/${record.id}`}
+                                    to={`/cbd/amc/report/detail/${record.id}`}
                                     style={{marginRight: '12px'}}
                                 >详情</Link>
                                 <Link
@@ -340,17 +340,7 @@ class Report extends Component {
                     </Link>
                 </div>
                 <div>
-                    <Table
-                        rowKey="id"
-                        dataSource={data}
-                        columns={columns}
-                        pagination={{
-                            current: this.pageNum,
-                            defaultPageSize: 10,
-                            showQuickJumper: true,
-                            total: total,
-                            onChange: this.getAlarmListByGroupId,
-                        }}/>
+                    <Table rowKey="id" dataSource={data} columns={columns} />
                 </div>
             </div>
         )

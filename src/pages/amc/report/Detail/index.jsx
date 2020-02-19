@@ -63,7 +63,7 @@ class AlarmDetail extends Component {
                     <Descriptions.Item label="告警位置" span={1.5}>{alarmDetail.alarmLocation}</Descriptions.Item>
                     <Descriptions.Item label="描述信息" span={1.5}>{alarmDetail.description}</Descriptions.Item>
                     <Descriptions.Item label="操作">
-                        <Link to={`/cbd/amc/process`} style={{marginRight: '12px'}}>返回上级</Link>
+                        <Link to={`/cbd/amc/report`} style={{marginRight: '12px'}}>返回上级</Link>
                     </Descriptions.Item>
                 </Descriptions>
             </div>

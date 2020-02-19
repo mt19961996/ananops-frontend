@@ -44,6 +44,15 @@ class AmcRoute extends Component {
                 />
                 <Route
                     exact
+                    path="/cbd/amc/report/detail/:id"
+                    component={Loadable({
+                        loader: () => import(
+                            './report/Detail/index'),
+                        loading: Loading
+                    })}
+                />
+                <Route
+                    exact
                     path="/cbd/amc/report"
                     component={Loadable({
                         loader: () => import(

@@ -203,7 +203,7 @@ class Process extends Component {
                 }
             },
             {
-                title: '受影响设备',
+                title: '告警资产',
                 key: 'alarmAsset',
                 render: (text, record) => {
                     return (record.alarmAsset && record.alarmAsset) || '--'
