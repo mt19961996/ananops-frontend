@@ -106,14 +106,6 @@ class EditBasicInfo extends Component{
 
     getOptUploadFileReqDto() {
       return {
-        fileType: 'picture',
-        bucketName: 'ananops',
-        filePath: 'ananops/spc/'
-      };
-    };
-
-    getOptUploadFileReqDto1() {
-      return {
         fileType: 'png',
         bucketName: 'ananops',
         filePath: 'accountOpeningLicense'
@@ -146,7 +138,7 @@ class EditBasicInfo extends Component{
           authorization: 'Bearer '+window.localStorage.getItem('token'),
           'deviceId': deviceId,
         },
-        data: this.getOptUploadFileReqDto1,
+        data: this.getOptUploadFileReqDto,
         onChange(info) {
           if (info.file.status !== 'uploading') {
             console.log(info.file, info.fileList);

@@ -12,8 +12,6 @@ export default class Provider extends Component{
       providerInfo:{}
     }
   }
-    
-  
 
   getProviderInfo = async () => {
     const userId = window.localStorage.getItem('id');
