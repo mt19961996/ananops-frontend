@@ -1,5 +1,5 @@
 import React, { Component, } from 'react';
-import {Descriptions, Badge,Button,Modal,Upload,Icon} from 'antd';
+import {Descriptions, Badge, Button, Modal, Upload, Icon, message} from 'antd';
 import moment from 'moment';
 import './index.styl'
 import { Link } from 'react-router-dom'
@@ -59,10 +59,11 @@ class ManagementDetail extends Component{
   }
     render(){
       const {contractDetail,visible}=this.state
-      const props = {
-        onChange: this.handleChange,
-        multiple: true,
-      };
+      // const props = {
+      //   onChange: this.handleChange,
+      //   multiple: true,
+      // };
+
         return(
             <div className="bg">
             <Descriptions bordered className="descriptions">
@@ -98,11 +99,6 @@ class ManagementDetail extends Component{
               <Descriptions.Item label="描述" span={3}>{contractDetail.description}</Descriptions.Item>
               <Descriptions.Item label="操作">
                 <Link to={`/cbd/pro/contract`} style={{marginRight:'12px'}}>返回上级</Link>
-                <Upload {...props}>
-                  <Button>
-                    <Icon type="upload" /> 上传
-                  </Button>
-                </Upload>  
               </Descriptions.Item>
             </Descriptions>    
             
