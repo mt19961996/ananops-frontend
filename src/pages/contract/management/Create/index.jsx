@@ -39,16 +39,16 @@ class ProjectNew extends Component {
                 });
         }
     }
-    //TODO
-    // getAttachments(fileList) {
-    //     var res = [];
-    //     var size = fileList.length;
-    //     for (var i = 0; i < size; i++) {
-    //         var attachmentId = fileList[i].response[0].attachmentId;
-    //         res.push(attachmentId);
-    //     }
-    //     return res.toString();
-    // }
+
+    getAttachments(fileList) {
+        var res = [];
+        var size = fileList.length;
+        for (var i = 0; i < size; i++) {
+            var attachmentId = fileList[i].response[0].attachmentId;
+            res.push(attachmentId);
+        }
+        return res.toString();
+    }
 
     handleSubmit = (e) => {
         e.preventDefault()
@@ -60,10 +60,10 @@ class ProjectNew extends Component {
         const {getFieldValue} = form;
         const values = form.getFieldsValue();
         console.log("value: "+values);
-      // if (values.filePath != undefined) {
-      //       let fileList = values.filePath.fileList;
-      //       values.filePath = this.getAttachments(fileList);
-      //   }
+      if (values.filePath != undefined) {
+            let fileList = values.filePath.fileList;
+            values.filePath = this.getAttachments(fileList);
+        }
         if (!getFieldValue('contractCode')) {
             message.error('请填写合同编号')
         }
