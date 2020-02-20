@@ -28,6 +28,7 @@ class Add extends Component{
           BList:[],
           BUserLength:0,
           BindLength:0,
+          partyBNameList: [],
       }
       this.getAllPreparedData1 = this.getAllPreparedData1.bind(this);
       this.getAllPreparedData2 = this.getAllPreparedData2.bind(this);
@@ -89,6 +90,9 @@ class Add extends Component{
       this.state.BUserLength = i;
       console.log("B长度：" + this.state.BUserLength)
     }
+    this.setState({
+      partyBNameList: this.prepareOptions()
+    })
   }
 
   getAllPreparedData2 = async(projectId) =>{
@@ -151,6 +155,9 @@ class Add extends Component{
       })
       console.log("B长度：" + this.state.BUserLength)
     }
+    this.setState({
+      partyBNameList: this.prepareOptions()
+    })
   }
   handlePartyBMSelect=(e)=>{
     const {
@@ -172,13 +179,7 @@ class Add extends Component{
     })
   }
 
-  render(){
-
-    const add = this.props.add
-    const formItemLayout = {
-      labelCol:{span:5},
-      wrapperCol:{span:15}
-    }
+  prepareOptions() {
     const partyBNameList = [];
     if(this.props.add.flag==1)
     {
@@ -204,6 +205,15 @@ class Add extends Component{
         }
       }
     }
+    return partyBNameList;
+  }
+
+  render(){
+    const add = this.props.add
+    const formItemLayout = {
+      labelCol:{span:5},
+      wrapperCol:{span:15}
+    }
     const {BUserId} = this.state;
     const {getFieldDecorator} = this.props.form;
     return (
@@ -224,7 +234,6 @@ class Add extends Component{
         <Item label="工程师">
           {
             getFieldDecorator('userName',{
-              initialValue:null,
               disabled:true,
               rules:[{
                 required:true,
@@ -232,7 +241,7 @@ class Add extends Component{
               }]
             })(
               <Select mode="tags" style={{ width: '100%' }} placeholder="请选择与该项目关联的工程师" onSelect={this.handlePartyBMSelect} onDeselect={this.handlePartyBMDelete} >
-                {partyBNameList}
+                {this.state.partyBNameList}
               </Select>
             )
           }       

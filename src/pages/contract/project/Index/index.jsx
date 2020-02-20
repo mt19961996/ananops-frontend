@@ -178,7 +178,6 @@ class Project extends Component{
             connectVisible:true,
             add:addDetail,
         })
-       
     }
 
      //关联模态框 取消
@@ -435,33 +434,34 @@ class Project extends Component{
                             style={{border:'none',padding:0,color:"#357aff",background:'transparent'}}
                             onClick={()=> {this.delete(record)}}
                         >删除关联</Button>
-                        <Modal
-                            title="关联用户"
-                            visible={this.state.connectVisible}
-                            onOk={this.handleOk}
-                            onCancel={this.handleCancel}
-                            okText='确定'
-                            cancelText='取消'
-                            destroyOnClose='true'
-                        >
-                            <Add setAdd={(form)=>{this.form = form}}  add={add}/>
-
-                        </Modal>
-                        <Modal
-                            title="解绑用户"
-                            visible={this.state.disVisible}
-                            onOk={this.disOk}
-                            onCancel={this.disCancel}
-                            okText='解绑'
-                            cancelText='取消'
-                            destroyOnClose='true'
-                        >
-                            <Add setAdd={(form)=>{this.form = form}}  add={add}/>
-                        </Modal>
+                        
                     </div>
                     ),
                 }]}
                 />
+                <Modal
+                    title="关联用户"
+                    visible={this.state.connectVisible}
+                    onOk={this.handleOk}
+                    onCancel={this.handleCancel}
+                    okText='确定'
+                    cancelText='取消'
+                    destroyOnClose='true'
+                >
+                    <Add setAdd={(form)=>{this.form = form}}  add={add}/>
+
+                </Modal>
+                <Modal
+                    title="解绑用户"
+                    visible={this.state.disVisible}
+                    onOk={this.disOk}
+                    onCancel={this.disCancel}
+                    okText='解绑'
+                    cancelText='取消'
+                    destroyOnClose='true'
+                >
+                    <Add setAdd={(form)=>{this.form = form}}  add={add}/>
+                </Modal>
          </div>
         )
     }
