@@ -10,6 +10,7 @@ class AlarmDetail extends Component {
         super(props)
         this.state = {
             alarmDetail: {},
+            attachmentList: [],
         }
         this.getAlarmDetailById = this.getAlarmDetailById.bind(this);
     }
@@ -19,6 +20,7 @@ class AlarmDetail extends Component {
             match: {params: {id}}
         } = this.props
         this.getAlarmDetailById(id);
+        this.downloadAlarmAttachment(id);
     }
 
     getAlarmDetailById = (id) => {
@@ -42,11 +44,44 @@ class AlarmDetail extends Component {
                 console.log(error);
             });
     }
-
+    downloadAlarmAttachment = (id) => {
+        let deviceId = new Date().getTime();
+        axios({
+            method: 'POST',
+            url: '/amc/alarm/getAlarmAttachment/' + id,
+            headers: {
+                'deviceId': deviceId,
+                'Authorization': 'Bearer ' + token,
+            }
+        })
+            .then((res) => {
+                if (res && res.status === 200) {
+                    console.log(res);
+                    this.setState({
+                        attachmentList: res.data.result
+                    });
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+    getUrls(attachmentList) {
+        var urls = [];
+        var size = attachmentList.length;
+        for (var i = 0; i < size; i++) {
+            var url = attachmentList[i].url;
+            urls.push(url);
+        }
+        return urls.toString();
+    }
     render() {
         const {
             alarmDetail,
+            attachmentList
         } = this.state
+        let urlList = {};
+        urlList = this.getUrls(attachmentList);
         return (
             <div>
                 <Descriptions bordered>
@@ -62,6 +97,7 @@ class AlarmDetail extends Component {
                     <Descriptions.Item label="最近发生时间" span={1.5}>{alarmDetail.lastOccurTime}</Descriptions.Item>
                     <Descriptions.Item label="告警位置" span={1.5}>{alarmDetail.alarmLocation}</Descriptions.Item>
                     <Descriptions.Item label="描述信息" span={1.5}>{alarmDetail.description}</Descriptions.Item>
+                    <Descriptions.Item label="附件下载链接" span={3}>{urlList}</Descriptions.Item>
                     <Descriptions.Item label="操作">
                         <Link to={`/cbd/amc/report`} style={{marginRight: '12px'}}>返回上级</Link>
                     </Descriptions.Item>

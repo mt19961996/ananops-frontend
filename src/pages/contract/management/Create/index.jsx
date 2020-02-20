@@ -59,8 +59,8 @@ class ProjectNew extends Component {
         } = this.props
         const {getFieldValue} = form;
         const values = form.getFieldsValue();
-        console.log("value: "+values);
-      if (values.filePath != undefined) {
+        console.log("value: " + values);
+        if (values.filePath != undefined) {
             let fileList = values.filePath.fileList;
             values.filePath = this.getAttachments(fileList);
         }

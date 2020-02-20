@@ -1,5 +1,5 @@
 import React, {Component,} from 'react';
-import {Form, Input, Button, message, DatePicker, Radio, Select} from 'antd';
+import {Form, Input, Button, message, DatePicker, Radio, Select, Upload, Icon} from 'antd';
 import moment from 'moment';
 import axios from 'axios';
 import locale from 'antd/es/date-picker/locale/zh_CN';
@@ -49,6 +49,10 @@ class AlarmNew extends Component {
         } = this.props
         const {getFieldValue} = form;
         const values = form.getFieldsValue()
+        if (values.alarmPhoto != undefined) {
+            let fileList = values.alarmPhoto.fileList;
+            values.alarmPhoto = this.getAttachments(fileList);
+        }
         if (!getFieldValue('alarmName')) {
             message.error('请填写告警名称')
         }
@@ -90,7 +94,43 @@ class AlarmNew extends Component {
             });
     }
 
+    getAttachments(fileList) {
+        var res = [];
+        var size = fileList.length;
+        for (var i = 0; i < size; i++) {
+            var attachmentId = fileList[i].response[0].attachmentId;
+            res.push(attachmentId);
+        }
+        return res.toString();
+    }
+    getOptUploadFileReqDto1() {
+        return {
+            fileType: 'png',
+            bucketName: 'ananops',
+            filePath: 'alarm'
+        };
+    };
     render() {
+        let deviceId = new Date().getTime();
+        const props = {
+            name: 'file',
+            action: 'http://www.ananops.com:29995/amc/alarm/uploadAlarmPhoto',
+            headers: {
+                authorization: 'Bearer ' + window.localStorage.getItem('token'),
+                'deviceId': deviceId,
+            },
+            data: this.getOptUploadFileReqDto1,
+            onChange(info) {
+                if (info.file.status !== 'uploading') {
+                    console.log(info.file, info.fileList);
+                }
+                if (info.file.status === 'done') {
+                    message.success(`${info.file.name} file uploaded successfully`);
+                } else if (info.file.status === 'error') {
+                    message.error(`${info.file.name} file upload failed.`);
+                }
+            },
+        };
         const createFormItemLayout = {
             labelCol: {span: 8},
             wrapperCol: {span: 8},
@@ -223,6 +263,18 @@ class AlarmNew extends Component {
                                 }]
                             })(
                                 <Input placeholder="请输入描述信息"/>
+                            )}
+                        </Form.Item>
+                        <Form.Item
+                            {...createFormItemLayout}
+                            label="图片上传"
+                        >
+                            {getFieldDecorator('alarmPhoto')(
+                                <Upload {...props}>
+                                    <Button>
+                                        <Icon type="upload"/> 附件上传
+                                    </Button>
+                                </Upload>
                             )}
                         </Form.Item>
                         <section className="operator-container">
