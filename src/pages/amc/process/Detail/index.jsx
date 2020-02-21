@@ -93,11 +93,23 @@ class AlarmDetail extends Component {
                     <Descriptions.Item label="告警资产" span={1.5}>{alarmDetail.alarmAsset}</Descriptions.Item>
                     <Descriptions.Item label="资产类型" span={1.5}>{alarmDetail.assetType}</Descriptions.Item>
                     <Descriptions.Item label="告警状态"
-                                       span={1.5}>{alarmDetail.assetStatus === 1 ? '未处理' : '已处理'}</Descriptions.Item>
+                                       span={1.5}>{alarmDetail.alarmStatus === 1 ? '未处理' : '已处理'}</Descriptions.Item>
                     <Descriptions.Item label="最近发生时间" span={1.5}>{alarmDetail.lastOccurTime}</Descriptions.Item>
                     <Descriptions.Item label="告警位置" span={1.5}>{alarmDetail.alarmLocation}</Descriptions.Item>
                     <Descriptions.Item label="描述信息" span={1.5}>{alarmDetail.description}</Descriptions.Item>
                     <Descriptions.Item label="附件下载链接" span={3}>{urlList}</Descriptions.Item>
+                    <Descriptions.Item label="发起工单" span={3}>
+                        <Link
+                            to={{
+                                pathname: `/cbd/amc/add/workOrder/`,
+                                query: {
+                                    alarmId: alarmDetail.id,
+                                    alarmLevel: alarmDetail.alarmLevel
+                                },
+                            }}
+                            style={{marginRight: '12px'}}
+                        >发起工单</Link>
+                    </Descriptions.Item>
                     <Descriptions.Item label="操作">
                         <Link to={`/cbd/amc/process`} style={{marginRight: '12px'}}>返回上级</Link>
                     </Descriptions.Item>
