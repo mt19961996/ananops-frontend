@@ -249,7 +249,7 @@ class Process extends Component {
                         >详情</Link>
                         <Link
                             to={{
-                                pathname: `/cbd/amc/alarm/workOrder/`,
+                                pathname: `/cbd/amc/add/workOrder/`,
                                 query: {
                                     alarmId: record.id,
                                     alarmLevel: record.alarmLevel
