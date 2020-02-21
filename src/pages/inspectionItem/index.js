@@ -12,8 +12,8 @@ class Item extends Component{
       tabKey:"",
       role:window.localStorage.getItem('role'),
       imcTaskId:null
-  };
-  this.onTabChange=this.onTabChange.bind(this);
+    };
+    this.onTabChange=this.onTabChange.bind(this);
   }
   componentDidMount(){
     const { 
@@ -44,55 +44,55 @@ class Item extends Component{
       <div className="plan-approval-list-page">
         
         <Tabs 
-        activeKey={(this.props.location.state && this.props.location.state.tabKey) ? this.props.location.state.tabKey : ''}
-        onChange={this.onTabChange}>
-            <TabPane 
+          activeKey={(this.props.location.state && this.props.location.state.tabKey) ? this.props.location.state.tabKey : ''}
+          onChange={this.onTabChange}>
+          <TabPane 
             tab="待分配工程师"
             key="waitForMaintainer"
-            >
+          >
             <Route exact 
-                path="/cbd/item/waitForMaintainer/:imcTaskId" 
-                component={imcItem} 
-                />
-            </TabPane>
-            <TabPane 
+              path="/cbd/item/waitForMaintainer/:imcTaskId" 
+              component={imcItem} 
+            />
+          </TabPane>
+          <TabPane 
             tab="工程师待接单"
             key="waitForAccept"
-            >
+          >
             <Route exact 
-                path="/cbd/item/waitForAccept/:imcTaskId" 
-                component={imcItem} 
-                />
-            </TabPane>
-            <TabPane 
+              path="/cbd/item/waitForAccept/:imcTaskId" 
+              component={imcItem} 
+            />
+          </TabPane>
+          <TabPane 
             tab="子项正在执行"
             key="execute"
-            >
+          >
             <Route exact 
-                path="/cbd/item/execute/:imcTaskId" 
-                component={imcItem} 
-                />
-            </TabPane>
-            <TabPane 
+              path="/cbd/item/execute/:imcTaskId" 
+              component={imcItem} 
+            />
+          </TabPane>
+          <TabPane 
             tab="子项执行结束"
             key="finish"
-            >  
-               <Route exact 
-                path="/cbd/item/finish/:imcTaskId" 
-                component={imcItem} 
-                />                         
-            </TabPane>
-            <TabPane 
+          >  
+            <Route exact 
+              path="/cbd/item/finish/:imcTaskId" 
+              component={imcItem} 
+            />                         
+          </TabPane>
+          <TabPane 
             tab="子项确认完毕"
             key="confirmed"
-            >  
-               <Route exact 
-                path="/cbd/item/confirmed/:imcTaskId" 
-                component={imcItem} 
-                />                         
-            </TabPane>
-    </Tabs>
-    </div>
+          >  
+            <Route exact 
+              path="/cbd/item/confirmed/:imcTaskId" 
+              component={imcItem} 
+            />                         
+          </TabPane>
+        </Tabs>
+      </div>
     );
   }
 

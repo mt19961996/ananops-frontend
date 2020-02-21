@@ -22,7 +22,7 @@ class system extends Component{
     };
     return (
       <Switch>
-         <Route 
+        <Route 
           exact   
           path="/cbd/inspection"
           component={Loadable({
@@ -32,7 +32,7 @@ class system extends Component{
             loading: Loading
           })}
         />    
-         {/* <Route 
+        {/* <Route 
           exact   
           path="/cbd/inspection/wait"
           component={Loadable({
@@ -41,7 +41,7 @@ class system extends Component{
             loading: Loading
           })}
         />    */}
-         <Route 
+        <Route 
           exact   
           path="/cbd/inspection/execute"
           component={Loadable({
@@ -51,7 +51,7 @@ class system extends Component{
             loading: Loading
           })}
         />  
-          <Route 
+        <Route 
           exact   
           path="/cbd/inspection/confirm"
           component={Loadable({
@@ -61,7 +61,7 @@ class system extends Component{
             loading: Loading
           })}
         />
-         <Route 
+        <Route 
           exact   
           path="/cbd/inspection/pay"
           component={Loadable({
@@ -71,7 +71,7 @@ class system extends Component{
             loading: Loading
           })}
         /> 
-          <Route 
+        <Route 
           exact   
           path="/cbd/inspection/comment"
           component={Loadable({

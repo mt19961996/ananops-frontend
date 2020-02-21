@@ -324,10 +324,13 @@ class ProjectDetail extends Component{
           <Descriptions.Item label="预计花费" span={1.5}>{projectDetail.totalCost}</Descriptions.Item>
         </Descriptions>
         {this.getFunction(id,statusCode)}
-        <div style={{textAlign:'right'}}>
-          <Link to={`/cbd/maintain/data`} style={{marginRight:'5px'}}>返回上一级</Link>
+        <div style={{textAlign:'right'}}>          
+          {projectDetail.projectId&& <Link to={`/cbd/pro/project/detail/${projectDetail.projectId}`} style={{marginRight:'5px'}}>查看项目</Link>}   
+          <Link to={`/cbd/maintain/data`} >返回上一级</Link>
+  
+  
           {/* {projectDetail.contract&&<Link to={`/cbd/pro/contract/detail/${projectDetail.contractId}`} style={{marginRight:'5px'}}>查看合同</Link>} */}
-          {projectDetail.projectId&& <Link to={`/cbd/pro/project/detail/${projectDetail.projectId}`}>查看项目</Link>}
+         
         </div>
 
         <div>

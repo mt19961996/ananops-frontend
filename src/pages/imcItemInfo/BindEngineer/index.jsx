@@ -7,26 +7,26 @@ import { Link } from 'react-router-dom'
 const { Option } = Select;
 // const token=window.localStorage.getItem('token')
 class BindEngineer extends Component{
-    constructor(props){
-        super(props)
-        this.state={
-          imcTaskDetail:{
+  constructor(props){
+    super(props)
+    this.state={
+      imcTaskDetail:{
 
-          },
-          engineerList:[],
-          token:window.localStorage.getItem('token'),
-          whichEngineer:null,
-        }
-        // this.getDetail = this.getDetail.bind(this);
+      },
+      engineerList:[],
+      token:window.localStorage.getItem('token'),
+      whichEngineer:null,
     }
-    componentDidMount(){
-      const { 
-        match : { params : { taskId,itemId } }
-      } = this.props
-      console.log("任务id：" + taskId)
-      this.getDetail(taskId)
+    // this.getDetail = this.getDetail.bind(this);
+  }
+  componentDidMount(){
+    const { 
+      match : { params : { taskId,itemId } }
+    } = this.props
+    console.log("任务id：" + taskId)
+    this.getDetail(taskId)
 
-    }
+  }
     chooseWho = (e) =>{
       console.log(e)
       this.setState({
@@ -55,15 +55,15 @@ class BindEngineer extends Component{
         },
         data:JSON.stringify(values)
       })
-      .then((res) => {
-        if(res && res.status === 200){     
-        console.log(res.data.result)
-        alert("工程师分配成功！")
-        }
-      })
-      .catch(function (error) {
+        .then((res) => {
+          if(res && res.status === 200){     
+            console.log(res.data.result)
+            alert("工程师分配成功！")
+          }
+        })
+        .catch(function (error) {
           console.log(error);
-      });
+        });
     }
     //获取当前巡检任务子项对应的巡检任务的信息
     getDetail= async(id)=>{
@@ -79,7 +79,7 @@ class BindEngineer extends Component{
       if(res1 && res1.status === 200){
         this.setState({
           imcTaskDetail:res1.data.result
-       }) ;
+        }) ;
       }
       const res2 = await axios({
         method: 'POST',
@@ -114,29 +114,29 @@ class BindEngineer extends Component{
       //   children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
       // }
 
-        return(
-          <div className="bg">
-            <div className="searchPart">
-              <Row>
-                  <Col span={5}>
-                  <Link to={`/cbd/item/${taskId}`}>
-                      <Icon type="arrow-left" ></Icon>返回
-                  </Link>
-                  </Col>
-              </Row> 
-              <Form>
-                <Form.Item>
-                  <Select mode="tags" style={{ width: '100%' }} placeholder="请选择和该项目绑定的工程师" onSelect={this.chooseWho}>
-                    {List}
-                  </Select>
-                  <Button onClick={()=>{this.appointEngineerForImcItem(this.state.whichEngineer)}}>确定绑定</Button>
-                </Form.Item>
-              </Form>
+      return(
+        <div className="bg">
+          <div className="searchPart">
+            <Row>
+              <Col span={5}>
+                <Link to={`/cbd/item/${taskId}`}>
+                  <Icon type="arrow-left" ></Icon>返回
+                </Link>
+              </Col>
+            </Row> 
+            <Form>
+              <Form.Item>
+                <Select mode="tags" style={{ width: '100%' }} placeholder="请选择和该项目绑定的工程师" onSelect={this.chooseWho}>
+                  {List}
+                </Select>
+                <Button onClick={()=>{this.appointEngineerForImcItem(this.state.whichEngineer)}}>确定绑定</Button>
+              </Form.Item>
+            </Form>
               
               
-            </div>
-          </div>  
-        )
+          </div>
+        </div>  
+      )
     }
 
 }

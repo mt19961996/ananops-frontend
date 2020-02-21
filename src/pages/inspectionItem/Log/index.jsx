@@ -51,16 +51,16 @@ class Log extends Component{
           } = this.props
         const {data}=this.state
         return(
-            <div>
+          <div>
             <div className="searchPart">
-            <Row>
+                <Row>
                 <Col span={5}>
                 <Link to={`/cbd/inspection`}>
                     <Icon type="arrow-left" ></Icon>返回
-                </Link>
-                </Col>
-            </Row> 
-            </div>
+                  </Link>
+              </Col>
+              </Row> 
+              </div>
             <Table
             className="group-list-module"
             bordered
@@ -139,7 +139,7 @@ class Log extends Component{
             },
         ]}
             />
-     </div>
+          </div>
         )
     }
 }
